@@ -1,5 +1,4 @@
-# CS319 - Project
-# Group Name: QED
+# CS319 - Project, Group Name: QED
 
 # Description
 
