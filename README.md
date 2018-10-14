@@ -1,8 +1,8 @@
 # CS319 - Project
 Project repository for CS319 Object-Oriented Software Engineering - Fall 2018  
-Group Number: 1B  
-Group Name: QED  
-Project Name: Q-bitz
+- Group Number: 1B  
+- Group Name: QED  
+- Project Name: Q-bitz
 
 # Team Members
 - Sait Aktürk  
