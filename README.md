@@ -39,7 +39,7 @@ While including the features in the original game, our variant has several addit
 ### Different Board Sizes
 Originall Q-bitz consists of blocks in a 4x4 grid, our game will have the options for changing this to either 3x3 or 5x5. This will be a convenient feature for setting the difficulty of the game.
 ### Single Player Mode
-A player can use this mode to practice individual skills without time limit or to have an arcade type of game experience. It consists of back to back rounds of the game which has increasing level of diffuclty.
+A player can use this mode to practice individual skills and to have an arcade type of game experience. It consists of back to back rounds of the game which has increasing level of diffuclty.
 ### Elimination Mode
 This mode is only valid for multiplayer games. Since the game is digital and we can have many boards instead of four in the original one. Several players (more than 4) can join to the same game room and start a tournament. In each game, the slowest player will be eliminated.
 
