@@ -1,4 +1,5 @@
 # CS319 - Project
+![image](img/Artboard_3@4x.png)
 Project repository for CS319 Object-Oriented Software Engineering - Fall 2018  
 - Group Number: 1B  
 - Group Name: QED  
