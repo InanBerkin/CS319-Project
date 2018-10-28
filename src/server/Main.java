@@ -1,13 +1,14 @@
 package server;
 
+import org.json.JSONObject;
+
 public class Main {
 
     public static void main(String[] args) {
         Server server = new Server();
-        server.setDBCreditantials("localhost", 3306, "root", "", "qbitz");
+        server.setDBCredentials("localhost", 3306, "root", "", "qbitz");
+        server.setSocketPort(7777);
         server.start();
-
-        server.stop();
+        System.out.println("Server Started!");
     }
-
 }
