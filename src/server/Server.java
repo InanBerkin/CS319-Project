@@ -35,7 +35,7 @@ class Server {
      * @param dbname Database Name on the Database Server
      */
     void setDBCredentials(String host, int port, String username, String password, String dbname) {
-        this.db = new DatabaseConnector("localhost", 3306);
+       //this.db = new DatabaseConnector("localhost", 3306);
         this.dbUsername = username;
         this.dbPassword = password;
         this.dbName = dbname;
@@ -53,7 +53,7 @@ class Server {
      * This method starts the main systems of the server. (Database and SocketServer)
      */
     void start() {
-        db.openConnection(dbUsername, dbPassword, dbName);
+        //db.openConnection(dbUsername, dbPassword, dbName);
         socketServer = new SocketServer(socketPort);
         socketServer.start();
     }

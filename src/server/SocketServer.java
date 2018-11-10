@@ -79,6 +79,7 @@ public class SocketServer extends Thread {
      */
     void onMessageReceived(ServerSocketHandler handler, String message) {
         System.out.println(message);
+        handler.sendMessage(" Mirror " + message);
     }
 
     /**

@@ -1,7 +1,11 @@
-package SceneController;
+package client.SceneController;
 
-import Qbitz.QbitzApplication;
+import client.ClientSocketHandler;
+import client.LoginMenu.LoginMenuController;
+import client.MenuController;
+import client.Qbitz.QbitzApplication;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.fxml.JavaFXBuilderFactory;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -13,13 +17,16 @@ import java.util.logging.Logger;
 public class SceneController {
 
     private Stage stage;
+    private FXMLLoader loader;
+    private ClientSocketHandler socketHandler;
 
     public SceneController(Stage stage){
         this.stage = stage;
     }
 
     private Parent replaceSceneContent(String fxml) throws Exception {
-        Parent page = (Parent) FXMLLoader.load(QbitzApplication.class.getResource(fxml), null, new JavaFXBuilderFactory());
+        loader = new FXMLLoader(getClass().getResource(fxml));
+        Parent page = (Parent) loader.load();
         Scene scene = stage.getScene();
         if (scene == null) {
             scene = new Scene(page, 800, 600);
@@ -54,5 +61,29 @@ public class SceneController {
         } catch (Exception ex) {
             Logger.getLogger(QbitzApplication.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+
+    public MenuController getController(){
+        return loader.getController();
+    }
+
+    public void setSocketHandler(ClientSocketHandler socketHandler) {
+        this.socketHandler = socketHandler;
+    }
+
+    public void onMessageReceived(String message){
+        if(getController() != null){
+            System.out.println(getController().getClass().toString());
+            getController().onMessageReceived(message);
+        }
+
+    }
+
+    public void onExit(){
+
+    }
+
+    public void sendMessageToServer(String message){
+        socketHandler.sendMessage(message);
     }
 }

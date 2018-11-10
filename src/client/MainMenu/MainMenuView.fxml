@@ -5,7 +5,7 @@
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" stylesheets="@/styles/MainMenu.css" fx:controller="MainMenu.MainMenuController" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" stylesheets="@/styles/MainMenu.css" fx:controller="client.MainMenu.MainMenuController" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <GridPane layoutX="469.0" layoutY="176.0" prefHeight="370.0" prefWidth="253.0">
         <columnConstraints>
@@ -39,7 +39,7 @@
                   <Image url="@/icon/SettingsIcon.png" />
                </image>
             </ImageView>
-            <Button id="multiplayer" mnemonicParsing="false" prefHeight="27.0" prefWidth="139.0" text="Multiplayer" GridPane.columnIndex="1" />
+            <Button id="multiplayer" onAction="#sait" mnemonicParsing="false" prefHeight="27.0" prefWidth="139.0" text="Multiplayer" GridPane.columnIndex="1" />
             <Button id="singleplayer" mnemonicParsing="false" prefHeight="27.0" prefWidth="139.0" text="Singleplayer" GridPane.columnIndex="1" GridPane.rowIndex="1" />
             <Button id="how-to-play" mnemonicParsing="false" prefHeight="27.0" prefWidth="139.0" text="How to Play" GridPane.columnIndex="1" GridPane.rowIndex="2" />
             <Button id="options" mnemonicParsing="false" prefHeight="27.0" prefWidth="139.0" text="Options" GridPane.columnIndex="1" GridPane.rowIndex="3" />

@@ -1,5 +1,7 @@
 package client;
 
+import client.Qbitz.QbitzApplication;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -25,7 +27,7 @@ public class ClientSocketHandler extends Thread {
      * @param serverIP IP of the server.
      * @param serverPort Connection port for the socket connection.
      */
-    ClientSocketHandler(String serverIP, int serverPort) {
+    public ClientSocketHandler(String serverIP, int serverPort) {
         super("SocketHandlerThread");
         this.serverIP = serverIP;
         this.serverPort = serverPort;
@@ -72,11 +74,12 @@ public class ClientSocketHandler extends Thread {
                 String text = incoming.readLine();
 
                 if (text != null) {
-                    // onMessageReceived event.
+                    System.out.println("ClientSH: " + text);
+                    QbitzApplication.getSceneController().onMessageReceived(text);
                 }
                 else {
                     isActive.set(false);
-                    // onExit event.
+                    QbitzApplication.getSceneController().onExit();
                 }
             }
 
@@ -92,7 +95,7 @@ public class ClientSocketHandler extends Thread {
      * This method sends message to the client over the socket connection.
      * @param message The string message.
      */
-    void sendMessage(String message) {
+    public void sendMessage(String message) {
         outgoing.println(message);
     }
 
@@ -100,15 +103,8 @@ public class ClientSocketHandler extends Thread {
      * This method sets the active status of the ServerSocketHandler.
      * @param status The active status.
      */
-    void setActiveStatus(boolean status) {
+    public void setActiveStatus(boolean status) {
         this.isActive.set(status);
     }
 
-    /**
-     * This method returns the IP of the client.
-     * @return Returns the IP of the client.
-     */
-    String getConnectionIP() {
-        return this.socket.getInetAddress().getHostAddress();
-    }
 }

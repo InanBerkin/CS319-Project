@@ -1,6 +1,7 @@
-package Qbitz;
+package client.Qbitz;
 
-import SceneController.SceneController;
+import client.ClientSocketHandler;
+import client.SceneController.SceneController;
 import javafx.application.Application;
 import javafx.stage.Stage;
 
@@ -18,7 +19,10 @@ public class QbitzApplication extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception{
         try {
+            ClientSocketHandler clientSocketHandler = new ClientSocketHandler("localhost", 9999);
+            clientSocketHandler.start();
             sceneController = new SceneController(primaryStage);
+            sceneController.setSocketHandler(clientSocketHandler);
             sceneController.gotoLogin();
             primaryStage.show();
         } catch (Exception ex) {
@@ -29,5 +33,7 @@ public class QbitzApplication extends Application {
     public static SceneController getSceneController(){
         return sceneController;
     }
+
+
 
 }
