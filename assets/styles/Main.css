@@ -1,0 +1,42 @@
+* {
+    -primary: #F2B134;
+    -secondary: #4FB99F;
+    -danger: #ED553B;
+    -light :#068587;
+    -dark :#112F41;
+}
+
+Button{
+    -fx-border-radius: 4px;
+    -fx-text-fill: #ffffff;
+    -fx-pref-height: 3.5em;
+}
+
+TextField, PasswordField{
+    -fx-background-color: #F2F2F2;
+    -fx-border-width: 1px;
+    -fx-font-size: 18px;
+    -fx-font-family: "Light-45", "Helvetica Neue", "Helvetica", Arial, sans-serif;
+    -fx-font-weight: normal;
+    -fx-text-overrun: ellipsis;
+}
+
+.primary{
+    -fx-background-color: -primary;
+}
+.secondary{
+    -fx-background-color: -secondary;
+}
+.danger{
+    -fx-background-color: -danger;
+}
+.light{
+    -fx-background-color: -light;
+}
+.dark{
+    -fx-background-color: -dark;
+}
+
+.error{
+    -fx-text-fill: #FF1654;
+}

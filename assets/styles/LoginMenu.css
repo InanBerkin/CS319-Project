@@ -1,0 +1,25 @@
+@import "Main.css";
+
+Button{
+    -fx-background-color: -secondary;
+}
+
+#RegisterButton{
+    -fx-background-color: -primary;
+}
+
+Button:hover{
+    -fx-background-color: #ED553B;
+}
+
+
+VBox{
+    -fx-background-color: #112F41;
+}
+
+Label{
+    -fx-font-family: "Light-45", "Helvetica Neue", "Helvetica", Arial, sans-serif;
+    -fx-text-fill: #ffffff;
+}
+
+

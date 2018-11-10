@@ -3,9 +3,7 @@
 <?import javafx.scene.text.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.image.*?>
-<?import java.lang.*?>
 <?import javafx.scene.layout.*?>
-<?import javafx.scene.layout.AnchorPane?>
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" stylesheets="@/styles/MainMenu.css" fx:controller="MainMenu.MainMenuController" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
    <children>
@@ -41,17 +39,17 @@
                   <Image url="@/icon/SettingsIcon.png" />
                </image>
             </ImageView>
-            <Button mnemonicParsing="false" prefHeight="27.0" prefWidth="139.0" text="Multiplayer" GridPane.columnIndex="1" />
-            <Button mnemonicParsing="false" prefHeight="27.0" prefWidth="139.0" text="Singleplayer" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-            <Button mnemonicParsing="false" prefHeight="27.0" prefWidth="139.0" text="How to Play" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-            <Button mnemonicParsing="false" prefHeight="27.0" prefWidth="139.0" text="Options" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+            <Button id="multiplayer" mnemonicParsing="false" prefHeight="27.0" prefWidth="139.0" text="Multiplayer" GridPane.columnIndex="1" />
+            <Button id="singleplayer" mnemonicParsing="false" prefHeight="27.0" prefWidth="139.0" text="Singleplayer" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            <Button id="how-to-play" mnemonicParsing="false" prefHeight="27.0" prefWidth="139.0" text="How to Play" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+            <Button id="options" mnemonicParsing="false" prefHeight="27.0" prefWidth="139.0" text="Options" GridPane.columnIndex="1" GridPane.rowIndex="3" />
          </children>
       </GridPane>
       <ImageView fitHeight="241.0" fitWidth="258.0" layoutX="138.0" layoutY="229.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@/Asset 2Key.png" />
          </image></ImageView>
-      <Label alignment="BOTTOM_CENTER" contentDisplay="CENTER" layoutX="302.0" layoutY="80.0" prefHeight="17.0" prefWidth="252.0" text="Q-BITZ" textAlignment="JUSTIFY">
+      <Label id="title" alignment="BOTTOM_CENTER" contentDisplay="CENTER" layoutX="302.0" layoutY="80.0" prefHeight="17.0" prefWidth="252.0" text="Q-BITZ" textAlignment="JUSTIFY">
          <font>
             <Font name="System Font" size="48.0" />
          </font>

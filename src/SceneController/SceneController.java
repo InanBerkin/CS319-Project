@@ -33,6 +33,7 @@ public class SceneController {
 
     public void gotoLogin(){
         try {
+            stage.setTitle("Login");
             replaceSceneContent("../LoginMenu/LoginMenuView.fxml");
         } catch (Exception ex) {
             Logger.getLogger(QbitzApplication.class.getName()).log(Level.SEVERE, null, ex);
@@ -42,6 +43,14 @@ public class SceneController {
     public void gotoMainMenu(){
         try {
             replaceSceneContent("../MainMenu/MainMenuView.fxml");
+        } catch (Exception ex) {
+            Logger.getLogger(QbitzApplication.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    public void gotoRegister(){
+        try {
+            replaceSceneContent("../RegisterMenu/RegisterMenuView.fxml");
         } catch (Exception ex) {
             Logger.getLogger(QbitzApplication.class.getName()).log(Level.SEVERE, null, ex);
         }

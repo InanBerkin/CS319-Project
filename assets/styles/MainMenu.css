@@ -1,0 +1,21 @@
+@import "Main.css";
+
+Button {
+    -fx-font-weight: bold;
+    -fx-background-color: -dark;
+}
+
+
+Button:focused{
+    -fx-background-color: -light;
+}
+
+
+#title{
+    -fx-text-fill: white;
+}
+
+AnchorPane{
+    -fx-background-color: linear-gradient( to bottom right, #52E5E7 10%, #130CB7 100%);
+}
+
