@@ -8,7 +8,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
  * This class is used to handle socket connections.
  * @author Zafer Tan Çankırı
  */
-public class SocketHandler extends Thread {
+public class ServerSocketHandler extends Thread {
 
     private Socket socket;
     private SocketServer socketServer;
@@ -17,12 +17,12 @@ public class SocketHandler extends Thread {
     private AtomicBoolean isActive;
 
     /**
-     * Constructor for SocketHandler Class.
+     * Constructor for ServerSocketHandler Class.
      * @param socket The socket object for the connection.
      * @param socketServer The instance of the SocketServer which holds
      *                     the collection of SocketHandlers.
      */
-    SocketHandler(Socket socket, SocketServer socketServer) {
+    ServerSocketHandler(Socket socket, SocketServer socketServer) {
         super("SocketHandlerThread");
         this.socket = socket;
         this.socketServer = socketServer;
@@ -44,7 +44,7 @@ public class SocketHandler extends Thread {
     }
 
     /**
-     * This method starts the thread of SocketHandler.
+     * This method starts the thread of ServerSocketHandler.
      */
     @Override
     public synchronized void start() {
@@ -87,7 +87,7 @@ public class SocketHandler extends Thread {
     }
 
     /**
-     * This method sets the active status of the SocketHandler.
+     * This method sets the active status of the ServerSocketHandler.
      * @param status The active status.
      */
     void setActiveStatus(boolean status) {

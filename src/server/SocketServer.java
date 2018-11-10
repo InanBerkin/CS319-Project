@@ -19,7 +19,7 @@ public class SocketServer extends Thread {
 
     private ServerSocket serverSocket;
     private AtomicBoolean isActive;
-    private ArrayList<SocketHandler> clientList;
+    private ArrayList<ServerSocketHandler> clientList;
     private int port;
 
     /**
@@ -51,8 +51,8 @@ public class SocketServer extends Thread {
      * This method stops the SocketHandlers in the collection.
      */
     void stopHandlers() {
-        for (SocketHandler socketHandler : clientList)
-            onExit(socketHandler);
+        for (ServerSocketHandler serverSocketHandler : clientList)
+            onExit(serverSocketHandler);
     }
 
     /**
@@ -67,7 +67,7 @@ public class SocketServer extends Thread {
      * This method is a callback method which is called when a client connected.
      * @param handler The handler for the socket connection with the client.
      */
-    void onConnect(SocketHandler handler) {
+    void onConnect(ServerSocketHandler handler) {
         clientList.add(handler);
         System.out.println("Client connected: " + handler.getConnectionIP());
     }
@@ -77,7 +77,7 @@ public class SocketServer extends Thread {
      * @param handler The handler for the socket connection with the client.
      * @param message The message came through the socket connection.
      */
-    void onMessageReceived(SocketHandler handler, String message) {
+    void onMessageReceived(ServerSocketHandler handler, String message) {
         System.out.println(message);
     }
 
@@ -85,7 +85,7 @@ public class SocketServer extends Thread {
      * This method is a callback method which is called when a client disconnected.
      * @param handler The handler for the socket connection with the client.
      */
-    void onExit(SocketHandler handler) {
+    void onExit(ServerSocketHandler handler) {
         System.out.println("Client exit!");
         handler.setActiveStatus(false);
         handler.interrupt();
@@ -100,7 +100,7 @@ public class SocketServer extends Thread {
         while (isActive.get()) {
             try {
                 Socket socket = serverSocket.accept();
-                SocketHandler handler = new SocketHandler(socket,this);
+                ServerSocketHandler handler = new ServerSocketHandler(socket,this);
                 handler.start();
                 onConnect(handler);
             } catch (IOException e) {

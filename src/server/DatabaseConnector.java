@@ -1,6 +1,9 @@
 package server;
 
+import server.models.Room;
+
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -24,6 +27,7 @@ class DatabaseConnector {
     private String dbName;
 
     private Connection connection;
+    private PreparedStatement statement;
 
     /**
      * Constructor for DatabaseConnector Class.
@@ -147,6 +151,38 @@ class DatabaseConnector {
     }
 
     /**
+     * This method returns active game room list.
+     * @return Returns active game room list.
+     */
+    ArrayList<Room> getRoomList() {
+        ArrayList<Room> result = new ArrayList<>();
+
+        ResultSet resultSet = executeQuery("rooms", "SELECT * FROM ###");
+
+        try {
+            while (resultSet.next()) {
+                Room room = new Room();
+                room.setId(resultSet.getInt("id"));
+                room.setName(resultSet.getString("name"));
+                room.setGamemode(resultSet.getInt("gamemode"));
+                room.setOwnerid(resultSet.getInt("ownerid"));
+                room.setPlayers(resultSet.getInt("players"));
+                room.setMaxplayers(resultSet.getInt("maxplayers"));
+                room.setEntranceLevel(resultSet.getInt("entrance_level"));
+                room.setRoomtype(resultSet.getInt("roomtype"));
+                room.setRoomcode(resultSet.getString("roomcode"));
+
+                result.add(room);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        closeStatement();
+        return result;
+    }
+
+    /**
      * This method queries manipulating queries on the desired table.
      * @param table The table name which the operation runs on.
      * @param query The SQL query.
@@ -155,7 +191,7 @@ class DatabaseConnector {
      */
     private boolean executeUpdate(String table, String query, Object... params) {
         try {
-            PreparedStatement statement = connection.prepareStatement(query.replace("###", table));
+            statement = connection.prepareStatement(query.replace("###", table));
 
             for (int i = 0; i < params.length; i++) {
                 if (params[i].getClass().equals(String.class)) {
@@ -177,7 +213,6 @@ class DatabaseConnector {
 
             statement.executeUpdate();
             statement.close();
-
         } catch (SQLException e) {
             e.printStackTrace();
             return false;
@@ -197,7 +232,7 @@ class DatabaseConnector {
     private ResultSet executeQuery(String table, String query, Object... params) {
         ResultSet result = null;
         try {
-            PreparedStatement statement = connection.prepareStatement(query.replace("###", table));
+            statement = connection.prepareStatement(query.replace("###", table));
 
             for (int i = 0; i < params.length; i++) {
                 if (params[i].getClass().equals(String.class)) {
@@ -218,8 +253,6 @@ class DatabaseConnector {
             }
 
             result = statement.executeQuery();
-            statement.close();
-
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -236,5 +269,13 @@ class DatabaseConnector {
         Pattern pattern = Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE);
         Matcher matcher = pattern.matcher(email);
         return matcher.find();
+    }
+
+    private void closeStatement() {
+        try {
+            statement.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 }
