@@ -11,6 +11,8 @@ public class Client extends Application {
 
     private static SceneController sceneController;
 
+
+
     public static void main(String[] args) {
         launch(args);
     }
@@ -22,7 +24,7 @@ public class Client extends Application {
             clientSocketHandler.start();
             sceneController = new SceneController(primaryStage);
             sceneController.setSocketHandler(clientSocketHandler);
-            sceneController.gotoLogin();
+            sceneController.changeScene("UserSettingsMenu");
             primaryStage.show();
         } catch (Exception ex) {
             Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
