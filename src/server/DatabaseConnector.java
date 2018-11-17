@@ -150,6 +150,18 @@ class DatabaseConnector {
         return -1;
     }
 
+    boolean userExists(String username, String email) {
+        ResultSet result = executeQuery(USER_TABLE,"SELECT * FROM ### WHERE `username` = ? OR `email` = ?", username, email);
+
+        try {
+            return result.next();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return false;
+    }
+
     /**
      * This method returns active game room list.
      * @return Returns active game room list.

@@ -2,7 +2,7 @@ package client.SceneController;
 
 import client.ClientSocketHandler;
 import client.MenuController;
-import client.QbitzApplication;
+import client.Client;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -40,7 +40,7 @@ public class SceneController {
             stage.setTitle("Login");
             replaceSceneContent("../LoginMenu/LoginMenuView.fxml");
         } catch (Exception ex) {
-            Logger.getLogger(QbitzApplication.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -48,7 +48,7 @@ public class SceneController {
         try {
             replaceSceneContent("../MainMenu/MainMenuView.fxml");
         } catch (Exception ex) {
-            Logger.getLogger(QbitzApplication.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -56,11 +56,11 @@ public class SceneController {
         try {
             replaceSceneContent("../RegisterMenu/RegisterMenuView.fxml");
         } catch (Exception ex) {
-            Logger.getLogger(QbitzApplication.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
-    public MenuController getController(){
+    MenuController getController(){
         return loader.getController();
     }
 

@@ -1,5 +1,10 @@
 package server;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+import server.models.User;
+
 /**
  * This class is the main class which holds the Server properties of the game.
  * This class has instances of DatabaseConnector and SocketServer classes which
@@ -14,16 +19,18 @@ class Server {
     private String dbName;
     private SocketServer socketServer;
     private int socketPort;
+    private VerificationManager verificationManager;
 
     /**
      * Constructor for Server Class.
      */
-    Server() {
+    private Server() {
         this.db = null;
         this.dbUsername = "";
         this.dbPassword = "";
         this.dbName = "";
         this.socketServer = null;
+        this.verificationManager = new VerificationManager();
     }
 
     /**
@@ -34,8 +41,8 @@ class Server {
      * @param password Password for the Database Server
      * @param dbname Database Name on the Database Server
      */
-    void setDBCredentials(String host, int port, String username, String password, String dbname) {
-       //this.db = new DatabaseConnector("localhost", 3306);
+    private void setDBCredentials(String host, int port, String username, String password, String dbname) {
+        this.db = new DatabaseConnector("localhost", 3306);
         this.dbUsername = username;
         this.dbPassword = password;
         this.dbName = dbname;
@@ -45,16 +52,16 @@ class Server {
      * This method initializes the port of socket connections.
      * @param socketPort The connection port for the Socket Server.
      */
-    void setSocketPort(int socketPort) {
+    private void setSocketPort(int socketPort) {
         this.socketPort = socketPort;
     }
 
     /**
      * This method starts the main systems of the server. (Database and SocketServer)
      */
-    void start() {
-        //db.openConnection(dbUsername, dbPassword, dbName);
-        socketServer = new SocketServer(socketPort);
+    private void start() {
+        db.openConnection(dbUsername, dbPassword, dbName);
+        socketServer = new SocketServer(socketPort, this);
         socketServer.start();
     }
 
@@ -65,6 +72,83 @@ class Server {
         db.closeConnection();
         socketServer.stopHandlers();
         socketServer.interrupt();
+    }
+
+    void onMessageReceived(ServerSocketHandler handler, String message) {
+        if (isJSONValid(message)) {
+            JSONObject msgObj = new JSONObject(message);
+
+            if (msgObj.getString("requestType").equals("register")) {
+                String username = msgObj.getString("username");
+                String email = msgObj.getString("email");
+                String password = msgObj.getString("password");
+
+                JSONObject respObj = new JSONObject();
+                respObj.put("responseType", "register");
+
+                if (!db.userExists(username, email)) {
+                    User user = new User();
+                    user.setUsername(username);
+                    user.setEmail(email);
+                    user.setPassword(password);
+                    verificationManager.sendVerificationCode(user);
+                    respObj.put("result", true);
+                }
+                else {
+                    respObj.put("result", false);
+                }
+
+                handler.sendMessage(respObj.toString());
+            }
+            else if (msgObj.getString("requestType").equals("verify")) {
+                String email = msgObj.getString("email");
+                String code = msgObj.getString("code");
+
+                User user = verificationManager.checkVerificationCode(email, code);
+
+                JSONObject respObj = new JSONObject();
+                respObj.put("responseType", "verify");
+
+                if (user != null) {
+                    if (db.addUser(user.getUsername(), user.getPassword(), user.getEmail())) {
+                        respObj.put("result", true);
+                    }
+                    else {
+                        respObj.put("result", false);
+                    }
+                }
+                else {
+                    respObj.put("result", false);
+                }
+
+                handler.sendMessage(respObj.toString());
+            }
+        }
+
+        System.out.println(message);
+    }
+
+    private boolean isJSONValid(String test) {
+        try {
+            new JSONObject(test);
+        } catch (JSONException ex) {
+            // edited, to include @Arthur's comment
+            // e.g. in case JSONArray is valid as well...
+            try {
+                new JSONArray(test);
+            } catch (JSONException ex1) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public static void main(String[] args) {
+        Server server = new Server();
+        server.setDBCredentials("localhost", 3306, "root", "", "qbitz");
+        server.setSocketPort(9999);
+        server.start();
+        System.out.println("Server Started!");
     }
 
 }

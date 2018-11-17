@@ -73,7 +73,10 @@ public class ServerSocketHandler extends Thread {
             outgoing.close();
             socket.close();
         } catch (IOException e) {
-            e.printStackTrace();
+            if (e.getMessage().equals("Connection reset")) {
+                isActive.set(false);
+                socketServer.onExit(this);
+            }
         }
 
     }

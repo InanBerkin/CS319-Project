@@ -1,7 +1,7 @@
 package client.LoginMenu;
 
 import client.MenuController;
-import client.QbitzApplication;
+import client.Client;
 import javafx.animation.TranslateTransition;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -47,14 +47,14 @@ public class LoginMenuController extends MenuController {
             translate.play();
             return;
         }
-        QbitzApplication.getSceneController().sendMessageToServer(password);
-        QbitzApplication.getSceneController().gotoMainMenu();
+        Client.getSceneController().sendMessageToServer(password);
+        Client.getSceneController().gotoMainMenu();
         System.out.println("Login");
     }
 
     @FXML
     public void gotoRegister(ActionEvent event){
-        QbitzApplication.getSceneController().gotoRegister();
+        Client.getSceneController().gotoRegister();
     }
 
     @Override

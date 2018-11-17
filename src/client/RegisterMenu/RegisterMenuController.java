@@ -1,6 +1,6 @@
 package client.RegisterMenu;
 
-import client.QbitzApplication;
+import client.Client;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -47,6 +47,6 @@ public class RegisterMenuController implements Initializable {
 
     @FXML
     public void gotoLogin(ActionEvent event){
-        QbitzApplication.getSceneController().gotoLogin();
+        Client.getSceneController().gotoLogin();
     }
 }

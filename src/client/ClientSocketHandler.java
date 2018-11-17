@@ -25,7 +25,7 @@ public class ClientSocketHandler extends Thread {
      * @param serverIP IP of the server.
      * @param serverPort Connection port for the socket connection.
      */
-    public ClientSocketHandler(String serverIP, int serverPort) {
+    ClientSocketHandler(String serverIP, int serverPort) {
         super("SocketHandlerThread");
         this.serverIP = serverIP;
         this.serverPort = serverPort;
@@ -73,11 +73,11 @@ public class ClientSocketHandler extends Thread {
 
                 if (text != null) {
                     System.out.println("ClientSH: " + text);
-                    QbitzApplication.getSceneController().onMessageReceived(text);
+                    Client.getSceneController().onMessageReceived(text);
                 }
                 else {
                     isActive.set(false);
-                    QbitzApplication.getSceneController().onExit();
+                    Client.getSceneController().onExit();
                 }
             }
 

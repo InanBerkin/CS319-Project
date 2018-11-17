@@ -17,6 +17,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
  */
 public class SocketServer extends Thread {
 
+    private Server server;
     private ServerSocket serverSocket;
     private AtomicBoolean isActive;
     private ArrayList<ServerSocketHandler> clientList;
@@ -26,10 +27,11 @@ public class SocketServer extends Thread {
      * Constructor for SocketServer Class.
      * @param port The connection port of the socket connections.
      */
-    SocketServer(int port) {
+    SocketServer(int port, Server server) {
         this.port = port;
         this.isActive = new AtomicBoolean(false);
         this.clientList = new ArrayList<>();
+        this.server = server;
         try {
             serverSocket = new ServerSocket(port);
         } catch (IOException e) {
@@ -67,9 +69,10 @@ public class SocketServer extends Thread {
      * This method is a callback method which is called when a client connected.
      * @param handler The handler for the socket connection with the client.
      */
-    void onConnect(ServerSocketHandler handler) {
+    private void onConnect(ServerSocketHandler handler) {
         clientList.add(handler);
         System.out.println("Client connected: " + handler.getConnectionIP());
+        handler.sendMessage("Welcome\n");
     }
 
     /**
@@ -78,8 +81,7 @@ public class SocketServer extends Thread {
      * @param message The message came through the socket connection.
      */
     void onMessageReceived(ServerSocketHandler handler, String message) {
-        System.out.println(message);
-        handler.sendMessage("Mirror: " + message);
+        server.onMessageReceived(handler, message);
     }
 
     /**

@@ -7,7 +7,7 @@ import javafx.stage.Stage;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class QbitzApplication extends Application {
+public class Client extends Application {
 
     private static SceneController sceneController;
 
@@ -25,14 +25,12 @@ public class QbitzApplication extends Application {
             sceneController.gotoLogin();
             primaryStage.show();
         } catch (Exception ex) {
-            Logger.getLogger(QbitzApplication.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
     public static SceneController getSceneController(){
         return sceneController;
     }
-
-
 
 }
