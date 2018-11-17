@@ -1,6 +1,5 @@
-package client.Qbitz;
+package client;
 
-import client.ClientSocketHandler;
 import client.SceneController.SceneController;
 import javafx.application.Application;
 import javafx.stage.Stage;

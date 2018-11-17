@@ -1,14 +1,12 @@
 package client.LoginMenu;
 
 import client.MenuController;
-import client.Qbitz.QbitzApplication;
+import client.QbitzApplication;
 import javafx.animation.TranslateTransition;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.Menu;
 import javafx.scene.control.TextField;
 import javafx.util.Duration;
 
@@ -44,13 +42,13 @@ public class LoginMenuController extends MenuController {
     public void login(ActionEvent event){
         String username = usernameTextField.getText();
         String password = passwordTextField.getText();
-//        if(username.isEmpty() || password.isEmpty() ){
-////            errorLabel.setText("Please fill all the fields");
-////            translate.play();
-////            return;
-////        }
+        if(username.isEmpty() || password.isEmpty() ){
+            errorLabel.setText("Please fill all the fields");
+            translate.play();
+            return;
+        }
         QbitzApplication.getSceneController().sendMessageToServer(password);
-        //QbitzApplication.getSceneController().gotoMainMenu();
+        QbitzApplication.getSceneController().gotoMainMenu();
         System.out.println("Login");
     }
 

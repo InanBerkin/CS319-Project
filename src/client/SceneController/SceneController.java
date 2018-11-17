@@ -1,12 +1,9 @@
 package client.SceneController;
 
 import client.ClientSocketHandler;
-import client.LoginMenu.LoginMenuController;
 import client.MenuController;
-import client.Qbitz.QbitzApplication;
+import client.QbitzApplication;
 import javafx.fxml.FXMLLoader;
-import javafx.fxml.Initializable;
-import javafx.fxml.JavaFXBuilderFactory;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;

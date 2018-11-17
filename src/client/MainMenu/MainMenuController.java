@@ -1,9 +1,9 @@
 package client.MainMenu;
 
 import client.MenuController;
-import client.Qbitz.QbitzApplication;
+import client.QbitzApplication;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
+
 import java.net.URL;
 import java.util.ResourceBundle;
 

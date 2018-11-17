@@ -1,6 +1,6 @@
 package client.RegisterMenu;
 
-import client.Qbitz.QbitzApplication;
+import client.QbitzApplication;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
