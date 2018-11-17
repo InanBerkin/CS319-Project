@@ -72,7 +72,6 @@ public class SocketServer extends Thread {
     private void onConnect(ServerSocketHandler handler) {
         clientList.add(handler);
         System.out.println("Client connected: " + handler.getConnectionIP());
-        handler.sendMessage("Welcome\n");
     }
 
     /**

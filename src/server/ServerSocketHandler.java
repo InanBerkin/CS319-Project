@@ -87,6 +87,7 @@ public class ServerSocketHandler extends Thread {
      */
     void sendMessage(String message) {
         outgoing.println(message);
+        System.out.println("To " + getConnectionIP() + " : " + message);
     }
 
     /**

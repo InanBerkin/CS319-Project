@@ -150,6 +150,43 @@ class DatabaseConnector {
         return -1;
     }
 
+    int loginWithUsername(String username, String password) {
+        ResultSet result = executeQuery(USER_TABLE,"SELECT `id` FROM ### WHERE `username` = ? AND `password` = MD5(?)", username, password);
+
+        try {
+            if (result.next())
+                return result.getInt("id");
+            else
+                return -1;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return -1;
+    }
+
+    int loginWithEmail(String email, String password) {
+        ResultSet result = executeQuery(USER_TABLE,"SELECT `id` FROM ### WHERE `email` = ? AND `password` = MD5(?)", email, password);
+
+        try {
+            if (result.next())
+                return result.getInt("id");
+            else
+                return -1;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return -1;
+    }
+
+    boolean resetPassword(String email, String password) {
+        if (password.length() >= MIN_PASSWORD_LENGTH)
+            return executeUpdate(USER_TABLE,"UPDATE ### SET `password` = MD5(?) WHERE `email` = ?", password, email);
+        else
+            return false;
+    }
+
     boolean userExists(String username, String email) {
         ResultSet result = executeQuery(USER_TABLE,"SELECT * FROM ### WHERE `username` = ? OR `email` = ?", username, email);
 

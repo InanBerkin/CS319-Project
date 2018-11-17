@@ -20,6 +20,7 @@ class Server {
     private SocketServer socketServer;
     private int socketPort;
     private VerificationManager verificationManager;
+    private ResetPasswordManager resetPasswordManager;
 
     /**
      * Constructor for Server Class.
@@ -31,6 +32,7 @@ class Server {
         this.dbName = "";
         this.socketServer = null;
         this.verificationManager = new VerificationManager();
+        this.resetPasswordManager = new ResetPasswordManager();
     }
 
     /**
@@ -75,6 +77,8 @@ class Server {
     }
 
     void onMessageReceived(ServerSocketHandler handler, String message) {
+        System.out.println("From " + handler.getConnectionIP() + ": " + message);
+
         if (isJSONValid(message)) {
             JSONObject msgObj = new JSONObject(message);
 
@@ -123,9 +127,61 @@ class Server {
 
                 handler.sendMessage(respObj.toString());
             }
-        }
+            else if (msgObj.getString("requestType").equals("login")) {
+                String password = msgObj.getString("password");
+                int id = -1;
 
-        System.out.println(message);
+                if (msgObj.has("email")) {
+                    String email = msgObj.getString("email");
+                    id = db.loginWithEmail(email, password);
+                }
+                else if (msgObj.has("username")) {
+                    String username = msgObj.getString("username");
+                    id = db.loginWithUsername(username, password);
+                }
+
+                JSONObject respObj = new JSONObject();
+                respObj.put("responseType", "login");
+
+                if (id != -1) {
+                    respObj.put("result", true);
+                    respObj.put("id", id);
+                }
+                else {
+                    respObj.put("result", false);
+                }
+
+                handler.sendMessage(respObj.toString());
+            }
+            else if (msgObj.getString("requestType").equals("resetPasswordRequest")) {
+                String email = msgObj.getString("email");
+
+                resetPasswordManager.sendPasswordResetCode(email);
+
+                JSONObject respObj = new JSONObject();
+                respObj.put("responseType", "resetPasswordRequest");
+                respObj.put("result", true);
+
+                handler.sendMessage(respObj.toString());
+            }
+            else if (msgObj.getString("requestType").equals("resetPassword")) {
+                String email = msgObj.getString("email");
+                String password = msgObj.getString("password");
+                String code = msgObj.getString("code");
+
+                JSONObject respObj = new JSONObject();
+                respObj.put("responseType", "resetPasswordRequest");
+
+                if (resetPasswordManager.checkVerificationCode(email, password)) {
+                    respObj.put("result", db.resetPassword(email, password));
+                }
+                else {
+                    respObj.put("result", false);
+                }
+
+                handler.sendMessage(respObj.toString());
+            }
+        }
     }
 
     private boolean isJSONValid(String test) {
