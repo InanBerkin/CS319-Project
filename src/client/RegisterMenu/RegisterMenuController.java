@@ -47,6 +47,6 @@ public class RegisterMenuController implements Initializable {
 
     @FXML
     public void gotoLogin(ActionEvent event){
-        QbitzApplication.getSceneController().gotoLogin();
+        QbitzApplication.getSceneController().changeScene("LoginMenu");
     }
 }

@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<VBox alignment="CENTER_RIGHT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" stylesheets="@/styles/LoginMenu.css" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.RoomMenu.RoomMenuController">
+    <children>
+        <HBox alignment="CENTER_RIGHT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="39.0" prefWidth="523.0">
+
+         <VBox.margin>
+             <Insets bottom="5.0" left="30.0" right="30.0" />
+         </VBox.margin>
+         <TextField fx:id="roomCodeText" prefHeight="39.0" prefWidth="119.0" promptText="Room Code">
+             <HBox.margin>
+                 <Insets left="150.0" right="5.0" />
+             </HBox.margin>
+
+         </TextField>
+         <Button fx:id="enterPrivateButton" mnemonicParsing="false" onAction="#enterPrivateRoom" prefHeight="5" prefWidth="101.0" text="Enter Private Room">
+
+            <font>
+               <Font size="10.0" />
+            </font>
+            </Button>
+        </HBox>
+
+        <HBox alignment="CENTER">
+                <VBox.margin>
+                    <Insets bottom="5.0" left="30.0" right="30.0" />
+                </VBox.margin>
+                <HBox alignment="BASELINE_LEFT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity">
+
+
+                    <TextField fx:id="searchText" prefHeight="39.0" prefWidth="129.0" promptText="Search Room">
+
+                    </TextField>
+                    <Label text="Race">
+                        <HBox.margin>
+                            <Insets left="5.0" right="5.0" top="7.5" />
+                        </HBox.margin>
+                    </Label>
+                    <CheckBox fx:id="raceCheck" selected="true">
+                        <HBox.margin>
+                            <Insets left="2.5" right="5.0" top="7.5" />
+                        </HBox.margin>
+                    </CheckBox>
+
+                    <Label text="Roll to Win">
+                        <HBox.margin>
+                            <Insets left="5.0" right="5.0" top="7.5" />
+                        </HBox.margin>
+                    </Label>
+                    <CheckBox fx:id="rollCheck" selected="true">
+                        <HBox.margin>
+                            <Insets left="2.5" right="5.0" top="7.5" />
+                        </HBox.margin>
+                    </CheckBox>
+                </HBox>
+                <HBox alignment="BASELINE_RIGHT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity">
+                    <Label text="Memory">
+                        <HBox.margin>
+                            <Insets left="5.0" right="5.0" top="7.5" />
+                        </HBox.margin>
+                    </Label>
+                    <CheckBox fx:id="MemoryCheck" selected="true">
+                        <HBox.margin>
+                            <Insets left="2.5" right="5.0" top="7.5" />
+                        </HBox.margin>
+                    </CheckBox>
+
+                    <Label text="Tournament">
+                        <HBox.margin>
+                            <Insets left="5.0" right="5.0" top="7.5" />
+                        </HBox.margin>
+                    </Label>
+                    <CheckBox fx:id="tourCheck" selected="true">
+                        <HBox.margin>
+                            <Insets left="2.5" right="5.0" top="7.5" />
+                        </HBox.margin>
+                    </CheckBox>
+
+                    <Button fx:id="createRoomMenu" onAction="#createRoom" prefHeight="32.0" prefWidth="101.0" text="Create Room">
+
+                    </Button>
+
+                </HBox>
+        </HBox>
+        <TableView fx:id="roomTable" style="-fx-background-color: #068587;">
+            <VBox.margin>
+                <Insets left="30.0" right="30.0" />
+            </VBox.margin>
+
+        </TableView>
+    </children>
+
+
+</VBox>

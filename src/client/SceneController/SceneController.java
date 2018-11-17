@@ -16,6 +16,7 @@ public class SceneController {
     private Stage stage;
     private FXMLLoader loader;
     private ClientSocketHandler socketHandler;
+    private final String BASE_URL = "../";
 
     public SceneController(Stage stage){
         this.stage = stage;
@@ -34,31 +35,16 @@ public class SceneController {
         stage.sizeToScene();
         return page;
     }
-
-    public void gotoLogin(){
+    public void changeScene( String sceneName ){
         try {
-            stage.setTitle("Login");
-            replaceSceneContent("../LoginMenu/LoginMenuView.fxml");
+            stage.setTitle(sceneName);
+            replaceSceneContent(BASE_URL + sceneName + "/"+ sceneName + "View.fxml");
         } catch (Exception ex) {
             Logger.getLogger(QbitzApplication.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
-    public void gotoMainMenu(){
-        try {
-            replaceSceneContent("../MainMenu/MainMenuView.fxml");
-        } catch (Exception ex) {
-            Logger.getLogger(QbitzApplication.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
 
-    public void gotoRegister(){
-        try {
-            replaceSceneContent("../RegisterMenu/RegisterMenuView.fxml");
-        } catch (Exception ex) {
-            Logger.getLogger(QbitzApplication.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
 
     public MenuController getController(){
         return loader.getController();

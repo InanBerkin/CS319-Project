@@ -1,5 +1,6 @@
 package server.models;
 
+
 public class Room {
 
     private int id;
@@ -11,6 +12,33 @@ public class Room {
     private int entranceLevel;
     private int roomtype;
     private String roomcode;
+
+    public Room(String name, int gamemode, int ownerid, int players, int entranceLevel) {
+        this.id = 0;
+        this.name = name;
+        this.gamemode = gamemode;
+        this.ownerid = ownerid;
+        this.players = players;
+        this.maxplayers = 0;
+        this.entranceLevel = entranceLevel;
+        this.roomtype = 0;
+        this.roomcode = "";
+    }
+
+    public Room(int id, String name, int gamemode, int ownerid, int players, int maxplayers, int entranceLevel, int roomtype, String roomcode) {
+        this.id = id;
+        this.name = name;
+        this.gamemode = gamemode;
+        this.ownerid = ownerid;
+        this.players = players;
+        this.maxplayers = maxplayers;
+        this.entranceLevel = entranceLevel;
+        this.roomtype = roomtype;
+        this.roomcode = roomcode;
+    }
+
+    public Room() {
+    }
 
     public int getId() {
         return id;

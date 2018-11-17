@@ -48,13 +48,13 @@ public class LoginMenuController extends MenuController {
             return;
         }
         QbitzApplication.getSceneController().sendMessageToServer(password);
-        QbitzApplication.getSceneController().gotoMainMenu();
+        QbitzApplication.getSceneController().changeScene("MainMenu");
         System.out.println("Login");
     }
 
     @FXML
     public void gotoRegister(ActionEvent event){
-        QbitzApplication.getSceneController().gotoRegister();
+        QbitzApplication.getSceneController().changeScene("RegisterMenu");
     }
 
     @Override
