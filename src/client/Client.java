@@ -2,7 +2,9 @@ package client;
 
 import client.SceneController.SceneController;
 import javafx.application.Application;
+import javafx.scene.input.KeyCombination;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -20,11 +22,15 @@ public class Client extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception{
         try {
+            primaryStage.setMinWidth(800);
+            primaryStage.setMinHeight(600);
+            primaryStage.setFullScreen(true);
+            primaryStage.setFullScreenExitKeyCombination(KeyCombination.NO_MATCH);
             ClientSocketHandler clientSocketHandler = new ClientSocketHandler("localhost", 9999);
             clientSocketHandler.start();
             sceneController = new SceneController(primaryStage);
             sceneController.setSocketHandler(clientSocketHandler);
-            sceneController.changeScene("UserSettingsMenu");
+            sceneController.changeScene("LoginMenu");
             primaryStage.show();
         } catch (Exception ex) {
             Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);

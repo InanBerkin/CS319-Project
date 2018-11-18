@@ -12,7 +12,7 @@ Button:hover{
     -fx-background-color: #ED553B;
 }
 
-VBox{
+GridPane{
     -fx-background-color: #112F41;
 }
 

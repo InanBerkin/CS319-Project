@@ -1,7 +1,7 @@
 package client.MainMenu;
 
 import client.MenuController;
-import client.Client;
+import client.QbitzApplication;
 import javafx.fxml.FXML;
 
 import java.net.URL;
@@ -20,7 +20,7 @@ public class MainMenuController extends MenuController {
     }
 
     @FXML
-    public void sait(){
-        Client.getSceneController().sendMessageToServer("Ben sait");
+    public void gotoSingleplayerMenu(){
+        QbitzApplication.getSceneController().changeScene("SingleplayerMenu");
     }
 }
