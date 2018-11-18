@@ -4,6 +4,7 @@ import client.SceneController.SceneController;
 import javafx.application.Application;
 import javafx.scene.input.KeyCombination;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
