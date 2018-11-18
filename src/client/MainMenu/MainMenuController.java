@@ -20,7 +20,7 @@ public class MainMenuController extends MenuController {
     }
 
     @FXML
-    public void sait(){
-        QbitzApplication.getSceneController().sendMessageToServer("Ben sait");
+    public void gotoSingleplayerMenu(){
+        QbitzApplication.getSceneController().changeScene("SingleplayerMenu");
     }
 }

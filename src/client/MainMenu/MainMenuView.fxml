@@ -1,58 +1,47 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.text.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.image.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TextField?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" stylesheets="@/styles/MainMenu.css" fx:controller="client.MainMenu.MainMenuController" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.image.Image?>
+<GridPane stylesheets="@/styles/MainMenu.css" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.MainMenu.MainMenuController">
    <children>
-      <GridPane layoutX="469.0" layoutY="176.0" prefHeight="370.0" prefWidth="253.0">
-        <columnConstraints>
-          <ColumnConstraints halignment="CENTER" maxWidth="106.01556396484375" minWidth="10.0" prefWidth="106.01556396484375" />
-          <ColumnConstraints hgrow="SOMETIMES" maxWidth="149.29434204101562" minWidth="10.0" prefWidth="113.98443603515625" />
-        </columnConstraints>
-        <rowConstraints>
-            <RowConstraints maxHeight="117.0" minHeight="10.0" prefHeight="117.0" vgrow="SOMETIMES" />
-          <RowConstraints maxHeight="117.0" minHeight="10.0" prefHeight="117.0" vgrow="SOMETIMES" />
-          <RowConstraints maxHeight="117.0" minHeight="10.0" prefHeight="117.0" vgrow="SOMETIMES" />
-          <RowConstraints maxHeight="117.0" minHeight="10.0" prefHeight="117.0" vgrow="SOMETIMES" />
-        </rowConstraints>
-         <children>
-            <ImageView fitHeight="52.0" fitWidth="60.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@/icon/MultiplayerIcon.png" />
-               </image>
-            </ImageView>
-            <ImageView fitHeight="41.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true" GridPane.rowIndex="1">
-               <image>
-                  <Image url="@/icon/SinglePlayerIcon.png" />
-               </image>
-            </ImageView>
-            <ImageView fitHeight="52.0" fitWidth="60.0" pickOnBounds="true" preserveRatio="true" GridPane.rowIndex="2">
-               <image>
-                  <Image url="@/icon/HowToPlay.png" />
-               </image>
-            </ImageView>
-            <ImageView fitHeight="52.0" fitWidth="60.0" pickOnBounds="true" preserveRatio="true" GridPane.rowIndex="3">
-               <image>
-                  <Image url="@/icon/SettingsIcon.png" />
-               </image>
-            </ImageView>
-            <Button id="multiplayer" onAction="#sait" mnemonicParsing="false" prefHeight="27.0" prefWidth="139.0" text="Multiplayer" GridPane.columnIndex="1" />
-            <Button id="singleplayer" mnemonicParsing="false" prefHeight="27.0" prefWidth="139.0" text="Singleplayer" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-            <Button id="how-to-play" mnemonicParsing="false" prefHeight="27.0" prefWidth="139.0" text="How to Play" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-            <Button id="options" mnemonicParsing="false" prefHeight="27.0" prefWidth="139.0" text="Options" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-         </children>
-      </GridPane>
-      <ImageView fitHeight="241.0" fitWidth="258.0" layoutX="138.0" layoutY="229.0" pickOnBounds="true" preserveRatio="true">
-         <image>
-            <Image url="@/Asset 2Key.png" />
-         </image></ImageView>
-      <Label id="title" alignment="BOTTOM_CENTER" contentDisplay="CENTER" layoutX="302.0" layoutY="80.0" prefHeight="17.0" prefWidth="252.0" text="Q-BITZ" textAlignment="JUSTIFY">
-         <font>
-            <Font name="System Font" size="48.0" />
-         </font>
-      </Label>
+      <HBox GridPane.rowIndex="0" GridPane.columnIndex="0" alignment="CENTER">
+         <Label style="-fx-font-size: 80" alignment="CENTER" text="Q-BITZ" textFill="WHITE"/>
+      </HBox>
+      <VBox alignment="CENTER" spacing="20" GridPane.rowIndex="1" GridPane.columnIndex="0">
+         <Button prefWidth="300" mnemonicParsing="false" onAction="#gotoMainMenu" text="Multiplayer"/>
+         <Button prefWidth="300" mnemonicParsing="false" onAction="#gotoSingleplayerMenu" text="Singleplayer"/>
+         <Button prefWidth="300" mnemonicParsing="false" text="How To Play"/>
+         <Button prefWidth="300" mnemonicParsing="false" text="Options"/>
+         <padding>
+            <Insets left="30.0" right="30.0" />
+         </padding>
+      </VBox>
+      <VBox alignment="CENTER" GridPane.rowIndex="1" GridPane.columnIndex="1">
+         <ImageView>
+            <Image url="@/Asset 3Key.png"></Image>
+         </ImageView>
+      </VBox>
    </children>
-</AnchorPane>
+   <columnConstraints>
+      <ColumnConstraints percentWidth="30.0" />
+      <ColumnConstraints percentWidth="70.0" />
+   </columnConstraints>
+   <rowConstraints>
+      <RowConstraints percentHeight="20.0"/>
+      <RowConstraints percentHeight="80.0"/>
+   </rowConstraints>
+   <padding>
+      <Insets bottom="10.0" left="10.0" right="10.0" top="30.0" />
+   </padding>
+</GridPane>

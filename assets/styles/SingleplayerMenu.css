@@ -1,0 +1,27 @@
+@import "Main.css";
+
+.easy{
+     -fx-background-color: -secondary;
+ }
+
+.normal{
+    -fx-background-color: -primary;
+}
+
+.hard{
+    -fx-background-color: -danger;
+}
+
+GridPane{
+    -fx-background-color: -dark;
+}
+
+Button{
+    -fx-pref-width: 100;
+    -fx-pref-height: 100;
+}
+
+Label{
+    -fx-font-family: "Light-45", "Helvetica Neue", "Helvetica", Arial, sans-serif;
+    -fx-text-fill: #ffffff;
+}
