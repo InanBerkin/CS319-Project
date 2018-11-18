@@ -71,7 +71,7 @@ public class SocketServer extends Thread {
      */
     private void onConnect(ServerSocketHandler handler) {
         clientList.add(handler);
-        System.out.println("Client connected: " + handler.getConnectionIP());
+        System.out.println("QBitzApplication connected: " + handler.getConnectionIP());
     }
 
     /**
@@ -88,7 +88,7 @@ public class SocketServer extends Thread {
      * @param handler The handler for the socket connection with the client.
      */
     void onExit(ServerSocketHandler handler) {
-        System.out.println("Client exit!");
+        System.out.println("QBitzApplication exit!");
         handler.setActiveStatus(false);
         handler.interrupt();
     }

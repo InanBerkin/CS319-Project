@@ -15,7 +15,7 @@ public abstract class MenuController implements Initializable {
 
 
     public void gotoMainMenu(){
-        QbitzApplication.getSceneController().changeScene("MainMenu");
+        QBitzApplication.getSceneController().changeScene("MainMenu");
     }
 
 

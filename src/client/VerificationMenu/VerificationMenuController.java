@@ -1,7 +1,7 @@
 package client.VerificationMenu;
 
 import client.MenuController;
-import client.QbitzApplication;
+import client.QBitzApplication;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
@@ -21,7 +21,7 @@ public class VerificationMenuController extends MenuController {
         JSONObject response = new JSONObject(message);
         if(response.getBoolean("result")){
             Platform.runLater(() -> {
-                QbitzApplication.getSceneController().changeScene("LoginMenu");
+                QBitzApplication.getSceneController().changeScene("LoginMenu");
             });
         }
     }
@@ -38,6 +38,6 @@ public class VerificationMenuController extends MenuController {
         }
         JSONObject verificationJSON = payload;
         payload.put("code", verificationCode.getText());
-        QbitzApplication.getSceneController().sendMessageToServer(payload.toString());
+        QBitzApplication.getSceneController().sendMessageToServer(payload.toString());
     }
 }

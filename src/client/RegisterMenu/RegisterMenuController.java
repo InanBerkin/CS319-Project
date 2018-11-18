@@ -1,7 +1,7 @@
 package client.RegisterMenu;
 
 import client.MenuController;
-import client.QbitzApplication;
+import client.QBitzApplication;
 import javafx.application.Platform;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
@@ -54,12 +54,12 @@ public class RegisterMenuController extends MenuController {
         registerJSON.put("username", username);
         registerJSON.put("email", email);
         registerJSON.put("password", password);
-        QbitzApplication.getSceneController().sendMessageToServer(registerJSON.toString());
+        QBitzApplication.getSceneController().sendMessageToServer(registerJSON.toString());
     }
 
     @FXML
     public void gotoLogin(){
-        QbitzApplication.getSceneController().changeScene("LoginMenu");
+        QBitzApplication.getSceneController().changeScene("LoginMenu");
     }
 
     @FXML
@@ -67,7 +67,7 @@ public class RegisterMenuController extends MenuController {
         JSONObject payload = new JSONObject();
         payload.put("requestType", "verify");
         payload.put("email", emailTextField.getText());
-        QbitzApplication.getSceneController().changeScene("VerificationMenu", payload);
+        QBitzApplication.getSceneController().changeScene("VerificationMenu", payload);
     }
 
     @Override

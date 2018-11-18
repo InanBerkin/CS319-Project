@@ -2,7 +2,7 @@ package client.SceneController;
 
 import client.ClientSocketHandler;
 import client.MenuController;
-import client.QbitzApplication;
+import client.QBitzApplication;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -42,7 +42,7 @@ public class SceneController {
             stage.setTitle(sceneName);
             replaceSceneContent(BASE_URL + sceneName + "/"+ sceneName + "View.fxml");
         } catch (Exception ex) {
-            Logger.getLogger(QbitzApplication.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(QBitzApplication.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -52,7 +52,7 @@ public class SceneController {
             replaceSceneContent(BASE_URL + sceneName + "/"+ sceneName + "View.fxml");
             getController().setPayload(payload);
         } catch (Exception ex) {
-            Logger.getLogger(QbitzApplication.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(QBitzApplication.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 

@@ -73,11 +73,11 @@ public class ClientSocketHandler extends Thread {
 
                 if (text != null) {
                     System.out.println("ClientSH: " + text);
-                    Client.getSceneController().onMessageReceived(text);
+                    QBitzApplication.getSceneController().onMessageReceived(text);
                 }
                 else {
                     isActive.set(false);
-                    Client.getSceneController().onExit();
+                    QBitzApplication.getSceneController().onExit();
                 }
             }
 
