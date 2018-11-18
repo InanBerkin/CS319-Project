@@ -11,7 +11,7 @@ public class MainMenuController extends MenuController {
 
     @Override
     public void initialize(URL url, ResourceBundle rb){
-
+        System.out.println(payload);
     }
 
     @Override
@@ -22,5 +22,8 @@ public class MainMenuController extends MenuController {
     @FXML
     public void gotoSingleplayerMenu(){
         QBitzApplication.getSceneController().changeScene("SingleplayerMenu");
+    }
+    public void gotoLogin(){
+        QBitzApplication.getSceneController().changeScene("LoginMenu");
     }
 }

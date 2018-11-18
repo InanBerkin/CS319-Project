@@ -1,10 +1,14 @@
 package client.GameInstance;
 
 import client.MenuController;
+import client.PatternChecker.PatternChecker;
+import client.QBitzApplication;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.geometry.Point3D;
 import javafx.scene.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.effect.Light;
 import javafx.scene.effect.Lighting;
 import javafx.scene.image.Image;
@@ -17,8 +21,8 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.transform.Rotate;
 import javafx.scene.transform.Transform;
 import javafx.scene.transform.Translate;
+import org.json.JSONObject;
 
-import java.awt.*;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -29,6 +33,16 @@ public class GameInstanceController extends MenuController {
     @FXML
     private GridPane gridPane;
 
+    @FXML
+    private Button submitButton;
+
+    @FXML
+    private Label timerLabel;
+
+    @FXML
+    private Label winText;
+
+
     final XformWorld world = new XformWorld();
     final PerspectiveCamera camera = new PerspectiveCamera(true);
     final XformCamera cameraXform = new XformCamera();
@@ -38,14 +52,6 @@ public class GameInstanceController extends MenuController {
     double mousePosX, mousePosY, mouseOldX, mouseOldY, mouseDeltaX, mouseDeltaY;
     double mouseFactorX, mouseFactorY;
 
-
-    private static final String img3url = "1.jpg";
-    private static final String img2url = "2.jpg";
-    private static final String img4url = "3.jpg";
-    private static final String img6url = "4.jpg";
-    private static final String img5url = "5.jpg";
-    private static final String img1url = "6.jpg";
-
     private Image img1;
     private Image img2;
     private Image img3;
@@ -54,7 +60,11 @@ public class GameInstanceController extends MenuController {
     private Image img6;
     private static final int WIDTH = 1200;
     private static final int HEIGHT = 800;
-    private static GameBoard board;
+    private GameBoard board;
+    private Pattern pattern;
+    private int gridDimension = 3;
+    private GameTimer gameTimer;
+    public boolean playerWon = false;
 
     @Override
     public void onMessageReceived(String message) {
@@ -64,8 +74,8 @@ public class GameInstanceController extends MenuController {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
-        board = new GameBoard(3);
-        Pattern pattern = new Pattern(3);
+        board = new GameBoard(gridDimension);
+        pattern = new Pattern(gridDimension);
         //pattern.setMatQuestMark();
 
         Group boardGroup = board.createBoardGroup();
@@ -94,7 +104,7 @@ public class GameInstanceController extends MenuController {
         Group sceneGroup = new Group();
         sceneGroup.getChildren().add(scene2);
 
-        SubScene scene = new SubScene(world, 300, HEIGHT, true,SceneAntialiasing.BALANCED);
+        SubScene scene = new SubScene(world, 300, 500, true,SceneAntialiasing.BALANCED);
         scene.setCamera(camera);
         scene.setFill(Color.GREY);
         handleMouse(scene);
@@ -102,11 +112,15 @@ public class GameInstanceController extends MenuController {
 
         sceneGroup.getChildren().add(scene);
 
-        gridPane.add(scene, 0,1);
-        gridPane.add(scene2,1,1);
+        gridPane.add(scene, 0,2);
+        gridPane.add(scene2,1,2);
 
         mouseFactorX = 180.0 / scene.getWidth();
         mouseFactorY = 180.0 / scene.getHeight();
+
+        gameTimer = new GameTimer();
+        gameTimer.setGameLabel(timerLabel);
+        gameTimer.startTimer(0);
     }
 
     private void buildCamera() {
@@ -268,6 +282,26 @@ public class GameInstanceController extends MenuController {
             }
         });
     }
+
+    public void checkWin(){
+        PatternChecker pc = new PatternChecker(board.getFaceStates(), pattern.getGridMatrix(), gridDimension);
+//        JSONObject payload = new JSONObject();
+//        payload.put("time", gameTimer.getGameTime().getValue());
+        gameTimer.stopTimer();
+        String time = gameTimer.getGameTime().getValue();
+        timerLabel.setText("You finished in " + time);
+        submitButton.setText("Go To Singleplayer");
+        if(playerWon){
+            QBitzApplication.getSceneController().changeScene("SingleplayerMenu");
+        }
+        playerWon = true;
+        //QBitzApplication.getSceneController().changeScene("MainMenu", payload);
+//        if(pc.checkPattern()){
+//            winLabel.setText("WIN");
+//            QBitzApplication.getSceneController().changeScene("PostGameMenu", payload);
+//        }
+    }
+
 }
 
 

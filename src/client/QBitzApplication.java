@@ -30,7 +30,7 @@ public class QBitzApplication extends Application {
 //            clientSocketHandler.start();
             sceneController = new SceneController(primaryStage);
             //sceneController.setSocketHandler(clientSocketHandler);
-            sceneController.changeScene("GameInstance");
+            sceneController.changeScene("MainMenu");
             primaryStage.show();
         } catch (Exception ex) {
             Logger.getLogger(QBitzApplication.class.getName()).log(Level.SEVERE, null, ex);

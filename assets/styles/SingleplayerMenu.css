@@ -19,6 +19,7 @@ GridPane{
 Button{
     -fx-pref-width: 100;
     -fx-pref-height: 100;
+    -fx-text-fill: #000000;
 }
 
 Label{

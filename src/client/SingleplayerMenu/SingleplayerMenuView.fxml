@@ -22,7 +22,8 @@
         <VBox alignment="TOP_CENTER" spacing="20" GridPane.rowIndex="1" GridPane.columnIndex="1">
             <Label style="-fx-font-size: 40" alignment="CENTER" text="Time Attack" textFill="WHITE"/>
             <HBox spacing="60" alignment="CENTER">
-                <Button styleClass="easy" text="3x3"/>
+                <Button styleClass="easy" text="3x3"
+                onAction="#startGame"/>
                 <Button styleClass="normal" text="4x4"/>
                 <Button styleClass="hard" text="5x5"/>
             </HBox>

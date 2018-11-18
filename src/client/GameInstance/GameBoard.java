@@ -1,6 +1,7 @@
 package client.GameInstance;
 
 
+import client.PatternChecker.PatternChecker;
 import javafx.scene.Group;
 import javafx.scene.image.Image;
 import javafx.scene.input.MouseButton;
@@ -23,6 +24,7 @@ public class GameBoard {
     private static Group boardGroup;
     private static Boolean[] statusOfGridCells;
     private static int[][] faceStates;
+    private static int filledFaces = 0;
     private static int faceName = 0;
 
     public GameBoard(int gridDimension)
@@ -113,7 +115,7 @@ public class GameBoard {
                             faceStates[cellId][1] = 0;
                             gridCell[cellId].setMaterial(tmp);
                             selectedFaceMat.setDiffuseMap(mainMat.getDiffuseMap());
-
+                            filledFaces++;
                             previewMat.setDiffuseMap(mainMat.getDiffuseMap());
                             statusOfGridCells[cellId] = Boolean.TRUE;
                             for(int m = 0; m < gridDimension*gridDimension; m++)
@@ -126,6 +128,7 @@ public class GameBoard {
                             gridCell[cellId].setMaterial(mainMat);
                             faceStates[cellId][0] = 0;
                             faceStates[cellId][1] = 0;
+                            filledFaces--;
                         }
                     }
                     else if( event.getButton() == MouseButton.SECONDARY)
@@ -176,4 +179,11 @@ public class GameBoard {
     }
 
 
+    public static int[][] getFaceStates() {
+        return faceStates;
+    }
+
+    public static int getFilledFaces() {
+        return filledFaces;
+    }
 }

@@ -19,7 +19,7 @@
          <Label style="-fx-font-size: 80" alignment="CENTER" text="Q-BITZ" textFill="WHITE"/>
       </HBox>
       <VBox alignment="CENTER" spacing="20" GridPane.rowIndex="1" GridPane.columnIndex="0">
-         <Button prefWidth="300" mnemonicParsing="false" onAction="#gotoMainMenu" text="Multiplayer"/>
+         <Button prefWidth="300" mnemonicParsing="false" onAction="#gotoLogin" text="Multiplayer"/>
          <Button prefWidth="300" mnemonicParsing="false" onAction="#gotoSingleplayerMenu" text="Singleplayer"/>
          <Button prefWidth="300" mnemonicParsing="false" text="How To Play"/>
          <Button prefWidth="300" mnemonicParsing="false" text="Options"/>

@@ -73,4 +73,7 @@ public class Pattern {
         }
     }
 
+    public static int[][] getGridMatrix() {
+        return gridMatrix;
+    }
 }

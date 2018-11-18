@@ -13,11 +13,18 @@
           prefHeight="400.0" prefWidth="600.0"
           stylesheets="@/styles/LoginMenu.css">
     <children>
-        <Label GridPane.rowIndex="0" GridPane.columnIndex="0" style="-fx-font-size: 80" alignment="CENTER" text="Q-BITZ" textFill="BLACK">
+        <Label fx:id="timerLabel" GridPane.rowIndex="0" GridPane.columnIndex="0" style="-fx-font-size: 20" alignment="CENTER" text="Q-BITZ" textFill="BLACK">
             <padding>
                 <Insets left="30.0" />
             </padding>
         </Label>
+        <Label fx:id="winText" GridPane.rowIndex="0" GridPane.columnIndex="1" style="-fx-font-size: 50" alignment="CENTER" text="" textFill="WHITE">
+            <padding>
+                <Insets left="30.0" />
+            </padding>
+        </Label>
+        <Button GridPane.rowIndex="1" GridPane.columnIndex="0" fx:id="submitButton" prefWidth="300" mnemonicParsing="false" onAction="#checkWin" text="Submit">
+        </Button>
     </children>
 
     <columnConstraints>
@@ -27,7 +34,8 @@
         <ColumnConstraints percentWidth="25.0" />
     </columnConstraints>
     <rowConstraints>
-        <RowConstraints percentHeight="20.0"/>
+        <RowConstraints percentHeight="10.0"/>
+        <RowConstraints percentHeight="10.0"/>
         <RowConstraints percentHeight="80.0"/>
     </rowConstraints>
 
