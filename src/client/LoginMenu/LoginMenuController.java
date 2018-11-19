@@ -60,8 +60,8 @@ public class LoginMenuController extends MenuController {
             loginJSON.put("username", username);
         }
         loginJSON.put("password", password);
-        //QbitzApplication.getSceneController().sendMessageToServer(loginJSON.toString());
-        gotoMainMenu();
+        QBitzApplication.getSceneController().sendMessageToServer(loginJSON.toString());
+//        gotoMainMenu();
     }
 
     @FXML

@@ -7,7 +7,7 @@
 <?import javafx.scene.text.Font?>
 
 
-<AnchorPane prefHeight="600.0" prefWidth="800.0" stylesheets="@/styles/LoginMenu.css" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.VerificationMenu.VerificationMenuController">
+<AnchorPane  prefHeight="600.0" prefWidth="800.0" stylesheets="@/styles/LoginMenu.css" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.VerificationMenu.VerificationMenuController">
    <children>
       <TextField fx:id="verificationCode" layoutX="251.0" layoutY="273.0" prefWidth="300.0" AnchorPane.leftAnchor="600.0" AnchorPane.rightAnchor="600.0" AnchorPane.topAnchor="273.0" />
       <Label alignment="CENTER" layoutX="191.0" layoutY="42.0" prefHeight="48.0" prefWidth="420.0" text="Verify your account" AnchorPane.leftAnchor="190.0" AnchorPane.rightAnchor="190.0" AnchorPane.topAnchor="42.0">
