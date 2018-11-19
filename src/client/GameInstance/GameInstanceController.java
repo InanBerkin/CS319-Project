@@ -62,7 +62,7 @@ public class GameInstanceController extends MenuController {
     private static final int HEIGHT = 800;
     private GameBoard board;
     private Pattern pattern;
-    private int gridDimension = 4;
+    private int gridDimension = 3;
     private GameTimer gameTimer;
     public boolean playerWon = false;
 

@@ -26,10 +26,10 @@ public class QBitzApplication extends Application {
             primaryStage.setMinHeight(600);
             primaryStage.setFullScreen(true);
             primaryStage.setFullScreenExitKeyCombination(KeyCombination.NO_MATCH);
-            ClientSocketHandler clientSocketHandler = new ClientSocketHandler("139.179.134.161", 9999);
-            clientSocketHandler.start();
+//            ClientSocketHandler clientSocketHandler = new ClientSocketHandler("192.168.43.212", 9999);
+//            clientSocketHandler.start();
             sceneController = new SceneController(primaryStage);
-            sceneController.setSocketHandler(clientSocketHandler);
+//            sceneController.setSocketHandler(clientSocketHandler);
             sceneController.changeScene("MainMenu");
             primaryStage.show();
         } catch (Exception ex) {
