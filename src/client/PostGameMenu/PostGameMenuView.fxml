@@ -17,7 +17,7 @@
         <VBox alignment="TOP_CENTER" spacing="20" GridPane.rowIndex="1" GridPane.columnIndex="1">
             <Label alignment="CENTER" text="You finished in"/>
             <Label fx:id="timeLabel" alignment="CENTER"/>
-            <Button prefWidth="300" mnemonicParsing="false" onAction="#gotoSingleplayer" text="Login"/>
+            <Button prefWidth="300" mnemonicParsing="false" onAction="#gotoSingleplayer" text="Go To Singleplayer"/>
             <padding>
                 <Insets left="30.0" right="30.0" />
             </padding>

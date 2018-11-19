@@ -62,7 +62,7 @@ public class GameInstanceController extends MenuController {
     private static final int HEIGHT = 800;
     private GameBoard board;
     private Pattern pattern;
-    private int gridDimension = 3;
+    private int gridDimension = 4;
     private GameTimer gameTimer;
     public boolean playerWon = false;
 
@@ -285,21 +285,19 @@ public class GameInstanceController extends MenuController {
 
     public void checkWin(){
         PatternChecker pc = new PatternChecker(board.getFaceStates(), pattern.getGridMatrix(), gridDimension);
-//        JSONObject payload = new JSONObject();
-//        payload.put("time", gameTimer.getGameTime().getValue());
-        gameTimer.stopTimer();
-        String time = gameTimer.getGameTime().getValue();
-        timerLabel.setText("You finished in " + time);
-        submitButton.setText("Go To Singleplayer");
-        if(playerWon){
-            QBitzApplication.getSceneController().changeScene("SingleplayerMenu");
-        }
-        playerWon = true;
-        //QBitzApplication.getSceneController().changeScene("MainMenu", payload);
-//        if(pc.checkPattern()){
-//            winLabel.setText("WIN");
+//        if(playerWon){
 //            QBitzApplication.getSceneController().changeScene("PostGameMenu", payload);
 //        }
+        if(pc.checkPattern()){
+            gameTimer.stopTimer();
+            JSONObject payload = new JSONObject();
+            payload.put("time", gameTimer.getGameTime().getValue());
+            String time = gameTimer.getGameTime().getValue();
+//            timerLabel.setText("You finished in " + time);
+//            submitButton.setText("Go To Singleplayer");
+            QBitzApplication.getSceneController().changeScene("PostGameMenu", payload);
+            playerWon = true;
+        }
     }
 
 }

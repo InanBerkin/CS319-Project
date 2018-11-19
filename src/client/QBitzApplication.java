@@ -26,7 +26,7 @@ public class QBitzApplication extends Application {
             primaryStage.setMinHeight(600);
             primaryStage.setFullScreen(true);
             primaryStage.setFullScreenExitKeyCombination(KeyCombination.NO_MATCH);
-            ClientSocketHandler clientSocketHandler = new ClientSocketHandler("139.179.206.247", 9999);
+            ClientSocketHandler clientSocketHandler = new ClientSocketHandler("139.179.134.161", 9999);
             clientSocketHandler.start();
             sceneController = new SceneController(primaryStage);
             sceneController.setSocketHandler(clientSocketHandler);
