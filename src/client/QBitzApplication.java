@@ -4,8 +4,9 @@ import client.SceneController.SceneController;
 import javafx.application.Application;
 import javafx.scene.input.KeyCombination;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
+import sun.rmi.runtime.NewThreadAction;
 
+import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -13,23 +14,31 @@ public class QBitzApplication extends Application {
 
     private static SceneController sceneController;
 
-
-
     public static void main(String[] args) {
         launch(args);
     }
 
     @Override
-    public void start(Stage primaryStage) throws Exception{
+    public void start(Stage primaryStage) {
         try {
             primaryStage.setMinWidth(800);
             primaryStage.setMinHeight(600);
             primaryStage.setFullScreen(true);
             primaryStage.setFullScreenExitKeyCombination(KeyCombination.NO_MATCH);
-//            ClientSocketHandler clientSocketHandler = new ClientSocketHandler("192.168.43.212", 9999);
-//            clientSocketHandler.start();
             sceneController = new SceneController(primaryStage);
-//            sceneController.setSocketHandler(clientSocketHandler);
+
+            NetworkAnalyzer networkAnalyzer = new NetworkAnalyzer("https://www.google.com.tr");
+            if (networkAnalyzer.isOnline()) {
+                try {
+                    ClientSocketHandler clientSocketHandler = new ClientSocketHandler("localhost", 9999);
+                    clientSocketHandler.start();
+                    sceneController.setSocketHandler(clientSocketHandler);
+                }
+                catch (IOException e) {
+                    System.out.println("» Server is unreachable.");
+                }
+            }
+
             sceneController.changeScene("MainMenu");
             primaryStage.show();
         } catch (Exception ex) {
