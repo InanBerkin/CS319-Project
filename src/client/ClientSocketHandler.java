@@ -25,32 +25,15 @@ public class ClientSocketHandler extends Thread {
      * @param serverIP IP of the server.
      * @param serverPort Connection port for the socket connection.
      */
-    ClientSocketHandler(String serverIP, int serverPort) {
+    ClientSocketHandler(String serverIP, int serverPort) throws IOException {
         super("SocketHandlerThread");
         this.serverIP = serverIP;
         this.serverPort = serverPort;
         this.isActive = new AtomicBoolean(false);
 
-        try {
-            this.socket = new Socket(serverIP, serverPort);
-        } catch (IOException e) {
-            this.outgoing = null;
-            System.out.println(e.toString());
-        }
-
-        try {
-            this.outgoing = new PrintWriter(socket.getOutputStream(), true);
-        } catch (IOException e) {
-            this.outgoing = null;
-            System.out.println(e.toString());
-        }
-
-        try {
-            this.incoming = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-        } catch (IOException e) {
-            this.incoming = null;
-            System.out.println(e.toString());
-        }
+        this.socket = new Socket(serverIP, serverPort);
+        this.outgoing = new PrintWriter(socket.getOutputStream(), true);
+        this.incoming = new BufferedReader(new InputStreamReader(socket.getInputStream()));
     }
 
     /**
