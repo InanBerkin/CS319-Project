@@ -1,10 +1,12 @@
 package client.GameInstance;
 
 public class PatternGenerator {
-    private static int gridDimension;
+    private int gridDimension;
     private static int[][] gridMatrix;
     private static int png;
     private static int state;
+    private static int numOfPng = 6;
+    private static int numOfStates = 4;
 
     public PatternGenerator(int gridDimension)
     {
@@ -16,17 +18,17 @@ public class PatternGenerator {
         if(!hard) {
             if (gridDimension == 3) {
                 for (int i = 0; i < 2; i++) {
-                    png = (int) ((Math.random() * 6) + 1);
-                    state = (int) ((Math.random() * 4));
+                    png = (int) ((Math.random() * numOfPng) + 1);
+                    state = (int) ((Math.random() * numOfStates));
                     for (int j = 0; j < 2; j++) {
                         gridMatrix[j + (i * 2)][0] = png;
-                        gridMatrix[j + (i * 2)][1] = state + 3;
+                        gridMatrix[j + (i * 2)][1] = (state + 3)%numOfStates;
                         gridMatrix[j + (i * 2) + 5][0] = png;
-                        gridMatrix[j + (i * 2) + 5][1] = state + 3;
+                        gridMatrix[j + (i * 2) + 5][1] = (state + 3)%numOfStates;
                     }
                 }
-                png = (int) ((Math.random() * 6) + 1);
-                state = (int) ((Math.random() * 4));
+                png = (int) ((Math.random() * numOfPng) + 1);
+                state = (int) ((Math.random() * numOfStates));
                 gridMatrix[4][0] = png;
                 gridMatrix[4][1] = state;
 
@@ -34,8 +36,8 @@ public class PatternGenerator {
                 int[][] tmp = new int[4][2];
 
                 for (int i = 0; i < 4; i++) {
-                    png = (int) ((Math.random() * 6) + 1);
-                    state = (int) ((Math.random() * 4));
+                    png = (int) ((Math.random() * numOfPng) + 1);
+                    state = (int) ((Math.random() * numOfStates));
 
                     tmp[i][0] = png;
                     tmp[i][1] = state;
@@ -49,18 +51,18 @@ public class PatternGenerator {
                         gridMatrix[i + (j * 4) + 10][1] = tmp[j + (i * 2)][1];
 
                         gridMatrix[j + (i * 4) + 2][0] = tmp[j + (i * 2)][0];
-                        gridMatrix[j + (i * 4) + 2][1] = tmp[j + (i * 2)][1]+ 3;
+                        gridMatrix[j + (i * 4) + 2][1] = (tmp[j + (i * 2)][1]+ 3)%numOfStates;
 
                         gridMatrix[j + (i * 4) + 8][0] = tmp[j + (i * 2)][0];
-                        gridMatrix[j + (i * 4) + 8][1] = tmp[j + (i * 2)][1]+ 3;
+                        gridMatrix[j + (i * 4) + 8][1] = (tmp[j + (i * 2)][1]+ 3)%numOfStates;
                     }
 
             } else {
                 int[][] tmp = new int[6][2];
 
                 for (int i = 0; i < 6; i++) {
-                    png = (int) ((Math.random() * 6) + 1);
-                    state = (int) ((Math.random() * 4));
+                    png = (int) ((Math.random() * numOfPng) + 1);
+                    state = (int) ((Math.random() * numOfStates));
 
                     tmp[i][0] = png;
                     tmp[i][1] = state;
@@ -72,12 +74,12 @@ public class PatternGenerator {
                         gridMatrix[i + (j * 5) + 13][0] = tmp[j + (i * 2)][0];
                         gridMatrix[i + (j * 5) + 13][1] = tmp[j + (i * 2)][1];
                         gridMatrix[j + (i * 5) + 2][0] = tmp[j + (i * 2)][0];
-                        gridMatrix[j + (i * 5) + 2][1] = tmp[j + (i * 2)][1] + 3;
+                        gridMatrix[j + (i * 5) + 2][1] = (tmp[j + (i * 2)][1] + 3)%numOfStates;
                         gridMatrix[j + (i * 5) + 15][0] = tmp[j + (i * 2)][0];
-                        gridMatrix[j + (i * 5) + 15][1] = tmp[j + (i * 2)][1] + 3;
+                        gridMatrix[j + (i * 5) + 15][1] = (tmp[j + (i * 2)][1] + 3)%numOfStates;
                     }
-                png = (int) ((Math.random() * 6) + 1);
-                state = (int) ((Math.random() * 4));
+                png = (int) ((Math.random() * numOfPng) + 1);
+                state = (int) ((Math.random() * numOfStates));
                 gridMatrix[12][0] = png;
                 gridMatrix[12][1] = state;
             }
@@ -86,8 +88,8 @@ public class PatternGenerator {
         {
             for(int i = 0; i< gridDimension*gridDimension; i++)
             {
-                png = (int) ((Math.random() * 6) + 1);
-                state = (int) ((Math.random() * 4));
+                png = (int) ((Math.random() * numOfPng) + 1);
+                state = (int) ((Math.random() * numOfStates));
                 gridMatrix[i][0] = png;
                 gridMatrix[i][1] = state;
             }
