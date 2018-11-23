@@ -6,12 +6,12 @@ import org.json.JSONObject;
 import server.models.User;
 
 /**
- * This class is the main class which holds the Server properties of the game.
+ * This class is the main class which holds the QBitzServer properties of the game.
  * This class has instances of DatabaseConnector and SocketServer classes which
  * are the main systems of the server of the game.
  * @author Zafer Tan Çankırı
  */
-class Server {
+class QBitzServer {
 
     private DatabaseConnector db;
     private String dbUsername;
@@ -23,9 +23,9 @@ class Server {
     private ResetPasswordManager resetPasswordManager;
 
     /**
-     * Constructor for Server Class.
+     * Constructor for QBitzServer Class.
      */
-    private Server() {
+    private QBitzServer() {
         this.db = null;
         this.dbUsername = "";
         this.dbPassword = "";
@@ -37,11 +37,11 @@ class Server {
 
     /**
      * This method initializes the database connection credentials.
-     * @param host Hostname of the Database Server
-     * @param port Port of the Database Server
-     * @param username Username for the Database Server
-     * @param password Password for the Database Server
-     * @param dbname Database Name on the Database Server
+     * @param host Hostname of the Database QBitzServer
+     * @param port Port of the Database QBitzServer
+     * @param username Username for the Database QBitzServer
+     * @param password Password for the Database QBitzServer
+     * @param dbname Database Name on the Database QBitzServer
      */
     private void setDBCredentials(String host, int port, String username, String password, String dbname) {
         this.db = new DatabaseConnector("localhost", 3306);
@@ -52,7 +52,7 @@ class Server {
 
     /**
      * This method initializes the port of socket connections.
-     * @param socketPort The connection port for the Socket Server.
+     * @param socketPort The connection port for the Socket QBitzServer.
      */
     private void setSocketPort(int socketPort) {
         this.socketPort = socketPort;
@@ -200,11 +200,11 @@ class Server {
     }
 
     public static void main(String[] args) {
-        Server server = new Server();
-        server.setDBCredentials("localhost", 3306, "root", "", "qbitz");
-        server.setSocketPort(9999);
-        server.start();
-        System.out.println("Server Started!");
+        QBitzServer QBitzServer = new QBitzServer();
+        QBitzServer.setDBCredentials("localhost", 3306, "root", "", "qbitz");
+        QBitzServer.setSocketPort(9999);
+        QBitzServer.start();
+        System.out.println("QBitzServer Started!");
     }
 
 }

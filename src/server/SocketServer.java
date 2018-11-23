@@ -12,12 +12,12 @@ import java.util.concurrent.atomic.AtomicBoolean;
  * managing the socket connections with the clients.
  * It receives operation requests from clients, processes them, and sends responses.
  * This class is also an extension of Thread class. Therefore, it runs on a different thread
- * other than the main thread of the server application.
+ * other than the main thread of the QBitzServer application.
  * @author Zafer Tan Çankırı
  */
 public class SocketServer extends Thread {
 
-    private Server server;
+    private QBitzServer QBitzServer;
     private ServerSocket serverSocket;
     private AtomicBoolean isActive;
     private ArrayList<ServerSocketHandler> clientList;
@@ -27,11 +27,11 @@ public class SocketServer extends Thread {
      * Constructor for SocketServer Class.
      * @param port The connection port of the socket connections.
      */
-    SocketServer(int port, Server server) {
+    SocketServer(int port, QBitzServer QBitzServer) {
         this.port = port;
         this.isActive = new AtomicBoolean(false);
         this.clientList = new ArrayList<>();
-        this.server = server;
+        this.QBitzServer = QBitzServer;
         try {
             serverSocket = new ServerSocket(port);
         } catch (IOException e) {
@@ -80,7 +80,7 @@ public class SocketServer extends Thread {
      * @param message The message came through the socket connection.
      */
     void onMessageReceived(ServerSocketHandler handler, String message) {
-        server.onMessageReceived(handler, message);
+        QBitzServer.onMessageReceived(handler, message);
     }
 
     /**
