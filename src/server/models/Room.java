@@ -1,6 +1,10 @@
 package server.models;
 
 
+import server.ServerSocketHandler;
+
+import java.util.ArrayList;
+
 public class Room {
 
     private int id;
@@ -12,6 +16,7 @@ public class Room {
     private int entranceLevel;
     private int roomtype;
     private String roomcode;
+    private ArrayList<User> users;
 
     public Room(String name, int gamemode, int ownerid, int players, int entranceLevel) {
         this.id = 0;
@@ -35,6 +40,7 @@ public class Room {
         this.entranceLevel = entranceLevel;
         this.roomtype = roomtype;
         this.roomcode = roomcode;
+        this.users = new ArrayList<>();
     }
 
     public Room() {
@@ -110,5 +116,17 @@ public class Room {
 
     public void setRoomcode(String roomcode) {
         this.roomcode = roomcode;
+    }
+
+    public ArrayList<User> getUsers() {
+        return users;
+    }
+
+    public void setUsers(ArrayList<User> users) {
+        this.users = users;
+    }
+
+    public void addUser(User user) {
+        users.add(user);
     }
 }

@@ -5,6 +5,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import server.models.User;
 
+import java.util.HashMap;
+
 /**
  * This class is the main class which holds the QBitzServer properties of the game.
  * This class has instances of DatabaseConnector and SocketServer classes which
@@ -21,6 +23,7 @@ class QBitzServer {
     private int socketPort;
     private VerificationManager verificationManager;
     private ResetPasswordManager resetPasswordManager;
+    private HashMap<Integer, User> userMap;
 
     /**
      * Constructor for QBitzServer Class.
@@ -33,6 +36,7 @@ class QBitzServer {
         this.socketServer = null;
         this.verificationManager = new VerificationManager();
         this.resetPasswordManager = new ResetPasswordManager();
+        this.userMap = new HashMap<>();
     }
 
     /**
@@ -129,14 +133,16 @@ class QBitzServer {
             }
             else if (msgObj.getString("requestType").equals("login")) {
                 String password = msgObj.getString("password");
+                String email = "";
+                String username = "";
                 int id = -1;
 
                 if (msgObj.has("email")) {
-                    String email = msgObj.getString("email");
+                    email = msgObj.getString("email");
                     id = db.loginWithEmail(email, password);
                 }
                 else if (msgObj.has("username")) {
-                    String username = msgObj.getString("username");
+                    username = msgObj.getString("username");
                     id = db.loginWithUsername(username, password);
                 }
 
@@ -146,6 +152,8 @@ class QBitzServer {
                 if (id != -1) {
                     respObj.put("result", true);
                     respObj.put("id", id);
+                    User tempUser = new User(username, email, password, id);
+                    userMap.put(tempUser.getId(), tempUser);
                 }
                 else {
                     respObj.put("result", false);
@@ -180,6 +188,9 @@ class QBitzServer {
                 }
 
                 handler.sendMessage(respObj.toString());
+            }
+            else if(msgObj.getString("requestType").equals("joinRoom")) {
+
             }
         }
     }
