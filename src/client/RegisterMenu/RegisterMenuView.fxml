@@ -29,7 +29,7 @@
             <Button prefWidth="300" mnemonicParsing="false" onAction="#register" text="Create an account"/>
             <Button prefWidth="300" mnemonicParsing="false" onAction="#gotoLogin" text="Login"/>
             <padding>
-                <Insets left="30.0" right="30.0" />
+                <Insets left="420.0" right="420.0" />
             </padding>
         </VBox>
     </children>
