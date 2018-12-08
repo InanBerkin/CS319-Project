@@ -1,8 +1,14 @@
 package client.GameInstance;
 
 import client.MenuController;
+import javafx.animation.Interpolator;
+import javafx.animation.KeyFrame;
+import javafx.animation.RotateTransition;
+import javafx.animation.Timeline;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.*;
 import javafx.scene.control.Label;
@@ -11,6 +17,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.paint.PhongMaterial;
 import javafx.scene.shape.Sphere;
 import javafx.scene.transform.Rotate;
+import javafx.util.Duration;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -72,9 +79,9 @@ public class GameInstanceController extends MenuController {
 
         gridPane.add(scene, 0,2);
 
-        /*gameTimer = new GameTimer();
+        gameTimer = new GameTimer();
         gameTimer.setGameLabel(timerLabel);
-        gameTimer.startTimer(0);*/
+        gameTimer.startTimer(0);
     }
 
     private void buildCamera() {
@@ -172,86 +179,117 @@ public class GameInstanceController extends MenuController {
                 case W:
                     if (!isRotating.get()) {
                         isRotating.set(true);
-                        Timer animTimer = new Timer();
-                        animTimer.scheduleAtFixedRate(new TimerTask() {
-                            double i = 0;
 
-                            @Override
-                            public void run() {
-                                if (i < 90) {
-                                    cube.rotate(KEY_ROTATION_STEP, Rotate.Z_AXIS);
-                                } else {
-                                    animTimer.cancel();
-                                    isRotating.set(false);
-                                    highlighter.updateInFront();
-                                }
-                                i += KEY_ROTATION_STEP;
-                            }
-                        }, 0, 25);
+                        Timeline timeline = new Timeline();
+                        timeline.setCycleCount(Timeline.INDEFINITE);
+                        timeline.getKeyFrames().add(
+                                new KeyFrame(Duration.millis(10), new EventHandler<ActionEvent>() {
+                                    double i = 0 ;
+                                    @Override
+                                    public void handle(ActionEvent event) {
+                                        if (i < 90) {
+                                            cube.rotate(KEY_ROTATION_STEP, Rotate.Z_AXIS);
+                                        }else{
+                                            System.out.println("it finished");
+                                            timeline.stop();
+                                            isRotating.set(false);
+                                            highlighter.updateInFront();
+                                        }
+
+                                        i += KEY_ROTATION_STEP ;
+
+                                    }
+
+                                }));
+                        timeline.play();
+
                     }
                     break;
                 case S:
                     if (!isRotating.get()) {
                         isRotating.set(true);
-                        Timer animTimer = new Timer();
-                        animTimer.scheduleAtFixedRate(new TimerTask() {
-                            double i = 0;
 
-                            @Override
-                            public void run() {
-                                if (i < 90) {
-                                    cube.rotate(-KEY_ROTATION_STEP, Rotate.Z_AXIS);
-                                } else {
-                                    animTimer.cancel();
-                                    isRotating.set(false);
-                                    highlighter.updateInFront();
-                                }
-                                i += KEY_ROTATION_STEP;
-                            }
-                        }, 0, 25);
+                        Timeline timeline = new Timeline();
+                        timeline.setCycleCount(Timeline.INDEFINITE);
+                        timeline.getKeyFrames().add(
+                                new KeyFrame(Duration.millis(10), new EventHandler<ActionEvent>() {
+                                    double i = 0 ;
+                                    @Override
+                                    public void handle(ActionEvent event) {
+                                        if (i < 90) {
+                                            cube.rotate(-KEY_ROTATION_STEP, Rotate.Z_AXIS);
+                                        }else{
+                                            System.out.println("it finished");
+                                            timeline.stop();
+                                            isRotating.set(false);
+                                            highlighter.updateInFront();
+                                        }
+
+                                        i += KEY_ROTATION_STEP ;
+
+                                    }
+
+                                }));
+                        timeline.play();
+
                     }
                     break;
                 case A:
                     if (!isRotating.get()) {
                         isRotating.set(true);
-                        Timer animTimer = new Timer();
-                        animTimer.scheduleAtFixedRate(new TimerTask() {
-                            double i = 0;
+                        Timeline timeline = new Timeline();
+                        timeline.setCycleCount(Timeline.INDEFINITE);
+                        timeline.getKeyFrames().add(
+                                new KeyFrame(Duration.millis(10), new EventHandler<ActionEvent>() {
+                                    double i = 0 ;
+                                    @Override
+                                    public void handle(ActionEvent event) {
+                                        if (i < 90) {
+                                            cube.rotate(KEY_ROTATION_STEP, Rotate.Y_AXIS);
+                                        }else{
+                                            System.out.println("it finished");
+                                            timeline.stop();
+                                            isRotating.set(false);
+                                            highlighter.updateInFront();
+                                        }
 
-                            @Override
-                            public void run() {
-                                if (i < 90) {
-                                    cube.rotate(KEY_ROTATION_STEP, Rotate.Y_AXIS);
-                                } else {
-                                    animTimer.cancel();
-                                    isRotating.set(false);
-                                    highlighter.updateInFront();
-                                }
-                                i += KEY_ROTATION_STEP;
-                            }
-                        }, 0, 25);
+                                        i += KEY_ROTATION_STEP ;
+                                    }
+
+                                }));
+                        timeline.play();
+
+
                     }
                     break;
                 case D:
                     if (!isRotating.get()) {
                         isRotating.set(true);
-                        Timer animTimer = new Timer();
-                        animTimer.scheduleAtFixedRate(new TimerTask() {
-                            double i = 0;
+                        Timeline timeline = new Timeline();
+                        timeline.setCycleCount(Timeline.INDEFINITE);
 
-                            @Override
-                            public void run() {
-                                if (i < 90) {
-                                    cube.rotate(-KEY_ROTATION_STEP, Rotate.Y_AXIS);
-                                } else {
-                                    animTimer.cancel();
-                                    isRotating.set(false);
-                                    highlighter.updateInFront();
-                                }
-                                i += KEY_ROTATION_STEP;
-                            }
-                        }, 0, 25);
-                    }
+                        timeline.getKeyFrames().add(
+                                new KeyFrame(Duration.millis(10), new EventHandler<ActionEvent>() {
+                                    double i = 0 ;
+                                    @Override
+                                    public void handle(ActionEvent event) {
+                                        if (i < 90) {
+                                            cube.rotate(-KEY_ROTATION_STEP, Rotate.Y_AXIS);
+                                        }else{
+                                            System.out.println("it finished");
+                                            timeline.stop();
+                                            isRotating.set(false);
+                                            highlighter.updateInFront();
+                                        }
+
+
+                                        i += KEY_ROTATION_STEP ;
+                                    }
+
+                                }));
+                        timeline.play();
+
+        }
                     break;
                 case Q:
                     highlighter.changeHLIndex(false);
