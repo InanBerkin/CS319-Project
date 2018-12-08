@@ -23,7 +23,7 @@
                 <Insets left="30.0" />
             </padding>
         </Label>
-        <Button GridPane.rowIndex="1" GridPane.columnIndex="0" fx:id="submitButton" prefWidth="300" mnemonicParsing="false" onAction="#checkWin" text="Submit">
+        <Button GridPane.rowIndex="1" GridPane.columnIndex="0" fx:id="submitButton" prefWidth="300" mnemonicParsing="false" text="Submit">
         </Button>
     </children>
 

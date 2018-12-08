@@ -4,7 +4,6 @@ import client.SceneController.SceneController;
 import javafx.application.Application;
 import javafx.scene.input.KeyCombination;
 import javafx.stage.Stage;
-import sun.rmi.runtime.NewThreadAction;
 
 import java.io.IOException;
 import java.util.logging.Level;
@@ -33,6 +32,7 @@ public class QBitzApplication extends Application {
                     ClientSocketHandler clientSocketHandler = new ClientSocketHandler("localhost", 9999);
                     clientSocketHandler.start();
                     sceneController.setSocketHandler(clientSocketHandler);
+                    UserConfiguration.isOnline = true;
                 }
                 catch (IOException e) {
                     System.out.println("» Server is unreachable.");

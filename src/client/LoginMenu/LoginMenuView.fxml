@@ -25,7 +25,7 @@
             <Button fx:id="loginButton" prefWidth="300" mnemonicParsing="false" onAction="#login" text="Login"/>
             <Button fx:id="registerButton" prefWidth="300" mnemonicParsing="false" onAction="#gotoRegister" text="Create an account"/>
             <padding>
-                <Insets left="200.0" right="200.0" />
+                <Insets left="420.0" right="420.0" />
             </padding>
         </VBox>
     </children>

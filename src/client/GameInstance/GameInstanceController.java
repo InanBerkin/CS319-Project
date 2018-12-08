@@ -1,30 +1,21 @@
 package client.GameInstance;
 
 import client.MenuController;
-import client.PatternChecker.PatternChecker;
-import client.QBitzApplication;
-import javafx.event.EventHandler;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.fxml.FXML;
-import javafx.geometry.Point3D;
 import javafx.scene.*;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.effect.Light;
-import javafx.scene.effect.Lighting;
-import javafx.scene.image.Image;
-import javafx.scene.input.MouseButton;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
-import javafx.scene.paint.ImagePattern;
-import javafx.scene.shape.Rectangle;
+import javafx.scene.paint.PhongMaterial;
+import javafx.scene.shape.Sphere;
 import javafx.scene.transform.Rotate;
-import javafx.scene.transform.Transform;
-import javafx.scene.transform.Translate;
-import org.json.JSONObject;
 
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class GameInstanceController extends MenuController {
     @FXML
@@ -34,37 +25,29 @@ public class GameInstanceController extends MenuController {
     private GridPane gridPane;
 
     @FXML
-    private Button submitButton;
-
-    @FXML
     private Label timerLabel;
 
-    @FXML
-    private Label winText;
-
-
-    final XformWorld world = new XformWorld();
-    final PerspectiveCamera camera = new PerspectiveCamera(true);
-    final XformCamera cameraXform = new XformCamera();
     private static final double CAMERA_INITIAL_DISTANCE = -1000;
+    private static final double CAMERA_INITIAL_X_ANGLE = -30.0;
+    private static final double CAMERA_INITIAL_Y_ANGLE = 60.0;
     private static final double CAMERA_NEAR_CLIP = 0.1;
     private static final double CAMERA_FAR_CLIP = 10000.0;
-    double mousePosX, mousePosY, mouseOldX, mouseOldY, mouseDeltaX, mouseDeltaY;
-    double mouseFactorX, mouseFactorY;
+    private static final double KEY_ROTATION_STEP = 4.5;
 
-    private Image img1;
-    private Image img2;
-    private Image img3;
-    private Image img4;
-    private Image img5;
-    private Image img6;
+    final XGroup cube = new XGroup();
+    final XGroup cameraHolder = new XGroup();
+    final PerspectiveCamera camera = new PerspectiveCamera(true);
+
+    final BooleanProperty isRotating = new SimpleBooleanProperty(false);
+
+    private XRectangle[] rect;
+
+    private Highlighter highlighter;
+
     private static final int WIDTH = 1200;
     private static final int HEIGHT = 800;
-    private GameBoard board;
-    private Pattern pattern;
-    private int gridDimension = 3;
+
     private GameTimer gameTimer;
-    public boolean playerWon = false;
 
     @Override
     public void onMessageReceived(String message) {
@@ -73,272 +56,216 @@ public class GameInstanceController extends MenuController {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-
-        board = new GameBoard(gridDimension);
-        pattern = new Pattern(gridDimension);
-        //pattern.setMatQuestMark();
-
-        Group boardGroup = board.createBoardGroup();
-        Group patternGroup = pattern.createPatternGroup();
-
-        patternGroup.translateXProperty().set((WIDTH)*0.70);
-        patternGroup.translateYProperty().set(HEIGHT/2);
-        patternGroup.translateZProperty().set(0);
-
-        boardGroup.translateXProperty().set((WIDTH)*0.25);
-        boardGroup.translateYProperty().set((HEIGHT)/2);
-        boardGroup.translateZProperty().set(0);
-
-        Group mainGroup = new Group();
-        mainGroup.getChildren().add(boardGroup);
-        mainGroup.getChildren().add(patternGroup);
+        root.setDepthTest(DepthTest.ENABLE);
 
         buildCamera();
-        buildBodySystem();
-        Camera camera2 = new PerspectiveCamera();
-        SubScene scene2 = new SubScene(mainGroup, WIDTH, HEIGHT , true, SceneAntialiasing.BALANCED);
+        try {
+            buildBody();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
-        scene2.setFill(Color.GREY);
-        scene2.setCamera(camera2);
-
-        Group sceneGroup = new Group();
-        sceneGroup.getChildren().add(scene2);
-
-        SubScene scene = new SubScene(world, 300, 500, true,SceneAntialiasing.BALANCED);
+        SubScene scene = new SubScene(root, 200, 500, true, SceneAntialiasing.BALANCED);
         scene.setCamera(camera);
         scene.setFill(Color.GREY);
-        handleMouse(scene);
-
-
-        sceneGroup.getChildren().add(scene);
+        handleKeys(gridPane);
 
         gridPane.add(scene, 0,2);
-        gridPane.add(scene2,1,2);
 
-        mouseFactorX = 180.0 / scene.getWidth();
-        mouseFactorY = 180.0 / scene.getHeight();
-
-        gameTimer = new GameTimer();
+        /*gameTimer = new GameTimer();
         gameTimer.setGameLabel(timerLabel);
-        gameTimer.startTimer(0);
+        gameTimer.startTimer(0);*/
     }
 
     private void buildCamera() {
-        root.getChildren().add(cameraXform);
-        cameraXform.getChildren().add(camera);
         camera.setNearClip(CAMERA_NEAR_CLIP);
         camera.setFarClip(CAMERA_FAR_CLIP);
         camera.setTranslateZ(CAMERA_INITIAL_DISTANCE);
+
+        cameraHolder.getChildren().add(camera);
+
+        cameraHolder.rotate(CAMERA_INITIAL_X_ANGLE, Rotate.X_AXIS);
+        cameraHolder.rotate(CAMERA_INITIAL_Y_ANGLE, Rotate.Y_AXIS);
+
+        root.getChildren().add(cameraHolder);
     }
 
-    private void buildBodySystem() {
-
-        img1 = new Image(getClass().getResourceAsStream("1.jpg"));
-        img2 = new Image(getClass().getResourceAsStream("2.jpg"));
-        img3 = new Image(getClass().getResourceAsStream("3.jpg"));
-        img4 = new Image(getClass().getResourceAsStream("4.jpg"));
-        img5 = new Image(getClass().getResourceAsStream("5.jpg"));
-        img6 = new Image(getClass().getResourceAsStream("6.jpg"));
-        Group cube = new Group();
-        //size of the cube
+    private void buildBody() throws Exception {
         double size = 100;
-        //set color for the cube
-        Rectangle[] rect = new Rectangle[6];
-        for ( int i = 0 ; i < 6 ; i++){
-            rect[i] = new Rectangle();
-            rect[i].setHeight(size);
-            rect[i].setWidth(size);
 
+        rect = new XRectangle[6];
+        rect[0] = new XRectangle(0, XRectangle.IMG0_URL, size, -0.5 * size, -0.5 * size, 0.5 * size);
+        rect[1] = new XRectangle(1, XRectangle.IMG1_URL, size, -0.5 * size, 0, 0);
+        rect[2] = new XRectangle(2, XRectangle.IMG2_URL, size, -1 * size, -0.5 * size, 0);
+        rect[3] = new XRectangle(3, XRectangle.IMG3_URL, size, 0, -0.5 * size, 0);
+        rect[4] = new XRectangle(4, XRectangle.IMG4_URL, size, -0.5 * size, -1 * size, 0);
+        rect[5] = new XRectangle(5, XRectangle.IMG5_URL, size, -0.5 * size, -0.5 * size, -0.5 * size);
 
-        }
-
-        rect[0].setTranslateX(-0.5 * size);
-        rect[0].setTranslateY(-0.5 * size);
-        rect[0].setTranslateZ(0.5 * size);
-        rect[0].setFill(new ImagePattern(img1));
-        rect[0].setOnMouseClicked(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent mouseEvent) {
-                if(mouseEvent.getButton().equals(MouseButton.PRIMARY)){
-                    if(mouseEvent.getClickCount() == 2){
-                        System.out.println("1");
-                        board.setSelectedFaceMat(1);
-                    }
-                }
-            }
-        });
-
-        rect[1].setFill(new ImagePattern(img2));
-
-        rect[1].setTranslateX(-0.5 * size);
-        rect[1].setTranslateY(0);
         rect[1].setRotationAxis(Rotate.X_AXIS);
         rect[1].setRotate(90);
-        rect[1].setOnMouseClicked(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent mouseEvent) {
-                if(mouseEvent.getButton().equals(MouseButton.PRIMARY)){
-                    if(mouseEvent.getClickCount() == 2){
-                        System.out.println("2");
-                        board.setSelectedFaceMat(2);
-                    }
-                }
-            }
-        });
 
-        rect[2].setFill(new ImagePattern(img3));
-        rect[2].setTranslateX(-1 * size);
-        rect[2].setTranslateY(-0.5 * size);
         rect[2].setRotationAxis(Rotate.Y_AXIS);
         rect[2].setRotate(90);
-        rect[2].setOnMouseClicked(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent mouseEvent) {
-                if(mouseEvent.getButton().equals(MouseButton.PRIMARY)){
-                    if(mouseEvent.getClickCount() == 2){
-                        System.out.println("3");
-                        board.setSelectedFaceMat(3);
-                    }
-                }
-            }
-        });
-        rect[3].setFill(new ImagePattern(img4));
 
-        rect[3].setTranslateX(0);
-        rect[3].setTranslateY(-0.5 * size);
         rect[3].setRotationAxis(Rotate.Y_AXIS);
         rect[3].setRotate(90);
-        rect[3].setOnMouseClicked(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent mouseEvent) {
-                if(mouseEvent.getButton().equals(MouseButton.PRIMARY)){
-                    if(mouseEvent.getClickCount() == 2){
-                        System.out.println("4");
-                        board.setSelectedFaceMat(4);
-                    }
-                }
-            }
-        });
 
-        rect[4].setFill(new ImagePattern(img5));
-        rect[4].setTranslateX(-0.5 * size);
-        rect[4].setTranslateY(-1 * size);
         rect[4].setRotationAxis(Rotate.X_AXIS);
         rect[4].setRotate(90);
-        rect[4].setOnMouseClicked(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent mouseEvent) {
-                if(mouseEvent.getButton().equals(MouseButton.PRIMARY)){
-                    if(mouseEvent.getClickCount() == 2){
-                        System.out.println("5");
-                        board.setSelectedFaceMat(5);
-                    }
-                }
-            }
-        });
 
-        rect[5].setFill(new ImagePattern(img6));
-        rect[5].setTranslateX(-0.5 * size);
-        rect[5].setTranslateY(-0.5 * size);
-        rect[5].setTranslateZ(-0.5 * size);
-        rect[5].setOnMouseClicked(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent mouseEvent) {
-                if(mouseEvent.getButton().equals(MouseButton.PRIMARY)){
-                    if(mouseEvent.getClickCount() == 2){
-                        System.out.println("6");
-                        board.setSelectedFaceMat(6);
-                    }
-                }
-            }
-        });
+        cube.getChildren().addAll(rect[0], rect[1], rect[2], rect[3], rect[4], rect[5]);
+        root.getChildren().add(cube);
 
+        highlighter = new Highlighter(rect);
 
-        cube.getChildren().addAll(
-                rect[0],rect[1],rect[2],rect[3],rect[4],rect[5]);
+        highlighter.updateInFront();
 
-        world.getChildren().addAll(cube);
+       // buildAxes();
     }
 
-    private void handleMouse(SubScene scene) {
-        scene.setOnMousePressed((MouseEvent me) -> {
-            mousePosX = me.getSceneX();
-            mousePosY = me.getSceneY();
-            mouseOldX = me.getSceneX();
-            mouseOldY = me.getSceneY();
-        });
-        scene.setOnMouseDragged((MouseEvent me) -> {
-            mouseOldX = mousePosX;
-            mouseOldY = mousePosY;
-            mousePosX = me.getSceneX();
-            mousePosY = me.getSceneY();
-            mouseDeltaX = (mousePosX - mouseOldX);
-            mouseDeltaY = (mousePosY - mouseOldY);
-            if (me.isPrimaryButtonDown()) {
-                cameraXform.ry(mouseDeltaX * 180.0 / scene.getWidth());
-                cameraXform.rx(-mouseDeltaY * 180.0 / scene.getHeight());
-            } else if (me.isSecondaryButtonDown()) {
-                camera.setTranslateZ(camera.getTranslateZ() + mouseDeltaY);
-            }
-        });
-    }
+    private void buildAxes() {
+        for (int i = -2000; i <= 2000; i += 10) {
+            PhongMaterial redMaterial = new PhongMaterial();
+            redMaterial.setDiffuseColor(Color.DARKRED);
+            redMaterial.setSpecularColor(Color.RED);
 
-    public void checkWin(){
-        PatternChecker pc = new PatternChecker(board.getFaceStates(), pattern.getGridMatrix(), gridDimension);
-//        if(playerWon){
-//            QBitzApplication.getSceneController().changeScene("PostGameMenu", payload);
-//        }
-        if(pc.checkPattern()){
-            gameTimer.stopTimer();
-            JSONObject payload = new JSONObject();
-            payload.put("time", gameTimer.getGameTime().getValue());
-            String time = gameTimer.getGameTime().getValue();
-//            timerLabel.setText("You finished in " + time);
-//            submitButton.setText("Go To Singleplayer");
-            QBitzApplication.getSceneController().changeScene("PostGameMenu", payload);
-            playerWon = true;
+            Sphere sphereX = new Sphere();
+            sphereX.setRadius(3);
+            sphereX.setTranslateX(i);
+            sphereX.setTranslateY(0);
+            sphereX.setTranslateZ(0);
+            sphereX.setMaterial(redMaterial);
+
+            root.getChildren().addAll(sphereX);
+
+            PhongMaterial greenMaterial = new PhongMaterial();
+            greenMaterial.setDiffuseColor(Color.DARKGREEN);
+            greenMaterial.setSpecularColor(Color.GREEN);
+
+            Sphere sphereY = new Sphere();
+            sphereY.setRadius(3);
+            sphereY.setTranslateX(0);
+            sphereY.setTranslateY(i);
+            sphereY.setTranslateZ(0);
+            sphereY.setMaterial(greenMaterial);
+
+            root.getChildren().addAll(sphereY);
+
+            PhongMaterial blueMaterial = new PhongMaterial();
+            blueMaterial.setDiffuseColor(Color.DARKBLUE);
+            blueMaterial.setSpecularColor(Color.BLUE);
+
+            Sphere sphereZ = new Sphere();
+            sphereZ.setRadius(3);
+            sphereZ.setTranslateX(0);
+            sphereZ.setTranslateY(0);
+            sphereZ.setTranslateZ(i);
+            sphereZ.setMaterial(blueMaterial);
+
+            root.getChildren().addAll(sphereZ);
         }
     }
 
-}
+    private void handleKeys(GridPane gridPane) {
+        gridPane.setOnKeyPressed(event -> {
+            switch (event.getCode()) {
+                case W:
+                    if (!isRotating.get()) {
+                        isRotating.set(true);
+                        Timer animTimer = new Timer();
+                        animTimer.scheduleAtFixedRate(new TimerTask() {
+                            double i = 0;
 
+                            @Override
+                            public void run() {
+                                if (i < 90) {
+                                    cube.rotate(KEY_ROTATION_STEP, Rotate.Z_AXIS);
+                                } else {
+                                    animTimer.cancel();
+                                    isRotating.set(false);
+                                    highlighter.updateInFront();
+                                }
+                                i += KEY_ROTATION_STEP;
+                            }
+                        }, 0, 25);
+                    }
+                    break;
+                case S:
+                    if (!isRotating.get()) {
+                        isRotating.set(true);
+                        Timer animTimer = new Timer();
+                        animTimer.scheduleAtFixedRate(new TimerTask() {
+                            double i = 0;
 
+                            @Override
+                            public void run() {
+                                if (i < 90) {
+                                    cube.rotate(-KEY_ROTATION_STEP, Rotate.Z_AXIS);
+                                } else {
+                                    animTimer.cancel();
+                                    isRotating.set(false);
+                                    highlighter.updateInFront();
+                                }
+                                i += KEY_ROTATION_STEP;
+                            }
+                        }, 0, 25);
+                    }
+                    break;
+                case A:
+                    if (!isRotating.get()) {
+                        isRotating.set(true);
+                        Timer animTimer = new Timer();
+                        animTimer.scheduleAtFixedRate(new TimerTask() {
+                            double i = 0;
 
+                            @Override
+                            public void run() {
+                                if (i < 90) {
+                                    cube.rotate(KEY_ROTATION_STEP, Rotate.Y_AXIS);
+                                } else {
+                                    animTimer.cancel();
+                                    isRotating.set(false);
+                                    highlighter.updateInFront();
+                                }
+                                i += KEY_ROTATION_STEP;
+                            }
+                        }, 0, 25);
+                    }
+                    break;
+                case D:
+                    if (!isRotating.get()) {
+                        isRotating.set(true);
+                        Timer animTimer = new Timer();
+                        animTimer.scheduleAtFixedRate(new TimerTask() {
+                            double i = 0;
 
-
-class XformWorld extends Group {
-    final Translate t = new Translate(0.0, 0.0, 0.0);
-    final Rotate rx = new Rotate(0, 0, 0, 0, Rotate.X_AXIS);
-    final Rotate ry = new Rotate(0, 0, 0, 0, Rotate.Y_AXIS);
-    final Rotate rz = new Rotate(0, 0, 0, 0, Rotate.Z_AXIS);
-
-    public XformWorld() {
-        super();
-        this.getTransforms().addAll(t, rx, ry, rz);
+                            @Override
+                            public void run() {
+                                if (i < 90) {
+                                    cube.rotate(-KEY_ROTATION_STEP, Rotate.Y_AXIS);
+                                } else {
+                                    animTimer.cancel();
+                                    isRotating.set(false);
+                                    highlighter.updateInFront();
+                                }
+                                i += KEY_ROTATION_STEP;
+                            }
+                        }, 0, 25);
+                    }
+                    break;
+                case Q:
+                    highlighter.changeHLIndex(false);
+                    highlighter.highlight();
+                    break;
+                case E:
+                    highlighter.changeHLIndex(true);
+                    highlighter.highlight();
+                    break;
+                case SPACE:
+                    System.out.println("Face: " + highlighter.getSelectedFace());
+                    break;
+            }
+        });
     }
-}
 
-class XformCamera extends Group {
-    Point3D px = new Point3D(1.0, 0.0, 0.0);
-    Point3D py = new Point3D(0.0, 1.0, 0.0);
-    Rotate r;
-    Transform t = new Rotate();
-
-    public XformCamera() {
-        super();
-    }
-
-    public void rx(double angle) {
-        r = new Rotate(angle, px);
-        this.t = t.createConcatenation(r);
-        this.getTransforms().clear();
-        this.getTransforms().addAll(t);
-    }
-
-    public void ry(double angle) {
-        r = new Rotate(angle, py);
-        this.t = t.createConcatenation(r);
-        this.getTransforms().clear();
-        this.getTransforms().addAll(t);
-    }
 }

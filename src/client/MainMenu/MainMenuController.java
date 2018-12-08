@@ -2,6 +2,7 @@ package client.MainMenu;
 
 import client.MenuController;
 import client.QBitzApplication;
+import client.UserConfiguration;
 import javafx.fxml.FXML;
 
 import java.net.URL;
@@ -24,6 +25,9 @@ public class MainMenuController extends MenuController {
         QBitzApplication.getSceneController().changeScene("SingleplayerMenu");
     }
     public void gotoLogin(){
-        QBitzApplication.getSceneController().changeScene("LoginMenu");
+        if (UserConfiguration.isOnline)
+            QBitzApplication.getSceneController().changeScene("LoginMenu");
+        else
+            System.out.println("» You are offline.");
     }
 }
