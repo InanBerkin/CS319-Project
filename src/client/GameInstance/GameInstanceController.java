@@ -1,9 +1,7 @@
 package client.GameInstance;
 
 import client.MenuController;
-import javafx.animation.Interpolator;
 import javafx.animation.KeyFrame;
-import javafx.animation.RotateTransition;
 import javafx.animation.Timeline;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -11,21 +9,21 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.*;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.PhongMaterial;
 import javafx.scene.shape.Sphere;
 import javafx.scene.transform.Rotate;
 import javafx.util.Duration;
-
 import java.net.URL;
 import java.util.ResourceBundle;
-import java.util.Timer;
-import java.util.TimerTask;
 
 public class GameInstanceController extends MenuController {
-    @FXML
+
     private final Group root = new Group();
 
     @FXML
@@ -51,9 +49,6 @@ public class GameInstanceController extends MenuController {
 
     private Highlighter highlighter;
 
-    private static final int WIDTH = 1200;
-    private static final int HEIGHT = 800;
-
     private GameTimer gameTimer;
 
     @Override
@@ -75,13 +70,14 @@ public class GameInstanceController extends MenuController {
         SubScene scene = new SubScene(root, 200, 500, true, SceneAntialiasing.BALANCED);
         scene.setCamera(camera);
         scene.setFill(Color.GREY);
-        handleKeys(gridPane);
 
         gridPane.add(scene, 0,2);
 
         gameTimer = new GameTimer();
         gameTimer.setGameLabel(timerLabel);
         gameTimer.startTimer(0);
+
+        handleKeys(gridPane);
     }
 
     private void buildCamera() {
@@ -174,136 +170,128 @@ public class GameInstanceController extends MenuController {
     }
 
     private void handleKeys(GridPane gridPane) {
-        gridPane.setOnKeyPressed(event -> {
-            switch (event.getCode()) {
-                case W:
-                    if (!isRotating.get()) {
-                        isRotating.set(true);
+        gridPane.addEventFilter(KeyEvent.KEY_PRESSED, event-> {
+            event.consume();
+            if (event.getCode() == KeyCode.W) {
+                if (!isRotating.get()) {
+                    isRotating.set(true);
 
-                        Timeline timeline = new Timeline();
-                        timeline.setCycleCount(Timeline.INDEFINITE);
-                        timeline.getKeyFrames().add(
-                                new KeyFrame(Duration.millis(10), new EventHandler<ActionEvent>() {
-                                    double i = 0 ;
-                                    @Override
-                                    public void handle(ActionEvent event) {
-                                        if (i < 90) {
-                                            cube.rotate(KEY_ROTATION_STEP, Rotate.Z_AXIS);
-                                        }else{
-                                            System.out.println("it finished");
-                                            timeline.stop();
-                                            isRotating.set(false);
-                                            highlighter.updateInFront();
-                                        }
+                    Timeline timeline = new Timeline();
+                    timeline.setCycleCount(Timeline.INDEFINITE);
+                    timeline.getKeyFrames().add(
+                            new KeyFrame(Duration.millis(10), new EventHandler<ActionEvent>() {
+                                double i = 0;
 
-                                        i += KEY_ROTATION_STEP ;
-
+                                @Override
+                                public void handle(ActionEvent event) {
+                                    if (i < 90) {
+                                        cube.rotate(KEY_ROTATION_STEP, Rotate.Z_AXIS);
+                                    } else {
+                                        timeline.stop();
+                                        isRotating.set(false);
+                                        highlighter.updateInFront();
                                     }
 
-                                }));
-                        timeline.play();
+                                    i += KEY_ROTATION_STEP;
+                                }
+                            }));
+                    timeline.play();
+                }
 
-                    }
-                    break;
-                case S:
-                    if (!isRotating.get()) {
-                        isRotating.set(true);
+            } else if (event.getCode() == KeyCode.S) {
+                if (!isRotating.get()) {
+                    isRotating.set(true);
 
-                        Timeline timeline = new Timeline();
-                        timeline.setCycleCount(Timeline.INDEFINITE);
-                        timeline.getKeyFrames().add(
-                                new KeyFrame(Duration.millis(10), new EventHandler<ActionEvent>() {
-                                    double i = 0 ;
-                                    @Override
-                                    public void handle(ActionEvent event) {
-                                        if (i < 90) {
-                                            cube.rotate(-KEY_ROTATION_STEP, Rotate.Z_AXIS);
-                                        }else{
-                                            System.out.println("it finished");
-                                            timeline.stop();
-                                            isRotating.set(false);
-                                            highlighter.updateInFront();
-                                        }
+                    Timeline timeline = new Timeline();
+                    timeline.setCycleCount(Timeline.INDEFINITE);
+                    timeline.getKeyFrames().add(
+                            new KeyFrame(Duration.millis(10), new EventHandler<ActionEvent>() {
+                                double i = 0;
 
-                                        i += KEY_ROTATION_STEP ;
-
+                                @Override
+                                public void handle(ActionEvent event) {
+                                    if (i < 90) {
+                                        cube.rotate(-KEY_ROTATION_STEP, Rotate.Z_AXIS);
+                                    } else {
+                                        timeline.stop();
+                                        isRotating.set(false);
+                                        highlighter.updateInFront();
                                     }
 
-                                }));
-                        timeline.play();
+                                    i += KEY_ROTATION_STEP;
+                                }
+                            }));
+                    timeline.play();
+                }
 
-                    }
-                    break;
-                case A:
-                    if (!isRotating.get()) {
-                        isRotating.set(true);
-                        Timeline timeline = new Timeline();
-                        timeline.setCycleCount(Timeline.INDEFINITE);
-                        timeline.getKeyFrames().add(
-                                new KeyFrame(Duration.millis(10), new EventHandler<ActionEvent>() {
-                                    double i = 0 ;
-                                    @Override
-                                    public void handle(ActionEvent event) {
-                                        if (i < 90) {
-                                            cube.rotate(KEY_ROTATION_STEP, Rotate.Y_AXIS);
-                                        }else{
-                                            System.out.println("it finished");
-                                            timeline.stop();
-                                            isRotating.set(false);
-                                            highlighter.updateInFront();
-                                        }
+            } else if (event.getCode() == KeyCode.A) {
+                if (!isRotating.get()) {
+                    isRotating.set(true);
+                    Timeline timeline = new Timeline();
+                    timeline.setCycleCount(Timeline.INDEFINITE);
+                    timeline.getKeyFrames().add(
+                            new KeyFrame(Duration.millis(10), new EventHandler<ActionEvent>() {
+                                double i = 0;
 
-                                        i += KEY_ROTATION_STEP ;
+                                @Override
+                                public void handle(ActionEvent event) {
+                                    if (i < 90) {
+                                        cube.rotate(KEY_ROTATION_STEP, Rotate.Y_AXIS);
+                                    } else {
+                                        timeline.stop();
+                                        isRotating.set(false);
+                                        highlighter.updateInFront();
                                     }
 
-                                }));
-                        timeline.play();
+                                    i += KEY_ROTATION_STEP;
+                                }
 
+                            }));
+                    timeline.play();
+                }
 
-                    }
-                    break;
-                case D:
-                    if (!isRotating.get()) {
-                        isRotating.set(true);
-                        Timeline timeline = new Timeline();
-                        timeline.setCycleCount(Timeline.INDEFINITE);
+            } else if (event.getCode() == KeyCode.D) {
+                if (!isRotating.get()) {
+                    isRotating.set(true);
+                    Timeline timeline = new Timeline();
+                    timeline.setCycleCount(Timeline.INDEFINITE);
 
-                        timeline.getKeyFrames().add(
-                                new KeyFrame(Duration.millis(10), new EventHandler<ActionEvent>() {
-                                    double i = 0 ;
-                                    @Override
-                                    public void handle(ActionEvent event) {
-                                        if (i < 90) {
-                                            cube.rotate(-KEY_ROTATION_STEP, Rotate.Y_AXIS);
-                                        }else{
-                                            System.out.println("it finished");
-                                            timeline.stop();
-                                            isRotating.set(false);
-                                            highlighter.updateInFront();
-                                        }
+                    timeline.getKeyFrames().add(
+                            new KeyFrame(Duration.millis(10), new EventHandler<ActionEvent>() {
+                                double i = 0;
 
-
-                                        i += KEY_ROTATION_STEP ;
+                                @Override
+                                public void handle(ActionEvent event) {
+                                    if (i < 90) {
+                                        cube.rotate(-KEY_ROTATION_STEP, Rotate.Y_AXIS);
+                                    } else {
+                                        timeline.stop();
+                                        isRotating.set(false);
+                                        highlighter.updateInFront();
                                     }
+                                    i += KEY_ROTATION_STEP;
+                                }
 
-                                }));
-                        timeline.play();
+                            }));
+                    timeline.play();
+                }
 
-        }
-                    break;
-                case Q:
-                    highlighter.changeHLIndex(false);
-                    highlighter.highlight();
-                    break;
-                case E:
-                    highlighter.changeHLIndex(true);
-                    highlighter.highlight();
-                    break;
-                case SPACE:
-                    System.out.println("Face: " + highlighter.getSelectedFace());
-                    break;
+            } else if (event.getCode() == KeyCode.Q) {
+                highlighter.changeHLIndex(false);
+                highlighter.highlight();
+
+            } else if (event.getCode() == KeyCode.E) {
+                highlighter.changeHLIndex(true);
+                highlighter.highlight();
+
+            } else if (event.getCode() == KeyCode.SPACE) {
+                System.out.println("Face: " + highlighter.getSelectedFace());
             }
         });
+    }
+
+    public void foo() {
+        System.out.println("Submit Button!");
     }
 
 }
