@@ -3,9 +3,12 @@ package client.SceneController;
 import client.ClientSocketHandler;
 import client.MenuController;
 import client.QBitzApplication;
+import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 import org.json.JSONObject;
 

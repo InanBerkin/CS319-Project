@@ -13,12 +13,12 @@ import javafx.scene.shape.Rectangle;
 
 public class XRectangle extends Rectangle {
 
-    public static final String IMG0_URL = "img/white_square.jpg";
-    public static final String IMG1_URL = "img/up_diagonal.jpg";
-    public static final String IMG2_URL = "img/down_diagonal.jpg";
-    public static final String IMG3_URL = "img/white_circle_inside_square_x.jpg";
-    public static final String IMG4_URL = "img/black_square.jpg";
-    public static final String IMG5_URL = "img/black_circle_inside_square_x.jpg";
+    public static final String IMG0_URL = "assets/CubeFaces/1.jpg";
+    public static final String IMG1_URL = "assets/CubeFaces/2.jpg";
+    public static final String IMG2_URL = "assets/CubeFaces/3.jpg";
+    public static final String IMG3_URL = "assets/CubeFaces/4.jpg";
+    public static final String IMG4_URL = "assets/CubeFaces/5.jpg";
+    public static final String IMG5_URL = "assets/CubeFaces/6.jpg";
 
     private final String imgUrl;
     private final int id;
