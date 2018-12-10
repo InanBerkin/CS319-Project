@@ -1,7 +1,6 @@
 package client.GameInstance;
 
 
-import client.PatternChecker.PatternChecker;
 import javafx.scene.Group;
 import javafx.scene.image.Image;
 import javafx.scene.input.MouseButton;
@@ -37,7 +36,7 @@ public class GameBoard {
         faceStates = new int[gridDimension*gridDimension][2];
 
         mainMat = new PhongMaterial();
-        mainMat.setDiffuseMap(new Image(getClass().getResourceAsStream("Green.jpg")));
+        mainMat.setDiffuseMap(new Image(getClass().getResourceAsStream("CubeFaces/2.jpg")));
 
         frameMat = new PhongMaterial();
         frameMat.setDiffuseMap(new Image(getClass().getResourceAsStream("black.jpg")));

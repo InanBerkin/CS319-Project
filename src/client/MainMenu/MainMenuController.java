@@ -3,6 +3,7 @@ package client.MainMenu;
 import client.MenuController;
 import client.QBitzApplication;
 import client.UserConfiguration;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 
 import java.net.URL;
@@ -12,7 +13,10 @@ public class MainMenuController extends MenuController {
 
     @Override
     public void initialize(URL url, ResourceBundle rb){
-        System.out.println(payload);
+        Platform.runLater(() -> {
+
+
+        });
     }
 
     @Override
@@ -24,6 +28,7 @@ public class MainMenuController extends MenuController {
     public void gotoSingleplayerMenu(){
         QBitzApplication.getSceneController().changeScene("SingleplayerMenu");
     }
+
     public void gotoLogin(){
         if (UserConfiguration.isOnline)
             QBitzApplication.getSceneController().changeScene("LoginMenu");

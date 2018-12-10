@@ -69,7 +69,7 @@ public class GameInstanceController extends MenuController {
 
         SubScene scene = new SubScene(root, 200, 500, true, SceneAntialiasing.BALANCED);
         scene.setCamera(camera);
-        scene.setFill(Color.GREY);
+        scene.setFill(Color.WHITE);
 
         gridPane.add(scene, 0,2);
 
