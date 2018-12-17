@@ -7,6 +7,9 @@ import javafx.scene.shape.Box;
 import javafx.scene.transform.Rotate;
 import javafx.scene.transform.Transform;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+
 public class Pattern {
 
     private static final int BOARD_LENGTH = 400;
@@ -50,9 +53,14 @@ public class Pattern {
                 gridMat[gridIndex] = new PhongMaterial();
                 gridCell[gridIndex].setId(Integer.toString(gridIndex));
                 System.out.println(gridMatrix[gridIndex][0]);
-                String png = Integer.toString(gridMatrix[gridIndex][0]) + ".jpg";
+                String png = Integer.toString(gridMatrix[gridIndex][0]) + "NoBorder.png";
                 System.out.println(png+ " " + gridMatrix[gridIndex][1]);
-                gridMat[gridIndex].setDiffuseMap(new Image(getClass().getResourceAsStream(png)));
+                try {
+                    gridMat[gridIndex].setDiffuseMap(new Image(new FileInputStream("assets/CubeFaces/" + png)));
+                }
+                catch(Exception e){
+                    System.out.println("File not found");
+                }
                 gridCell[gridIndex].setMaterial(gridMat[gridIndex]);
                 gridCell[gridIndex].getTransforms().add(new Rotate(90*gridMatrix[gridIndex][1], Rotate.Z_AXIS));
 

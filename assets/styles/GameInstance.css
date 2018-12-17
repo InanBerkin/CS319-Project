@@ -10,7 +10,7 @@ Button:hover{
 }
 
 GridPane{
-    -fx-background-color: #ffffff;
+    -fx-background-color: -primary;
 }
 
 Label{

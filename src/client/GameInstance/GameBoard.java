@@ -9,6 +9,8 @@ import javafx.scene.paint.PhongMaterial;
 import javafx.scene.shape.Box;
 import javafx.scene.transform.Rotate;
 
+import java.io.FileInputStream;
+
 public class GameBoard {
 
 
@@ -36,10 +38,23 @@ public class GameBoard {
         faceStates = new int[gridDimension*gridDimension][2];
 
         mainMat = new PhongMaterial();
-        mainMat.setDiffuseMap(new Image(getClass().getResourceAsStream("CubeFaces/2.jpg")));
+        try {
+            mainMat.setDiffuseMap(new Image(new FileInputStream("assets/CubeFaces/2.jpg")));
+        }
+        catch (Exception e){
+            System.out.println("No file ");
+        }
+
+
 
         frameMat = new PhongMaterial();
-        frameMat.setDiffuseMap(new Image(getClass().getResourceAsStream("black.jpg")));
+
+        try {
+            frameMat.setDiffuseMap(new Image(new FileInputStream("assets/black.jpg")));
+        }
+        catch (Exception e){
+            System.out.println("No file ");
+        }
         frameMat.setSpecularColor(Color.BLACK);
 
         previewMat = new PhongMaterial();

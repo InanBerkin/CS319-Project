@@ -37,8 +37,8 @@ Button:hover{
 }
 
 GridPane{
-    -fx-background-color: linear-gradient( to bottom, #594D9C 10%, #F8649E 100%);
-    /*-fx-background-color: white;*/
+    /*-fx-background-color: linear-gradient( to bottom, #594D9C 10%, #F8649E 100%);*/
+    -fx-background-color: #2EC1E6;
 }
 
 

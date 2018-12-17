@@ -25,12 +25,16 @@ import java.util.ResourceBundle;
 public class GameInstanceController extends MenuController {
 
     private final Group root = new Group();
+    private final Group mainGroup = new Group();
 
     @FXML
     private GridPane gridPane;
 
     @FXML
     private Label timerLabel;
+
+    private GameBoard board;
+    private Pattern pattern;
 
     private static final double CAMERA_INITIAL_DISTANCE = -1000;
     private static final double CAMERA_INITIAL_X_ANGLE = -30.0;
@@ -39,9 +43,16 @@ public class GameInstanceController extends MenuController {
     private static final double CAMERA_FAR_CLIP = 10000.0;
     private static final double KEY_ROTATION_STEP = 4.5;
 
+    private static final int WIDTH = 1200;
+    private static final int HEIGHT = 800;
+    private int gridDimension = 3;
+
     final XGroup cube = new XGroup();
     final XGroup cameraHolder = new XGroup();
     final PerspectiveCamera camera = new PerspectiveCamera(true);
+
+    final XGroup cameraHolderBoard = new XGroup();
+    final PerspectiveCamera cameraBoard = new PerspectiveCamera(true);
 
     final BooleanProperty isRotating = new SimpleBooleanProperty(false);
 
@@ -66,12 +77,36 @@ public class GameInstanceController extends MenuController {
             e.printStackTrace();
         }
 
+        board = new GameBoard(gridDimension);
+        pattern = new Pattern(gridDimension);
+        //pattern.setMatQuestMark();
+
+        Group boardGroup = board.createBoardGroup();
+        Group patternGroup = pattern.createPatternGroup();
+
+        patternGroup.translateXProperty().set((WIDTH)*0.70);
+        patternGroup.translateYProperty().set(HEIGHT/2);
+        patternGroup.translateZProperty().set(0);
+
+        boardGroup.translateXProperty().set((WIDTH)*0.25);
+        boardGroup.translateYProperty().set((HEIGHT)/2);
+        boardGroup.translateZProperty().set(0);
+
+        Group mainGroup = new Group();
+        mainGroup.getChildren().add(boardGroup);
+        mainGroup.getChildren().add(patternGroup);
+
+
         SubScene scene = new SubScene(root, 200, 500, true, SceneAntialiasing.BALANCED);
         scene.setCamera(camera);
         scene.setFill(Color.WHITE);
 
-        gridPane.add(scene, 0,2);
+        SubScene boardScene = new SubScene(mainGroup, WIDTH, HEIGHT , true, SceneAntialiasing.BALANCED);
+        boardScene.setCamera(cameraBoard);
+        boardScene.setFill(Color.WHITE);
 
+        gridPane.add(scene, 0,2);
+        gridPane.add(boardScene, 1, 2);
         gameTimer = new GameTimer();
         gameTimer.setGameLabel(timerLabel);
         gameTimer.startTimer(0);
@@ -90,6 +125,17 @@ public class GameInstanceController extends MenuController {
         cameraHolder.rotate(CAMERA_INITIAL_Y_ANGLE, Rotate.Y_AXIS);
 
         root.getChildren().add(cameraHolder);
+
+        cameraBoard.setNearClip(CAMERA_NEAR_CLIP);
+        cameraBoard.setFarClip(CAMERA_FAR_CLIP);
+        cameraBoard.setTranslateZ(CAMERA_INITIAL_DISTANCE);
+
+        cameraHolderBoard.getChildren().add(cameraBoard);
+
+        cameraHolderBoard.rotate(CAMERA_INITIAL_X_ANGLE, Rotate.X_AXIS);
+        cameraHolderBoard.rotate(CAMERA_INITIAL_Y_ANGLE, Rotate.Y_AXIS);
+
+        mainGroup.getChildren().add(cameraHolderBoard);
     }
 
     private void buildBody() throws Exception {
