@@ -59,7 +59,6 @@ public class GameInstanceController extends MenuController {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         root.setDepthTest(DepthTest.ENABLE);
-
         buildCamera();
         try {
             buildBody();

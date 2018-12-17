@@ -12,27 +12,23 @@
 <?import javafx.scene.image.Image?>
 <GridPane stylesheets="@/styles/MainMenu.css" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.MainMenu.MainMenuController">
    <children>
-      <HBox GridPane.rowIndex="0" GridPane.columnIndex="0" alignment="CENTER">
-         <Label style="-fx-font-size: 80" alignment="CENTER" text="Q-BITZ" textFill="WHITE"/>
+      <HBox GridPane.rowIndex="0" GridPane.columnIndex="1" alignment="CENTER">
+         <Label styleClass="title" alignment="CENTER" text="Q-BITZ" textFill="WHITE"/>
       </HBox>
-      <VBox alignment="CENTER" spacing="20" GridPane.rowIndex="1" GridPane.columnIndex="0">
-         <Button prefWidth="300" onAction="#gotoLogin" text="Multiplayer"/>
-         <Button prefWidth="300" onAction="#gotoSingleplayerMenu" text="Singleplayer"/>
-         <Button prefWidth="300" text="How To Play"/>
-         <Button prefWidth="300" text="Options"/>
+      <VBox alignment="CENTER" spacing="20" GridPane.rowIndex="1" GridPane.columnIndex="1">
+         <Button id="multiplayerButton" onAction="#gotoLogin" text="Multiplayer"/>
+         <Button id="singleplayerButton" onAction="#gotoSingleplayerMenu" text="Singleplayer"/>
+         <Button id="howtoplayButton" text="How To Play"/>
+         <Button id="optionsButton" text="Options"/>
          <padding>
             <Insets left="30.0" right="30.0" />
          </padding>
       </VBox>
-      <VBox alignment="CENTER" GridPane.rowIndex="1" GridPane.columnIndex="1">
-         <ImageView>
-            <Image url="@/Asset 3Key.png"/>
-         </ImageView>
-      </VBox>
    </children>
    <columnConstraints>
       <ColumnConstraints percentWidth="30.0" />
-      <ColumnConstraints percentWidth="70.0" />
+      <ColumnConstraints percentWidth="40.0" />
+      <ColumnConstraints percentWidth="30.0" />
    </columnConstraints>
    <rowConstraints>
       <RowConstraints percentHeight="20.0"/>

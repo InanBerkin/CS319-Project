@@ -4,6 +4,7 @@
     -danger: #ED553B;
     -light :#068587;
     -dark :#112F41;
+    -fx-font-family: "Nexa Bold";
 }
 
 Button{
