@@ -12,9 +12,15 @@
 <?import javafx.scene.image.Image?>
 <GridPane stylesheets="@/styles/MainMenu.css" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.MainMenu.MainMenuController">
    <children>
-      <HBox GridPane.rowIndex="0" GridPane.columnIndex="1" alignment="CENTER">
-         <Label styleClass="title" alignment="CENTER" text="Q-BITZ" textFill="WHITE"/>
-      </HBox>
+      <VBox GridPane.rowIndex="0" GridPane.columnIndex="1" alignment="CENTER">
+         <!--<Label styleClass="title" alignment="CENTER" text="Q-BITZ" textFill="WHITE"/>-->
+         <ImageView>
+            <Image url="@/Title.png"></Image>
+         </ImageView>
+         <padding>
+            <Insets top="50.0" />
+         </padding>
+      </VBox>
       <VBox alignment="CENTER" spacing="20" GridPane.rowIndex="1" GridPane.columnIndex="1">
          <Button id="multiplayerButton" onAction="#gotoLogin" text="Multiplayer"/>
          <Button id="singleplayerButton" onAction="#gotoSingleplayerMenu" text="Singleplayer"/>
@@ -26,13 +32,13 @@
       </VBox>
    </children>
    <columnConstraints>
-      <ColumnConstraints percentWidth="30.0" />
-      <ColumnConstraints percentWidth="40.0" />
-      <ColumnConstraints percentWidth="30.0" />
+      <ColumnConstraints percentWidth="20.0" />
+      <ColumnConstraints percentWidth="60.0" />
+      <ColumnConstraints percentWidth="20.0" />
    </columnConstraints>
    <rowConstraints>
-      <RowConstraints percentHeight="20.0"/>
-      <RowConstraints percentHeight="80.0"/>
+      <RowConstraints percentHeight="30.0"/>
+      <RowConstraints percentHeight="70.0"/>
    </rowConstraints>
    <padding>
       <Insets bottom="10.0" left="10.0" right="10.0" top="30.0" />

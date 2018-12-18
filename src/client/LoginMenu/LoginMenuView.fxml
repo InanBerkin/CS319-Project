@@ -24,9 +24,9 @@
             <Label alignment="CENTER" text="Forgot your password?"/>
             <Button fx:id="loginButton" prefWidth="300" mnemonicParsing="false" onAction="#login" text="Login"/>
             <Button fx:id="registerButton" prefWidth="300" mnemonicParsing="false" onAction="#gotoRegister" text="Create an account"/>
-            <padding>
-                <Insets left="420.0" right="420.0" />
-            </padding>
+            <!--<padding>-->
+                <!--<Insets left="420.0" right="420.0" />-->
+            <!--</padding>-->
         </VBox>
     </children>
     <columnConstraints>

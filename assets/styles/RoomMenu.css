@@ -1,0 +1,17 @@
+@import "Main.css";
+
+Button{
+    -fx-background-color: #E6932E;
+}
+
+Button:hover{
+    -fx-background-color: #E6372E;
+}
+
+VBox{
+    -fx-background-color: #2EC1E6;
+}
+
+Label{
+    -fx-text-fill: #ffffff;
+}

@@ -2,6 +2,7 @@ package client.LoginMenu;
 
 import client.MenuController;
 import client.QBitzApplication;
+import client.UserConfiguration;
 import javafx.animation.TranslateTransition;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -60,7 +61,7 @@ public class LoginMenuController extends MenuController {
             loginJSON.put("username", username);
         }
         loginJSON.put("password", password);
-        QBitzApplication.getSceneController().sendMessageToServer(loginJSON.toString());
+        QBitzApplication.getSceneController().sendMessageToServer(loginJSON);
 //        gotoMainMenu();
     }
 
@@ -78,7 +79,8 @@ public class LoginMenuController extends MenuController {
         if(responseJSON.getString("responseType").equals("login")){
             if (responseJSON.getBoolean("result")){
                 Platform.runLater(() -> {
-                    gotoMainMenu();
+                    UserConfiguration.isLoggedIn = true;
+                    QBitzApplication.getSceneController().changeScene("RoomMenu");
                 });
             }
         }

@@ -54,7 +54,7 @@ public class RegisterMenuController extends MenuController {
         registerJSON.put("username", username);
         registerJSON.put("email", email);
         registerJSON.put("password", password);
-        QBitzApplication.getSceneController().sendMessageToServer(registerJSON.toString());
+        QBitzApplication.getSceneController().sendMessageToServer(registerJSON);
     }
 
     @FXML

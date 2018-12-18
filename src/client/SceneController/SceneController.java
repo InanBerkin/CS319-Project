@@ -3,6 +3,7 @@ package client.SceneController;
 import client.ClientSocketHandler;
 import client.MenuController;
 import client.QBitzApplication;
+import client.UserConfiguration;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -10,6 +11,8 @@ import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
+import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.logging.Level;
@@ -79,7 +82,23 @@ public class SceneController {
 
     }
 
-    public void sendMessageToServer(String message){
-        socketHandler.sendMessage(message);
+    public void sendMessageToServer(JSONObject message){
+        if(isJSONValid(message.toString())){
+            socketHandler.sendMessage(message.toString());
+        }
+
+    }
+
+    private boolean isJSONValid(String test) {
+        try {
+            new JSONObject(test);
+        } catch (JSONException ex) {
+            try {
+                new JSONArray(test);
+            } catch (JSONException ex1) {
+                return false;
+            }
+        }
+        return true;
     }
 }

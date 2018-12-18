@@ -38,6 +38,6 @@ public class VerificationMenuController extends MenuController {
         }
         JSONObject verificationJSON = payload;
         payload.put("code", verificationCode.getText());
-        QBitzApplication.getSceneController().sendMessageToServer(payload.toString());
+        QBitzApplication.getSceneController().sendMessageToServer(payload);
     }
 }

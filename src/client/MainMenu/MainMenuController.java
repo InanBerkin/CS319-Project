@@ -5,6 +5,7 @@ import client.QBitzApplication;
 import client.UserConfiguration;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -30,11 +31,15 @@ public class MainMenuController extends MenuController {
     }
 
     public void gotoLogin(){
-        QBitzApplication.getSceneController().changeScene("RoomCreateMenu");
-//        if (UserConfiguration.isOnline)
-//            QBitzApplication.getSceneController().changeScene("LoginMenu");
-//
-//        else
-//            System.out.println("» You are offline.");
+        if (UserConfiguration.isOnline){
+            if(UserConfiguration.isLoggedIn){
+                QBitzApplication.getSceneController().changeScene("RoomMenu");
+            }
+            else {
+                QBitzApplication.getSceneController().changeScene("LoginMenu");
+            }
+        }
+        else
+            System.out.println("» You are offline.");
     }
 }

@@ -46,21 +46,10 @@ public class RoomCreateMenuController extends MenuController {
     @FXML
     private void sendRoomData(){
         String roomName = roomNameTextField.getText();
-//        String gameRoomString = gameModeComboBox.getSelectionModel().getSelectedItem().toString();
         int gameMode = gameModeComboBox.getSelectionModel().getSelectedIndex();
-//
-//        if(gameRoomString.equals("Race")){
-//            gameMode = 0;
-//        }
-//        else if(gameRoomString.equals("Race")){
-//            gameMode = 1;
-//        }
-//        else{
-//            gameMode = 2;
-//        }
         int maxPlayers = Integer.parseInt(maxPlayersTextField.getText());
         int entranceLevel = Integer.parseInt(minEntranceLevelTextField.getText());
-        boolean roomType = roomTypeCheckbox.isSelected();
+        int roomType = roomTypeCheckbox.isSelected() ? 1 : 0;
         JSONObject roomJSON = new JSONObject();
         roomJSON.put("requestType", "createRoom");
         roomJSON.put("name", roomName);
@@ -68,24 +57,8 @@ public class RoomCreateMenuController extends MenuController {
         roomJSON.put("maxPlayers", maxPlayers);
         roomJSON.put("entranceLevel", entranceLevel);
         roomJSON.put("roomType", roomType);
-        QBitzApplication.getSceneController().sendMessageToServer(roomJSON.toString());
+        QBitzApplication.getSceneController().sendMessageToServer(roomJSON);
+        QBitzApplication.getSceneController().changeScene("RoomMenu");
     }
 
-    private class GameModeCell{
-        private int id;
-        private String name;
-
-        public GameModeCell(int id, String name){
-
-        }
-
-        public int getId() {
-            return id;
-        }
-
-        public String getName(){
-            return name;
-        }
-
-    }
 }

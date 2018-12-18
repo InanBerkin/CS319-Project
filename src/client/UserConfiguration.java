@@ -8,7 +8,7 @@ import java.util.Scanner;
 public class UserConfiguration {
 
     public static boolean isOnline = false;
-
+    public static boolean isLoggedIn = false;
 
     public static void set(String configFilePath) throws IOException {
         JSONObject json = new JSONObject();
