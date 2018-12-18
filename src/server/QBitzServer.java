@@ -3,8 +3,10 @@ package server;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import server.models.Room;
 import server.models.User;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
@@ -23,7 +25,7 @@ class QBitzServer {
     private int socketPort;
     private VerificationManager verificationManager;
     private ResetPasswordManager resetPasswordManager;
-    private HashMap<Integer, User> userMap;
+    private ArrayList<Room> rooms;
 
     /**
      * Constructor for QBitzServer Class.
@@ -36,7 +38,7 @@ class QBitzServer {
         this.socketServer = null;
         this.verificationManager = new VerificationManager();
         this.resetPasswordManager = new ResetPasswordManager();
-        this.userMap = new HashMap<>();
+        rooms = new ArrayList<>();
     }
 
     /**
@@ -153,7 +155,8 @@ class QBitzServer {
                     respObj.put("result", true);
                     respObj.put("id", id);
                     User tempUser = new User(username, email, password, id);
-                    userMap.put(tempUser.getId(), tempUser);
+                    handler.setUser(tempUser);
+
                 }
                 else {
                     respObj.put("result", false);
@@ -189,9 +192,37 @@ class QBitzServer {
 
                 handler.sendMessage(respObj.toString());
             }
+            else if(msgObj.getString("requestType").equals("createRoom")) {
+                int id = 0; // TODO: this will be generated.
+                System.out.println("CreateRoomRecieved!" + msgObj.toString());
+                // TODO: initialize the following from json
+                String name = "";
+                int gameMode = 0;
+
+                int players = 0; // initially zero
+                int maxPlayers = 0;
+                int entranceLevel = 0;
+                int roomType = 0;
+                String roomCode = "";
+
+                // id of the user
+                int ownerId = handler.getUser().getId();
+
+                // create the room and add it to the room list
+                rooms.add(new Room(id, name, gameMode, ownerId, players, maxPlayers, entranceLevel, roomType, roomCode, true));
+
+                // send response to user.
+
+            }
+            else if(msgObj.getString("requestType").equals("displayRooms")) {
+
+
+            }
             else if(msgObj.getString("requestType").equals("joinRoom")) {
 
             }
+
+
         }
     }
 

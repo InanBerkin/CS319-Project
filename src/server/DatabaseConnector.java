@@ -216,7 +216,7 @@ class DatabaseConnector {
                 room.setGamemode(resultSet.getInt("gamemode"));
                 room.setOwnerid(resultSet.getInt("ownerid"));
                 room.setPlayers(resultSet.getInt("players"));
-                room.setMaxplayers(resultSet.getInt("maxplayers"));
+                room.setMaxPlayers(resultSet.getInt("maxplayers"));
                 room.setEntranceLevel(resultSet.getInt("entrance_level"));
                 room.setRoomtype(resultSet.getInt("roomtype"));
                 room.setRoomcode(resultSet.getString("roomcode"));

@@ -1,5 +1,7 @@
 package server;
 
+import server.models.User;
+
 import java.io.*;
 import java.net.Socket;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -15,6 +17,7 @@ public class ServerSocketHandler extends Thread {
     private BufferedReader incoming;
     private PrintWriter outgoing;
     private AtomicBoolean isActive;
+    private User user;
 
     /**
      * Constructor for ServerSocketHandler Class.
@@ -27,6 +30,7 @@ public class ServerSocketHandler extends Thread {
         this.socket = socket;
         this.socketServer = socketServer;
         this.isActive = new AtomicBoolean(false);
+        this.user = null;
 
         try {
             this.outgoing = new PrintWriter(socket.getOutputStream(), true);
@@ -41,6 +45,8 @@ public class ServerSocketHandler extends Thread {
             this.incoming = null;
             System.out.println(e.toString());
         }
+
+
     }
 
     /**
@@ -87,8 +93,10 @@ public class ServerSocketHandler extends Thread {
      */
     void sendMessage(String message) {
         outgoing.println(message);
+
         System.out.println("To " + getConnectionIP() + " : " + message);
     }
+
 
     /**
      * This method sets the active status of the ServerSocketHandler.
@@ -104,5 +112,13 @@ public class ServerSocketHandler extends Thread {
      */
     String getConnectionIP() {
         return this.socket.getInetAddress().getHostAddress();
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 }
