@@ -97,7 +97,6 @@ public class ServerSocketHandler extends Thread {
         System.out.println("To " + getConnectionIP() + " : " + message);
     }
 
-
     /**
      * This method sets the active status of the ServerSocketHandler.
      * @param status The active status.

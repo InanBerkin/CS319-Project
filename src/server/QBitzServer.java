@@ -38,7 +38,7 @@ class QBitzServer {
         this.socketServer = null;
         this.verificationManager = new VerificationManager();
         this.resetPasswordManager = new ResetPasswordManager();
-        rooms = new ArrayList<>();
+        rooms = null;
     }
 
     /**
@@ -135,28 +135,25 @@ class QBitzServer {
             }
             else if (msgObj.getString("requestType").equals("login")) {
                 String password = msgObj.getString("password");
-                String email = "";
-                String username = "";
-                int id = -1;
+                String email;
+                String username;
+                User user = null;
 
                 if (msgObj.has("email")) {
                     email = msgObj.getString("email");
-                    id = db.loginWithEmail(email, password);
+                    user = db.loginWithEmail(email, password);
                 }
                 else if (msgObj.has("username")) {
                     username = msgObj.getString("username");
-                    id = db.loginWithUsername(username, password);
+                    user = db.loginWithUsername(username, password);
                 }
 
                 JSONObject respObj = new JSONObject();
                 respObj.put("responseType", "login");
 
-                if (id != -1) {
+                if (user != null) {
                     respObj.put("result", true);
-                    respObj.put("id", id);
-                    User tempUser = new User(username, email, password, id);
-                    handler.setUser(tempUser);
-
+                    handler.setUser(user);
                 }
                 else {
                     respObj.put("result", false);
@@ -193,36 +190,108 @@ class QBitzServer {
                 handler.sendMessage(respObj.toString());
             }
             else if(msgObj.getString("requestType").equals("createRoom")) {
-                int id = 0; // TODO: this will be generated.
-                System.out.println("CreateRoomRecieved!" + msgObj.toString());
-                // TODO: initialize the following from json
-                String name = "";
-                int gameMode = 0;
+                System.out.println("CreateRoomRecieved! -> " + msgObj.toString());
+                String name = msgObj.getString("name");
+                int gameMode = msgObj.getInt("gameMode");
 
-                int players = 0; // initially zero
-                int maxPlayers = 0;
-                int entranceLevel = 0;
-                int roomType = 0;
+                int players = 0;
+                int maxPlayers = msgObj.getInt("maxPlayers");
+                int entranceLevel = msgObj.getInt("entranceLevel");
+                int roomType = msgObj.getInt("roomType");
                 String roomCode = "";
 
                 // id of the user
                 int ownerId = handler.getUser().getId();
 
-                // create the room and add it to the room list
-                rooms.add(new Room(id, name, gameMode, ownerId, players, maxPlayers, entranceLevel, roomType, roomCode, true));
+                Room newRoom = new Room(-1, name, gameMode, ownerId, players, maxPlayers, entranceLevel, roomType, roomCode);
+
+                int id = db.addRoom(newRoom);
+                newRoom.setId(id);
+
+                rooms.add(newRoom);
 
                 // send response to user.
+                JSONObject respObj = new JSONObject();
+                respObj.put("responseType", "createRoom");
+                respObj.put("id", id);
 
+                handler.sendMessage(respObj.toString());
             }
             else if(msgObj.getString("requestType").equals("displayRooms")) {
+                JSONArray roomList = new JSONArray();
 
+                for (Room iterator : rooms) {
+                    if (iterator.getRoomtype() == Room.PUBLIC) {
+                        JSONObject room = new JSONObject();
+                        room.put("id", iterator.getId());
+                        room.put("name", iterator.getName());
+                        room.put("gameMode", iterator.getGamemode());
+                        room.put("players", iterator.getPlayers());
+                        room.put("maxPlayers", iterator.getMaxPlayers());
+                        room.put("entranceLevel", iterator.getEntranceLevel());
 
+                        roomList.put(room);
+                    }
+                }
+
+                JSONObject respObj = new JSONObject();
+                respObj.put("responseType", "displayRooms");
+                respObj.put("roomList", roomList);
+                respObj.put("result", !roomList.isEmpty());
+
+                handler.sendMessage(respObj.toString());
             }
             else if(msgObj.getString("requestType").equals("joinRoom")) {
+                int id = msgObj.getInt("id");
+                Room room = findRoomFromID(id);
 
+                JSONObject respObj = new JSONObject();
+                respObj.put("responseType", "joinRoom");
+
+                if (room != null) {
+                    if (room.getPlayers() != room.getMaxPlayers()) {
+                        if (room.getEntranceLevel() <= handler.getUser().getLevel()) {
+                            respObj.put("result", 0);
+
+                            respObj.put("id", room.getId());
+                            respObj.put("name", room.getName());
+                            respObj.put("gameMode", room.getGamemode());
+                            respObj.put("players", room.getPlayers());
+                            respObj.put("maxPlayers", room.getMaxPlayers());
+                            respObj.put("entranceLevel", room.getEntranceLevel());
+                            respObj.put("name", room.getName());
+
+                            room.addUser(handler);
+                            room.setPlayers(room.getPlayers() + 1);
+
+                            JSONArray userList = new JSONArray();
+
+                            for (ServerSocketHandler userHandler : room.getUsers()) {
+                                User user = userHandler.getUser();
+
+                                JSONObject userObj = new JSONObject();
+                                userObj.put("name", user.getUsername());
+                                userObj.put("id", user.getId());
+                                userObj.put("level", user.getLevel());
+
+                                userList.put(userObj);
+                            }
+                            respObj.put("userList", userList);
+                        }
+                        else {
+                            respObj.put("result", 2);
+                        }
+                    }
+                    else {
+                        respObj.put("result", 1);
+                    }
+                }
+                else {
+                    respObj.put("result", 3);
+                }
+
+                handler.sendMessage(respObj.toString());
             }
-
-
         }
     }
 
@@ -230,8 +299,6 @@ class QBitzServer {
         try {
             new JSONObject(test);
         } catch (JSONException ex) {
-            // edited, to include @Arthur's comment
-            // e.g. in case JSONArray is valid as well...
             try {
                 new JSONArray(test);
             } catch (JSONException ex1) {
@@ -247,6 +314,21 @@ class QBitzServer {
         QBitzServer.setSocketPort(9999);
         QBitzServer.start();
         System.out.println("QBitzServer Started!");
+
+        QBitzServer.populateRoomsFromDB();
     }
 
+    private Room findRoomFromID(int id) {
+        for (Room room : rooms) {
+            if (room.getId() == id)
+                return room;
+        }
+
+        return null;
+    }
+
+    private void populateRoomsFromDB() {
+        rooms = db.getRoomList();
+        System.out.println("Game rooms are populated from DB.");
+    }
 }

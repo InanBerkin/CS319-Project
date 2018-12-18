@@ -7,8 +7,10 @@ import java.util.ArrayList;
 
 public class Room {
 
+    public static int PUBLIC = 0;
+    public static int PRIVATE = 1;
+
     private int id;
-    private boolean isPublic;
     private String name;
     private int gamemode;
     private int ownerid;
@@ -29,9 +31,10 @@ public class Room {
         this.entranceLevel = entranceLevel;
         this.roomtype = 0;
         this.roomcode = "";
+        this.users = new ArrayList<>();
     }
 
-    public Room(int id, String name, int gamemode, int ownerid, int players, int maxPlayers, int entranceLevel, int roomtype, String roomcode, boolean isPublic) {
+    public Room(int id, String name, int gamemode, int ownerid, int players, int maxPlayers, int entranceLevel, int roomtype, String roomcode) {
         this.id = id;
         this.name = name;
         this.gamemode = gamemode;
@@ -42,10 +45,10 @@ public class Room {
         this.roomtype = roomtype;
         this.roomcode = roomcode;
         this.users = new ArrayList<>();
-        this.isPublic = isPublic;
     }
 
     public Room() {
+        this.users = new ArrayList<>();
     }
 
     public int getId() {
@@ -132,11 +135,5 @@ public class Room {
         users.add(userHandler);
     }
 
-    public boolean isPublic() {
-        return isPublic;
-    }
 
-    public void setPublic(boolean aPublic) {
-        isPublic = aPublic;
-    }
 }

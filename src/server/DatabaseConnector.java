@@ -1,6 +1,7 @@
 package server;
 
 import server.models.Room;
+import server.models.User;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -17,6 +18,7 @@ class DatabaseConnector {
 
     private static final String DRIVER_CLASS_NAME = "com.mysql.cj.jdbc.Driver";
     private static final String USER_TABLE = "users";
+    private static final String ROOM_TABLE = "rooms";
     private static final int MIN_USERNAME_LENGTH = 4;
     private static final int MIN_PASSWORD_LENGTH = 8;
 
@@ -101,6 +103,25 @@ class DatabaseConnector {
             return false;
     }
 
+    int addRoom(Room room) {
+        executeUpdate(ROOM_TABLE,"INSERT INTO ### (`name`, `gamemode`, `ownerid`, `players`, `maxplayers`, `entrance_level`, `roomtype`, `roomcode`) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
+                room.getName(), room.getGamemode(), room.getOwnerid(), room.getPlayers(), room.getMaxPlayers(), room.getEntranceLevel(), room.getRoomtype(), room.getRoomcode());
+
+        ResultSet result = executeQuery(ROOM_TABLE,"SELECT `id` FROM ### WHERE `name` = ? AND `gamemode` = ? AND `ownerid` = ? AND `players` = ? AND `maxplayers` = ? AND `entrance_level` = ? AND `roomtype` = ? AND `roomcode` = ?",
+                room.getName(), room.getGamemode(), room.getOwnerid(), room.getPlayers(), room.getMaxPlayers(), room.getEntranceLevel(), room.getRoomtype(), room.getRoomcode());
+
+        try {
+            if (result.next())
+                return result.getInt("id");
+            else
+                return -1;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return -1;
+    }
+
     /**
      * This method resets the progress of the user.
      * @param username The username of the user.
@@ -150,34 +171,54 @@ class DatabaseConnector {
         return -1;
     }
 
-    int loginWithUsername(String username, String password) {
-        ResultSet result = executeQuery(USER_TABLE,"SELECT `id` FROM ### WHERE `username` = ? AND `password` = MD5(?)", username, password);
+    User loginWithUsername(String username, String password) {
+        ResultSet result = executeQuery(USER_TABLE,"SELECT * FROM ### WHERE `username` = ? AND `password` = MD5(?)", username, password);
+
+        User user = null;
 
         try {
-            if (result.next())
-                return result.getInt("id");
-            else
-                return -1;
+            if (result.next()) {
+                user = new User(
+                        result.getString("username"),
+                        result.getString("password"),
+                        result.getString("email"),
+                        result.getInt("id"),
+                        result.getInt("exp"),
+                        result.getInt("level"),
+                        result.getInt("wins"),
+                        result.getInt("loses")
+                );
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }
 
-        return -1;
+        return user;
     }
 
-    int loginWithEmail(String email, String password) {
-        ResultSet result = executeQuery(USER_TABLE,"SELECT `id` FROM ### WHERE `email` = ? AND `password` = MD5(?)", email, password);
+    User loginWithEmail(String email, String password) {
+        ResultSet result = executeQuery(USER_TABLE,"SELECT * FROM ### WHERE `email` = ? AND `password` = MD5(?)", email, password);
+
+        User user = null;
 
         try {
-            if (result.next())
-                return result.getInt("id");
-            else
-                return -1;
+            if (result.next()) {
+                user = new User(
+                        result.getString("username"),
+                        result.getString("password"),
+                        result.getString("email"),
+                        result.getInt("id"),
+                        result.getInt("exp"),
+                        result.getInt("level"),
+                        result.getInt("wins"),
+                        result.getInt("loses")
+                );
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }
 
-        return -1;
+        return user;
     }
 
     boolean resetPassword(String email, String password) {
