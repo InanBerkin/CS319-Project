@@ -30,9 +30,11 @@ public class MainMenuController extends MenuController {
     }
 
     public void gotoLogin(){
-        if (UserConfiguration.isOnline)
-            QBitzApplication.getSceneController().changeScene("LoginMenu");
-        else
-            System.out.println("» You are offline.");
+        QBitzApplication.getSceneController().changeScene("RoomCreateMenu");
+//        if (UserConfiguration.isOnline)
+//            QBitzApplication.getSceneController().changeScene("LoginMenu");
+//
+//        else
+//            System.out.println("» You are offline.");
     }
 }

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<?import javafx.geometry.Insets?>
+<GridPane style="-fx-background-color: white" xmlns="http://javafx.com/javafx"
+          xmlns:fx="http://javafx.com/fxml"
+          stylesheets="@/styles/RoomCreateMenu.css"
+          fx:controller="client.RoomCreateMenu.RoomCreateMenuController">
+    <GridPane style="-fx-background-color: black" GridPane.rowIndex="0" GridPane.columnIndex="1">
+        <Label GridPane.rowIndex="0" GridPane.columnIndex="0" text="Room Name"/>
+        <Label GridPane.rowIndex="1" GridPane.columnIndex="0" text="Game Mode"/>
+        <Label GridPane.rowIndex="2" GridPane.columnIndex="0" text="Number of players"/>
+        <Label GridPane.rowIndex="3" GridPane.columnIndex="0" text="Minimum Level"/>
+        <Label GridPane.rowIndex="4" GridPane.columnIndex="0" text="Private room"/>
+
+        <TextField GridPane.rowIndex="0" GridPane.columnIndex="1" fx:id="roomNameTextField"/>
+        <ComboBox GridPane.rowIndex="1" GridPane.columnIndex="1" fx:id="gameModeComboBox"/>
+        <TextField GridPane.rowIndex="2" GridPane.columnIndex="1" fx:id="maxPlayersTextField"/>
+        <TextField GridPane.rowIndex="3" GridPane.columnIndex="1" fx:id="minEntranceLevelTextField"/>
+        <CheckBox GridPane.rowIndex="4" GridPane.columnIndex="1" fx:id="roomTypeCheckbox"/>
+        <columnConstraints>
+            <ColumnConstraints percentWidth="50.0" />
+            <ColumnConstraints percentWidth="50.0" />
+        </columnConstraints>
+        <rowConstraints>
+            <RowConstraints percentHeight="20.0"/>
+            <RowConstraints percentHeight="20.0"/>
+            <RowConstraints percentHeight="20.0"/>
+            <RowConstraints percentHeight="20.0"/>
+            <RowConstraints percentHeight="20.0"/>
+        </rowConstraints>
+        <padding>
+            <Insets bottom="10.0" left="10.0" right="10.0" top="30.0" />
+        </padding>
+    </GridPane>
+    <Button onAction="#sendRoomData">Create Room</Button>
+    <columnConstraints>
+        <ColumnConstraints percentWidth="25.0" />
+        <ColumnConstraints percentWidth="50.0" />
+        <ColumnConstraints percentWidth="25.0" />
+    </columnConstraints>
+    <rowConstraints>
+        <RowConstraints percentHeight="40.0"/>
+        <RowConstraints percentHeight="60.0"/>
+    </rowConstraints>
+</GridPane>
