@@ -8,15 +8,16 @@ import java.util.ArrayList;
 public class Room {
 
     private int id;
+    private boolean isPublic;
     private String name;
     private int gamemode;
     private int ownerid;
     private int players;
-    private int maxplayers;
+    private int maxPlayers;
     private int entranceLevel;
     private int roomtype;
     private String roomcode;
-    private ArrayList<User> users;
+    private ArrayList<ServerSocketHandler> users;
 
     public Room(String name, int gamemode, int ownerid, int players, int entranceLevel) {
         this.id = 0;
@@ -24,23 +25,24 @@ public class Room {
         this.gamemode = gamemode;
         this.ownerid = ownerid;
         this.players = players;
-        this.maxplayers = 0;
+        this.maxPlayers = 0;
         this.entranceLevel = entranceLevel;
         this.roomtype = 0;
         this.roomcode = "";
     }
 
-    public Room(int id, String name, int gamemode, int ownerid, int players, int maxplayers, int entranceLevel, int roomtype, String roomcode) {
+    public Room(int id, String name, int gamemode, int ownerid, int players, int maxPlayers, int entranceLevel, int roomtype, String roomcode, boolean isPublic) {
         this.id = id;
         this.name = name;
         this.gamemode = gamemode;
         this.ownerid = ownerid;
         this.players = players;
-        this.maxplayers = maxplayers;
+        this.maxPlayers = maxPlayers;
         this.entranceLevel = entranceLevel;
         this.roomtype = roomtype;
         this.roomcode = roomcode;
         this.users = new ArrayList<>();
+        this.isPublic = isPublic;
     }
 
     public Room() {
@@ -86,12 +88,12 @@ public class Room {
         this.players = players;
     }
 
-    public int getMaxplayers() {
-        return maxplayers;
+    public int getMaxPlayers() {
+        return maxPlayers;
     }
 
-    public void setMaxplayers(int maxplayers) {
-        this.maxplayers = maxplayers;
+    public void setMaxPlayers(int maxPlayers) {
+        this.maxPlayers = maxPlayers;
     }
 
     public int getEntranceLevel() {
@@ -118,15 +120,23 @@ public class Room {
         this.roomcode = roomcode;
     }
 
-    public ArrayList<User> getUsers() {
+    public ArrayList<ServerSocketHandler> getUsers() {
         return users;
     }
 
-    public void setUsers(ArrayList<User> users) {
+    public void setUsers(ArrayList<ServerSocketHandler> users) {
         this.users = users;
     }
 
-    public void addUser(User user) {
-        users.add(user);
+    public void addUser(ServerSocketHandler userHandler) {
+        users.add(userHandler);
+    }
+
+    public boolean isPublic() {
+        return isPublic;
+    }
+
+    public void setPublic(boolean aPublic) {
+        isPublic = aPublic;
     }
 }
