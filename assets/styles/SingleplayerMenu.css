@@ -12,6 +12,11 @@
     -fx-background-color: -danger;
 }
 
+.return-button{
+    -fx-background-color: #FF1654;
+    -fx-font-size: 20;
+}
+
 GridPane{
     -fx-background-color: -dark;
 }
@@ -19,7 +24,9 @@ GridPane{
 Button{
     -fx-pref-width: 100;
     -fx-pref-height: 100;
-    -fx-text-fill: #000000;
+    -fx-text-fill: #ffffff;
+    -fx-font-size: 25;
+    -fx-background-radius: 10;
 }
 
 Label{

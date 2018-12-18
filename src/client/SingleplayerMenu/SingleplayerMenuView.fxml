@@ -40,8 +40,8 @@
                 <Button styleClass="hard" text="5x5"/>
             </HBox>
         </VBox>
-        <HBox GridPane.rowIndex="2" GridPane.columnIndex="0" >
-            <Button onAction="#gotoMainMenu" text="Return"></Button>
+        <HBox GridPane.rowIndex="2" GridPane.columnIndex="0">
+            <Button styleClass="return-button" onAction="#gotoMainMenu" text="Return"></Button>
         </HBox>
     </children>
     <columnConstraints>

@@ -4,15 +4,15 @@ Button {
     -fx-font-weight: bold;
     -fx-background-color: -dark;
     -fx-font-size: 30;
-    -fx-pref-width: 300;
+    -fx-pref-width: 350;
     -fx-pref-height: 100;
-    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.8), 10, 0, 0, 0);
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.8), 20, 0, 0, 0);
     -fx-background-radius: 10;
 }
 
 
 Button:hover{
-    -fx-background-color: -light;
+    -fx-background-color: -error;
 }
 
 #multiplayerButton{
@@ -38,7 +38,12 @@ Button:hover{
 
 GridPane{
     /*-fx-background-color: linear-gradient( to bottom, #594D9C 10%, #F8649E 100%);*/
-    -fx-background-color: #2EC1E6;
+    /*-fx-background-color: white;*/
+    -fx-background-image: url("/BackgroundMenu.png");
+    -fx-background-repeat: no-repeat;
+    -fx-background-size: cover, auto;
+    -fx-background-position: center center;
+    -fx-background-color: transparent;
 }
 
 

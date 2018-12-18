@@ -131,9 +131,9 @@ public class GameInstanceController extends MenuController {
         cameraBoard.setTranslateZ(CAMERA_INITIAL_DISTANCE);
 
         cameraHolderBoard.getChildren().add(cameraBoard);
-
-        cameraHolderBoard.rotate(CAMERA_INITIAL_X_ANGLE, Rotate.X_AXIS);
-        cameraHolderBoard.rotate(CAMERA_INITIAL_Y_ANGLE, Rotate.Y_AXIS);
+//
+//        cameraHolderBoard.rotate(CAMERA_INITIAL_X_ANGLE, Rotate.X_AXIS);
+//        cameraHolderBoard.rotate(CAMERA_INITIAL_Y_ANGLE, Rotate.Y_AXIS);
 
         mainGroup.getChildren().add(cameraHolderBoard);
     }
