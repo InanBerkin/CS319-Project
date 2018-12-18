@@ -155,7 +155,7 @@ public class RoomMenuController extends MenuController {
             if (resultCode == 0){
                 Platform.runLater(() -> {
                     System.out.println("Joined");
-                    QBitzApplication.getSceneController().changeScene("roomLobby", responseJSON);
+                    QBitzApplication.getSceneController().changeScene("RoomLobbyMenu", responseJSON);
                 });
             }
             else if(resultCode == 1){
@@ -163,6 +163,9 @@ public class RoomMenuController extends MenuController {
             }
             else if(resultCode == 2){
                 System.out.println("Entrance level :(");
+            }
+            else if(resultCode == 3){
+                System.out.println("Room does not exist :(");
             }
         }
     }

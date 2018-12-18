@@ -28,7 +28,7 @@
         </Button>
     </HBox>
 
-    <HBox alignment="CENTER">
+    <HBox GridPane.rowIndex="0" GridPane.columnIndex="1" alignment="CENTER">
             <VBox.margin>
                 <Insets bottom="5.0" left="30.0" right="30.0" />
             </VBox.margin>
@@ -102,7 +102,7 @@
         <ColumnConstraints percentWidth="10.0" />
     </columnConstraints>
     <rowConstraints>
-        <RowConstraints percentHeight="20.0"/>
-        <RowConstraints percentHeight="80.0"/>
+        <RowConstraints percentHeight="40.0"/>
+        <RowConstraints percentHeight="60.0"/>
     </rowConstraints>
 </GridPane>

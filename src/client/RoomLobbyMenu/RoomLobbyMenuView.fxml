@@ -9,7 +9,54 @@
 <GridPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
             fx:controller="client.RoomLobbyMenu.RoomLobbyMenuController"
-            prefHeight="400.0" prefWidth="600.0">
+            stylesheets="@/styles/RoomLobbyMenu.css">
+    <GridPane GridPane.rowIndex="1" GridPane.columnIndex="1">
+        <HBox GridPane.rowIndex="0" GridPane.columnIndex="0" alignment="CENTER_LEFT">
+            <Label>
+                User0
+            </Label>
+        </HBox>
+        <HBox GridPane.rowIndex="1" GridPane.columnIndex="0" alignment="CENTER_LEFT">
+            <Label>
+                User0
+            </Label>
+        </HBox>
+        <HBox GridPane.rowIndex="2" GridPane.columnIndex="0" alignment="CENTER_LEFT">
+            <Label>
+                User0
+            </Label>
+        </HBox>
+        <HBox GridPane.rowIndex="3" GridPane.columnIndex="0" alignment="CENTER_LEFT">
+            <Label>
+                User0
+            </Label>
+        </HBox>
 
 
+        <columnConstraints>
+            <ColumnConstraints percentWidth="50.0" />
+            <ColumnConstraints percentWidth="50.0" />
+        </columnConstraints>
+        <rowConstraints>
+            <RowConstraints percentHeight="25.0"/>
+            <RowConstraints percentHeight="25.0"/>
+            <RowConstraints percentHeight="25.0"/>
+            <RowConstraints percentHeight="25.0"/>
+        </rowConstraints>
+    </GridPane>
+
+
+
+    <columnConstraints>
+        <!-- Space -->
+        <ColumnConstraints percentWidth="20.0" />
+        <ColumnConstraints percentWidth="60.0" />
+        <!-- Space -->
+        <ColumnConstraints percentWidth="20.0" />
+    </columnConstraints>
+    <rowConstraints>
+        <RowConstraints percentHeight="20.0"/>
+        <RowConstraints percentHeight="60.0"/>
+        <RowConstraints percentHeight="20.0"/>
+    </rowConstraints>
 </GridPane>
