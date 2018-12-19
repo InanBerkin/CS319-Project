@@ -90,19 +90,19 @@ public class GameInstanceController extends MenuController {
             gameMode = payload.getInt("gameMode");
             System.out.println(gridDimension + " " + gameMode);
 
-            if(gameMode == 1) {
-            try {
-            imageRecreation = new ImageRecreation("assets/recImage.jpg", gridDimension, rect);
-            } catch (IOException e) {
-            e.printStackTrace();
+            if (gameMode == 1) {
+                try {
+                    imageRecreation = new ImageRecreation("assets/recImage.jpg", gridDimension, cube.getFaces());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                board = new GameBoard(gridDimension, imageRecreation);
+                pattern = new Pattern(gridDimension, imageRecreation.getImgParts().toArray(new Image[imageRecreation.getImgParts().size()]));
+                imageRecreation.imageRec();
             }
-            board = new GameBoard(gridDimension, imageRecreation);
-            pattern = new Pattern(gridDimension, imageRecreation.getImgParts().toArray(new Image[imageRecreation.getImgParts().size()]));
-            imageRecreation.imageRec();
-            } else if(gameMode == 0)
-            {
-            board = new GameBoard(gridDimension, null);
-            pattern = new Pattern(gridDimension,null);
+            else if (gameMode == 0) {
+                board = new GameBoard(gridDimension, null);
+                pattern = new Pattern(gridDimension,null);
             }
 
             //pattern.setMatQuestMark();
@@ -161,9 +161,7 @@ public class GameInstanceController extends MenuController {
         cameraBoard.setTranslateZ(CAMERA_INITIAL_DISTANCE);
 
         cameraHolderBoard.getChildren().add(cameraBoard);
-//
-//        cameraHolderBoard.rotate(CAMERA_INITIAL_X_ANGLE, Rotate.X_AXIS);
-//        cameraHolderBoard.rotate(CAMERA_INITIAL_Y_ANGLE, Rotate.Y_AXIS);
+
 
         mainGroup.getChildren().add(cameraHolderBoard);
 

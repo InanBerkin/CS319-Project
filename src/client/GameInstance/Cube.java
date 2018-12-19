@@ -182,4 +182,8 @@ public class Cube extends XGroup {
     public void updateFrontFaces() {
         highlighter.updateInFront();
     }
+
+    public XRectangle[] getFaces() {
+        return faces;
+    }
 }

@@ -61,7 +61,6 @@ public class SingleplayerController extends MenuController {
         JSONObject payload = new JSONObject();
         payload.put("boardSize", boardSize);
         payload.put("gameMode", gameMode);
-        System.out.println("StartGame: "+gameMode + " " + boardSize);
         QBitzApplication.getSceneController().changeScene("GameInstance", payload);
     }
 

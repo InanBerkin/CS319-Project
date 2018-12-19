@@ -7,38 +7,29 @@ import javafx.scene.image.ImageView;
 import javafx.scene.paint.PhongMaterial;
 import javafx.scene.shape.Box;
 import javafx.scene.transform.Rotate;
-import javafx.scene.transform.Transform;
-
 
 import java.awt.image.BufferedImage;
 import java.awt.image.Raster;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 
 public class Pattern {
 
     private static final int BOARD_LENGTH = 200;
-    private static final int BOARD_DEPTH = 5;
-    private static final int BOARD_WIDTH = 5;
     private static final int SIZE = 128;
     private static PhongMaterial[] gridMat;
     private static int gridDimension;
     private static Group patternGroup;
     private static Box[] gridCell;
     private static int[][] gridMatrix;
-    private static Rotate r;
-    private static final Transform t = new Rotate();
     private ImageView[] patternImageViews;
     private Image[] imagesToCreatePattern;
 
-    public Pattern(int gridDimension, Image[] imagesToCreatePattern)
-    {
+    public Pattern(int gridDimension, Image[] imagesToCreatePattern) {
         this.gridDimension = gridDimension;
         this.imagesToCreatePattern = imagesToCreatePattern;
 
-
-        gridMat = new PhongMaterial[gridDimension*gridDimension];
-        patternImageViews =  new ImageView[gridDimension*gridDimension];
+        gridMat = new PhongMaterial[gridDimension * gridDimension];
+        patternImageViews =  new ImageView[gridDimension * gridDimension];
 
         gridCell = new Box[(gridDimension) * (gridDimension)];
         patternGroup = createPattern();
@@ -49,14 +40,11 @@ public class Pattern {
         return patternGroup;
     }
 
-    private Group createPattern()
-    {
+    private Group createPattern() {
         Group boardGroupInst = new Group();
         int gridIndex;
 
         gridMatrix = (new PatternGenerator(gridDimension)).generatePattern(false);
-
-
 
         for (int i = 0; i < gridDimension; i++) {
             for (int j = 0; j < gridDimension; j++) {
@@ -67,23 +55,21 @@ public class Pattern {
                 gridMat[gridIndex] = new PhongMaterial();
                 gridCell[gridIndex].setId(Integer.toString(gridIndex));
 
-
                 if(imagesToCreatePattern == null){
-                    String png = Integer.toString(gridMatrix[gridIndex][0]) + ".png";
+                    String png = gridMatrix[gridIndex][0] + ".png";
 
                     try {
                         gridMat[gridIndex].setDiffuseMap(new Image(new FileInputStream("assets/CubeFaces/" + png), SIZE, SIZE, true, false));
                         gridCell[gridIndex].getTransforms().add(new Rotate(90*gridMatrix[gridIndex][1], Rotate.Z_AXIS));
-                        patternImageViews[gridIndex].setRotate( 90*gridMatrix[gridIndex][1]);
-                    } catch (Exception e) {
-                        System.out.println("File not found");
-                    }
+
+                        patternImageViews[gridIndex].setRotate(90 * gridMatrix[gridIndex][1]);
+                    } catch (Exception e) {}
                 }
                 else {
                     try {
                         gridMat[gridIndex].setDiffuseMap(imagesToCreatePattern[gridIndex]);
                     } catch (Exception e) {
-                        System.out.println("File not found");
+                        System.out.println("File not found multiplayer");
                     }
                 }
                 patternImageViews[gridIndex] = new ImageView(gridMat[gridIndex].getDiffuseMap());
@@ -95,7 +81,6 @@ public class Pattern {
                 boardGroupInst.getChildren().add(gridCell[gridIndex]);
             }
         }
-        System.out.println(boardGroupInst);
         return boardGroupInst;
     }
 
@@ -123,7 +108,6 @@ public class Pattern {
                     int patternR = rasterPattern.getSample(x, y, 0);
                     int patternG = rasterPattern.getSample(x, y, 1);
                     int patternB = rasterPattern.getSample(x, y, 2);
-
 
                     if (boardR != patternR || boardG != patternG || boardB != patternB) {
                         System.out.println("Wrong one: " + i);
