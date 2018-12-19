@@ -75,10 +75,11 @@ public class GameBoard {
         Group boardGroupInst = new Group();
 
         Box mainBoard = new Box(BOARD_LENGTH, BOARD_LENGTH, BOARD_DEPTH );
-        Box frameRight = new Box(BOARD_WIDTH, BOARD_LENGTH + 20, BOARD_DEPTH + 10);
-        Box frameLeft = new Box(BOARD_WIDTH, BOARD_LENGTH + 20, BOARD_DEPTH + 10);
-        Box frameTop = new Box(BOARD_LENGTH + 20, BOARD_WIDTH, BOARD_DEPTH + 10);
-        Box frameBottom = new Box(BOARD_LENGTH + 20, BOARD_WIDTH, BOARD_DEPTH + 10);
+        Box frameRight = new Box(BOARD_WIDTH, BOARD_LENGTH + 10, BOARD_DEPTH + 10);
+        Box frameLeft = new Box(BOARD_WIDTH, BOARD_LENGTH + 10, BOARD_DEPTH + 10);
+        Box frameTop = new Box(BOARD_LENGTH + 10, BOARD_WIDTH, BOARD_DEPTH + 10);
+        Box frameBottom = new Box(BOARD_LENGTH + 10, BOARD_WIDTH, BOARD_DEPTH + 10);
+
 
         Box[] gridCell = new Box[(gridDimension) * (gridDimension)];
 
@@ -152,6 +153,7 @@ public class GameBoard {
                     gridCell.setMaterial(mainMat);
 
 
+
                 }
             }
             else if( event.getButton() == MouseButton.SECONDARY)
@@ -185,6 +187,7 @@ public class GameBoard {
                     if(gridCell[r].getMaterial() == mainMat){
 
                         gridCell[r].setMaterial(previewMat);
+
                     }
                 }
             }

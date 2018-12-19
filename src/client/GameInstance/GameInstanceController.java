@@ -84,13 +84,14 @@ public class GameInstanceController extends MenuController {
         Group boardGroup = board.createBoardGroup();
         Group patternGroup = pattern.createPatternGroup();
 
-        patternGroup.translateXProperty().set((WIDTH)*0.70);
-        patternGroup.translateYProperty().set(HEIGHT/2);
+        patternGroup.setTranslateX(patternGroup.getTranslateX()+WIDTH/5);
         patternGroup.translateZProperty().set(0);
 
-        boardGroup.translateXProperty().set((WIDTH)/32);
-        boardGroup.translateYProperty().set((HEIGHT)/32);
+
         boardGroup.translateZProperty().set(0);
+        boardGroup.getTransforms().add(new Rotate(-40, Rotate.X_AXIS));
+        //boardGroup.getTransforms().add(new Rotate(-15, Rotate.Y_AXIS));
+        boardGroup.setTranslateX(boardGroup.getTranslateX()-WIDTH/5);
 
         Group mainGroup = new Group();
         mainGroup.getChildren().add(boardGroup);
