@@ -2,7 +2,6 @@ package client.GameInstance;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.awt.image.Raster;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -48,8 +47,6 @@ public class XRectangle extends Rectangle {
         setTranslateZ(posZ);
     }
 
-
-
     public void hl(boolean isHL) throws FileNotFoundException {
         if (isHL) {
             setFill(new ImagePattern(changeImageColor()));
@@ -74,7 +71,6 @@ public class XRectangle extends Rectangle {
 
 
     private Image addBorders( Image img ){
-
         BufferedImage buffImg =  SwingFXUtils.fromFXImage(img, null);
 
         int widthPad = (int) ( img.getWidth() * 6) / 100;
@@ -94,8 +90,6 @@ public class XRectangle extends Rectangle {
         tempView.setPreserveRatio(true);
 
         return  tempView.snapshot(null, null);
-
-
     }
 
     private Image changeImageColor() {
@@ -105,7 +99,7 @@ public class XRectangle extends Rectangle {
             BufferedImage overlay = SwingFXUtils.fromFXImage(new Image(new FileInputStream("img/selected.png")),null);
 
             Graphics2D g2d = base.createGraphics();
-            g2d.setComposite(AlphaComposite.SrcOver.derive(0.7f));
+            g2d.setComposite(AlphaComposite.SrcOver.derive(0.3f));
             int x = (base.getWidth() - overlay.getWidth()) / 2;
             int y = (base.getHeight() - overlay.getHeight()) / 2;
             g2d.drawImage(overlay, x, y, null);
@@ -115,27 +109,6 @@ public class XRectangle extends Rectangle {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        // Raster raster = result.getRaster();
-
-//        for (int x = 0; x < result.getWidth(); x++) {
-//            for (int y = 0; y < result.getHeight(); y++) {
-//                int R = raster.getSample(x, y, 0);
-//                int G = raster.getSample(x, y, 1);
-//                int B = raster.getSample(x, y, 2);
-//
-//
-//                if (R < 75 && G < 75 && B < 75) {
-//                    R = 255;
-//                }
-//                else if (R > 175 && G > 175 && B > 175) {
-//                    R = (int) (R * 0.75);
-//                }
-//
-//                Color color = new Color(R, G, B);
-//                int RGB = color.getRGB();
-//                result.setRGB(x, y, RGB);
-//            }
-//        }
         Image tempImg = SwingFXUtils.toFXImage(base, null);
         ImageView temp = new ImageView(tempImg);
         temp.setFitWidth(this.faceImage.getWidth());
