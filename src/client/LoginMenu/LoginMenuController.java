@@ -82,9 +82,9 @@ public class LoginMenuController extends MenuController {
         if(responseJSON.getString("responseType").equals("login")){
             if (responseJSON.getBoolean("result")){
                 Platform.runLater(() -> {
+                    progressIcon.setVisible(false);
                     UserConfiguration.isLoggedIn = true;
                     QBitzApplication.getSceneController().changeScene("RoomMenu");
-                    progressIcon.setVisible(false);
                 });
             }
         }

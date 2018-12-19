@@ -22,9 +22,9 @@ public class RoomLobbyMenuController extends MenuController {
     @Override
     public void onMessageReceived(String message) {
         JSONObject responseJSON = new JSONObject(message);
-        if(responseJSON.getString("responseType").equals("joinAnnouncement") || responseJSON.getString("responseType").equals("exitAnnouncement")){
+        if(responseJSON.getString("responseType").equals("userAnnouncement")){
             Platform.runLater(() -> {
-                addPlayers(responseJSON.getJSONArray("userList"), responseJSON.getInt("players"));
+                addPlayers(responseJSON.getJSONArray("userList"));
             });
         }
     }
@@ -32,13 +32,15 @@ public class RoomLobbyMenuController extends MenuController {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         Platform.runLater(() ->{
-            addPlayers(payload.getJSONArray("userList"), payload.getInt("players"));
+            addPlayers(payload.getJSONArray("userList"));
         });
     }
 
-    private void addPlayers(JSONArray playersList, int players){
+    private void addPlayers(JSONArray playersList){
+        int players = playersList.length();
         playersGridPane.getChildren().clear();
         Player player;
+        HBox hBox;
         int id;
         int level;
         String name;
@@ -48,7 +50,7 @@ public class RoomLobbyMenuController extends MenuController {
             level = playerJSON.getInt("level");
             name = playerJSON.getString("name");
             player = new Player(id,level,name);
-            HBox hBox = new HBox();
+            hBox = new HBox();
             hBox.setAlignment(Pos.CENTER_LEFT);
             hBox.getChildren().add(new Label(player.getName()));
             playersGridPane.add(hBox,i/4 , i);
