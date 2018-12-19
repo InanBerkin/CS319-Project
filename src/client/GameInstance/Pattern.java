@@ -49,8 +49,7 @@ public class Pattern {
         return patternGroup;
     }
 
-    private Group createPattern()
-    {
+    private Group createPattern() {
         Group boardGroupInst = new Group();
         int gridIndex;
 
