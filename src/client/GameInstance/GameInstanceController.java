@@ -1,5 +1,6 @@
 package client.GameInstance;
 
+import client.ImageRecreation.ImageRecreation;
 import client.MenuController;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -11,14 +12,18 @@ import javafx.fxml.FXML;
 import javafx.scene.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.ImagePattern;
 import javafx.scene.paint.PhongMaterial;
 import javafx.scene.shape.Sphere;
 import javafx.scene.transform.Rotate;
 import javafx.util.Duration;
+
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -42,6 +47,7 @@ public class GameInstanceController extends MenuController {
     private static final double CAMERA_NEAR_CLIP = 0.1;
     private static final double CAMERA_FAR_CLIP = 10000.0;
     private static final double KEY_ROTATION_STEP = 4.5;
+    private static ImageRecreation imageRecreation;
 
     private static final int WIDTH = 1200;
     private static final int HEIGHT = 800;
@@ -77,24 +83,33 @@ public class GameInstanceController extends MenuController {
             e.printStackTrace();
         }
 
-        board = new GameBoard(gridDimension);
-        pattern = new Pattern(gridDimension);
+        try {
+            imageRecreation = new ImageRecreation("assets/recImage.jpg", gridDimension, rect);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        board = new GameBoard(gridDimension,imageRecreation);
+        pattern = new Pattern(gridDimension, imageRecreation.getImgParts().toArray(new Image[imageRecreation.getImgParts().size()]));
+        imageRecreation.imageRec();
+
         //pattern.setMatQuestMark();
 
         Group boardGroup = board.createBoardGroup();
         Group patternGroup = pattern.createPatternGroup();
 
-        patternGroup.setTranslateX(patternGroup.getTranslateX()+WIDTH/5);
+        patternGroup.setTranslateX(patternGroup.getTranslateX()+ WIDTH/5);
         patternGroup.translateZProperty().set(0);
 
 
         boardGroup.translateZProperty().set(0);
         boardGroup.getTransforms().add(new Rotate(-40, Rotate.X_AXIS));
-        //boardGroup.getTransforms().add(new Rotate(-15, Rotate.Y_AXIS));
+
         boardGroup.setTranslateX(boardGroup.getTranslateX()-WIDTH/5);
+        boardGroup.getChildren().add(new AmbientLight());
 
         Group mainGroup = new Group();
         mainGroup.getChildren().addAll(boardGroup,patternGroup);
+
 
 
 
@@ -344,6 +359,7 @@ public class GameInstanceController extends MenuController {
     }
 
     public void foo() {
+        System.out.println("Is pattern correct? : " + pattern.checkPattern(board.getBoardImageViews()));
         System.out.println("Submit Button!");
     }
 

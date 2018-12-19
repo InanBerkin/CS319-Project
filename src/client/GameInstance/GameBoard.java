@@ -1,6 +1,7 @@
 package client.GameInstance;
 
 
+import client.ImageRecreation.ImageRecreation;
 import javafx.scene.Group;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -26,11 +27,13 @@ public class GameBoard {
     private static Group boardGroup;
     private static Boolean[] statusOfGridCells;
     private static ImageView[] boardImageViews;
+    private static ImageRecreation imageRecreation;
 
-    public GameBoard(int gridDimension)
+    public GameBoard(int gridDimension, ImageRecreation imageRecreation)
     {
         this.gridDimension = gridDimension;
 
+        this.imageRecreation = imageRecreation;
 
         statusOfGridCells = new Boolean[gridDimension*gridDimension];
 
@@ -136,12 +139,14 @@ public class GameBoard {
             int cellId = Integer.parseInt(event.getPickResult().getIntersectedNode().getId());
 
             if(event.getButton() == MouseButton.PRIMARY) {
-
+                imageRecreation.imageRec();
                 if (!statusOfGridCells[cellId]&& selectedFaceMat.getDiffuseMap() != mainMat.getDiffuseMap()) {
                     PhongMaterial tmp = new PhongMaterial();
                     tmp.setDiffuseMap(selectedFaceMat.getDiffuseMap());
 
                     boardImageViews[cellId].setImage(selectedFaceMat.getDiffuseMap());
+                    imageRecreation.removeFace(selectedFaceMat.getDiffuseMap());
+
 
                     gridCell.setMaterial(tmp);
                     selectedFaceMat.setDiffuseMap(mainMat.getDiffuseMap());
@@ -150,9 +155,9 @@ public class GameBoard {
                     statusOfGridCells[cellId] = Boolean.TRUE;
                 } else {
                     statusOfGridCells[cellId] = Boolean.FALSE;
+                    imageRecreation.addFace(boardImageViews[cellId].getImage());
+
                     gridCell.setMaterial(mainMat);
-
-
 
                 }
             }
@@ -187,18 +192,20 @@ public class GameBoard {
                     if(gridCell[r].getMaterial() == mainMat){
 
                         gridCell[r].setMaterial(previewMat);
-
                     }
                 }
             }
         });
     }
-    public void setSelectedFaceMat( Image selectedFace)
+    public void setSelectedFaceMat(Image selectedFace)
     {
-
         selectedFaceMat.setDiffuseMap(selectedFace);
         previewMat.setDiffuseMap(selectedFace);
     }
 
+    public ImageView[] getBoardImageViews()
+    {
+        return boardImageViews;
+    }
 
 }
