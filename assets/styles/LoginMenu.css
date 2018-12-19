@@ -1,0 +1,29 @@
+@import "Main.css";
+
+Button{
+    -fx-background-color: -secondary;
+}
+
+TextField{
+    -fx-pref-width: 200;
+}
+
+#RegisterButton{
+    -fx-background-color: -primary;
+}
+
+Button:hover{
+    -fx-background-color: #ED553B;
+}
+
+GridPane{
+    -fx-background-color: -backgroundDark;
+}
+
+Label{
+    -fx-text-fill: #ffffff;
+}
+
+
+
+

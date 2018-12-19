@@ -1,0 +1,49 @@
+@import "Main.css";
+
+Button {
+    -fx-font-weight: bold;
+    -fx-background-color: -dark;
+    -fx-font-size: 30;
+    -fx-pref-width: 350;
+    -fx-pref-height: 100;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.8), 20, 0, 0, 0);
+    -fx-background-radius: 10;
+}
+
+
+Button:hover{
+    -fx-background-color: -error;
+}
+
+#multiplayerButton{
+    -fx-background-color: #88d8b0;
+}
+
+#singleplayerButton{
+    -fx-background-color: #E95F79;
+}
+
+#howtoplayButton{
+    -fx-background-color: #848AC4;
+}
+
+#optionsButton{
+    -fx-background-color: #FBC625;
+}
+
+.title{
+    -fx-text-fill: white;
+    -fx-font-size: 100;
+}
+
+GridPane{
+    /*-fx-background-color: linear-gradient( to bottom, #594D9C 10%, #F8649E 100%);*/
+    /*-fx-background-color: white;*/
+    -fx-background-image: url("/BackgroundMenu.png");
+    -fx-background-repeat: no-repeat;
+    -fx-background-size: cover, auto;
+    -fx-background-position: center center;
+    -fx-background-color: transparent;
+}
+
+
