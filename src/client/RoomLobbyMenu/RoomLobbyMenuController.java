@@ -1,6 +1,7 @@
 package client.RoomLobbyMenu;
 
 import client.MenuController;
+import client.QBitzApplication;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
@@ -21,9 +22,9 @@ public class RoomLobbyMenuController extends MenuController {
     @Override
     public void onMessageReceived(String message) {
         JSONObject responseJSON = new JSONObject(message);
-        if(responseJSON.getString("responseType").equals("joinAnnouncement")){
+        if(responseJSON.getString("responseType").equals("joinAnnouncement") || responseJSON.getString("responseType").equals("exitAnnouncement")){
             Platform.runLater(() -> {
-                addPlayers(responseJSON.getJSONArray("usersList"), responseJSON.getInt("players"));
+                addPlayers(responseJSON.getJSONArray("userList"), responseJSON.getInt("players"));
             });
         }
     }
@@ -36,11 +37,11 @@ public class RoomLobbyMenuController extends MenuController {
     }
 
     private void addPlayers(JSONArray playersList, int players){
+        playersGridPane.getChildren().clear();
         Player player;
         int id;
         int level;
         String name;
-
         for (int i = 0; i < players; i++){
             JSONObject playerJSON = (JSONObject) playersList.get(i);
             id = playerJSON.getInt("id");
@@ -50,10 +51,17 @@ public class RoomLobbyMenuController extends MenuController {
             HBox hBox = new HBox();
             hBox.setAlignment(Pos.CENTER_LEFT);
             hBox.getChildren().add(new Label(player.getName()));
-            System.out.println(i/4 + "  " + i);
             playersGridPane.add(hBox,i/4 , i);
         }
+    }
 
+    @FXML
+    private void goBack(){
+        QBitzApplication.getSceneController().changeScene("RoomLobbyMenu");
+        JSONObject quitJSON = new JSONObject();
+        quitJSON.put("requestType", "exitRoom");
+        quitJSON.put("roomID", payload.getInt("roomID"));
+        QBitzApplication.getSceneController().sendMessageToServer(quitJSON);
     }
 
     private class Player{

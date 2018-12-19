@@ -9,6 +9,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ProgressIndicator;
 import javafx.scene.control.TextField;
 import javafx.util.Duration;
 import org.json.JSONObject;
@@ -29,6 +30,8 @@ public class LoginMenuController extends MenuController {
     private Label errorLabel;
     @FXML
     private Button loginButton;
+    @FXML
+    private ProgressIndicator progressIcon;
 
     private TranslateTransition translate;
 
@@ -61,8 +64,8 @@ public class LoginMenuController extends MenuController {
             loginJSON.put("username", username);
         }
         loginJSON.put("password", password);
+        progressIcon.setVisible(true);
         QBitzApplication.getSceneController().sendMessageToServer(loginJSON);
-//        gotoMainMenu();
     }
 
     @FXML
@@ -81,6 +84,7 @@ public class LoginMenuController extends MenuController {
                 Platform.runLater(() -> {
                     UserConfiguration.isLoggedIn = true;
                     QBitzApplication.getSceneController().changeScene("RoomMenu");
+                    progressIcon.setVisible(false);
                 });
             }
         }

@@ -72,7 +72,7 @@ public class RoomMenuController extends MenuController {
             JSONObject roomJSON = (JSONObject) roomObj;
             rooms.add(new Room(
                     roomJSON.getString("name"),
-                    roomJSON.getInt("id"),
+                    roomJSON.getInt("roomID"),
                     roomJSON.getInt("gameMode"),
                     roomJSON.getInt("players"),
                     roomJSON.getInt("maxPlayers"),
@@ -137,7 +137,7 @@ public class RoomMenuController extends MenuController {
     private void joinRoom(int id){
         JSONObject roomJSON = new JSONObject();
         roomJSON.put("requestType", "joinRoom");
-        roomJSON.put("id", id);
+        roomJSON.put("roomID", id);
         QBitzApplication.getSceneController().sendMessageToServer(roomJSON);
     }
 

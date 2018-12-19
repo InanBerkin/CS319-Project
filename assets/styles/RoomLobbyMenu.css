@@ -1,5 +1,11 @@
+@import "Main.css";
+
 HBox{
     -fx-background-color: #4BB0E4;
     -fx-font-size: 20;
     -fx-padding: 30;
+}
+
+GridPane#background{
+    -fx-background-color: -backgroundDark;
 }
