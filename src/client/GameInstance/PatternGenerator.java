@@ -1,5 +1,7 @@
 package client.GameInstance;
 
+import javafx.scene.image.ImageView;
+
 public class PatternGenerator {
     private int gridDimension;
     private static int[][] gridMatrix;
@@ -7,6 +9,7 @@ public class PatternGenerator {
     private static int state;
     private static int numOfPng = 6;
     private static int numOfStates = 4;
+
 
     public PatternGenerator(int gridDimension)
     {
@@ -16,6 +19,7 @@ public class PatternGenerator {
     public int[][] generatePattern(boolean hard)
     {
         if(!hard) {
+            System.out.println("easy");
             if (gridDimension == 3) {
                 for (int i = 0; i < 2; i++) {
                     png = (int) ((Math.random() * numOfPng) + 1);
@@ -25,6 +29,7 @@ public class PatternGenerator {
                         gridMatrix[j + (i * 2)][1] = (state + 3)%numOfStates;
                         gridMatrix[j + (i * 2) + 5][0] = png;
                         gridMatrix[j + (i * 2) + 5][1] = (state + 3)%numOfStates;
+
                     }
                 }
                 png = (int) ((Math.random() * numOfPng) + 1);
