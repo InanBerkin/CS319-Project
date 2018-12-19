@@ -4,6 +4,8 @@
     -danger: #ED553B;
     -light :#068587;
     -dark :#112F41;
+    -background: #2EC1E6;
+    -backgroundDark: #249ab8;
     -fx-font-family: "Nexa Bold";
 }
 
@@ -11,6 +13,8 @@ Button{
     -fx-border-radius: 4px;
     -fx-text-fill: #ffffff;
     -fx-pref-height: 3.5em;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.8), 20, 0, 0, 0);
+    -fx-background-radius: 10;
 }
 
 TextField, PasswordField{

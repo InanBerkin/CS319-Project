@@ -13,87 +13,40 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.ColumnConstraints?>
-<GridPane alignment="CENTER_RIGHT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" stylesheets="@/styles/RoomMenu.css" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.RoomMenu.RoomMenuController">
-    <HBox GridPane.rowIndex="0" GridPane.columnIndex="0" alignment="CENTER_RIGHT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity">
-     <TextField fx:id="roomCodeText" prefHeight="39.0" prefWidth="119.0" promptText="Room Code">
-         <HBox.margin>
-             <Insets left="150.0" right="5.0" />
-         </HBox.margin>
-
-     </TextField>
-     <Button fx:id="enterPrivateButton" mnemonicParsing="false" onAction="#enterPrivateRoom" prefHeight="5" prefWidth="101.0" text="Enter Private Room">
-        <font>
-           <Font size="10.0" />
-        </font>
-        </Button>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.layout.Region?>
+<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" stylesheets="@/styles/RoomMenu.css" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.RoomMenu.RoomMenuController">
+    <HBox GridPane.rowIndex="0" GridPane.columnIndex="1" alignment="CENTER" spacing="50">
+        <Region id="rightFace"/>
+        <Label id="Title" alignment="CENTER" text="Multiplayer" textFill="WHITE"/>
+        <Region id="leftFace"/>
+    </HBox>
+    <HBox GridPane.rowIndex="1" GridPane.ColumnIndex="1" alignment="CENTER_LEFT" spacing="20">
+        <HBox alignment="CENTER_LEFT" spacing="10" HBox.hgrow="ALWAYS">
+            <TextField fx:id="roomCodeText" promptText="Room Code"/>
+            <Button>Join</Button>
+        </HBox>
+        <HBox alignment="CENTER" spacing="10" HBox.hgrow="ALWAYS">
+            <Label>Race</Label>
+            <CheckBox fx:id="raceCheck" selected="true"/>
+            <Label>Elimination</Label>
+            <CheckBox fx:id="eliminationCheck" selected="true"/>
+            <Label>Image Rec</Label>
+            <CheckBox fx:id="imageRecCheck" selected="true"/>
+        </HBox>
+        <HBox alignment="CENTER_RIGHT" spacing="10" HBox.hgrow="ALWAYS">
+            <TextField fx:id="searchText" promptText="Search Room"/>
+            <Button>Search</Button>
+        </HBox>
     </HBox>
 
-    <HBox GridPane.rowIndex="0" GridPane.columnIndex="1" alignment="CENTER">
-            <VBox.margin>
-                <Insets bottom="5.0" left="30.0" right="30.0" />
-            </VBox.margin>
-            <HBox alignment="BASELINE_LEFT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity">
-
-
-                <TextField fx:id="searchText" prefHeight="39.0" prefWidth="129.0" promptText="Search Room">
-
-                </TextField>
-                <Label text="Race">
-                    <HBox.margin>
-                        <Insets left="5.0" right="5.0" top="7.5" />
-                    </HBox.margin>
-                </Label>
-                <CheckBox fx:id="raceCheck" selected="true">
-                    <HBox.margin>
-                        <Insets left="2.5" right="5.0" top="7.5" />
-                    </HBox.margin>
-                </CheckBox>
-
-                <Label text="Roll to Win">
-                    <HBox.margin>
-                        <Insets left="5.0" right="5.0" top="7.5" />
-                    </HBox.margin>
-                </Label>
-                <CheckBox fx:id="rollCheck" selected="true">
-                    <HBox.margin>
-                        <Insets left="2.5" right="5.0" top="7.5" />
-                    </HBox.margin>
-                </CheckBox>
-            </HBox>
-            <HBox alignment="BASELINE_RIGHT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity">
-                <Label text="Memory">
-                    <HBox.margin>
-                        <Insets left="5.0" right="5.0" top="7.5" />
-                    </HBox.margin>
-                </Label>
-                <CheckBox fx:id="MemoryCheck" selected="true">
-                    <HBox.margin>
-                        <Insets left="2.5" right="5.0" top="7.5" />
-                    </HBox.margin>
-                </CheckBox>
-
-                <Label text="Tournament">
-                    <HBox.margin>
-                        <Insets left="5.0" right="5.0" top="7.5" />
-                    </HBox.margin>
-                </Label>
-                <CheckBox fx:id="tourCheck" selected="true">
-                    <HBox.margin>
-                        <Insets left="2.5" right="5.0" top="7.5" />
-                    </HBox.margin>
-                </CheckBox>
-
-                <Button fx:id="createRoomMenu" onAction="#createRoom" prefHeight="32.0" prefWidth="101.0" text="Create Room">
-                </Button>
-
-            </HBox>
-    </HBox>
-    <TableView GridPane.rowIndex="1" GridPane.columnIndex="1"  fx:id="roomTable" style="-fx-background-color: #068587;">
+    <TableView GridPane.rowIndex="2" GridPane.columnIndex="1"  fx:id="roomTable">
         <VBox.margin>
             <Insets left="30.0" right="30.0" />
         </VBox.margin>
     </TableView>
-    <Button onAction="#gotoMainMenu">Return</Button>
+    <Button GridPane.rowIndex="3" GridPane.columnIndex="0"  onAction="#gotoMainMenu">Return</Button>
     <columnConstraints>
         <!-- Space -->
         <ColumnConstraints percentWidth="10.0" />
@@ -102,7 +55,9 @@
         <ColumnConstraints percentWidth="10.0" />
     </columnConstraints>
     <rowConstraints>
-        <RowConstraints percentHeight="40.0"/>
-        <RowConstraints percentHeight="60.0"/>
+        <RowConstraints percentHeight="20.0"/>
+        <RowConstraints percentHeight="10.0"/>
+        <RowConstraints percentHeight="50.0"/>
+        <RowConstraints percentHeight="20.0"/>
     </rowConstraints>
 </GridPane>

@@ -18,7 +18,8 @@
 }
 
 GridPane{
-    -fx-background-color: -dark;
+    /*-fx-background-color: -dark;*/
+    -fx-background-color:-backgroundDark;
 }
 
 Button{
