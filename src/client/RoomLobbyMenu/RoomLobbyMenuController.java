@@ -18,4 +18,8 @@ public class RoomLobbyMenuController extends MenuController {
             System.out.println(payload.getInt("id"));
         });
     }
+
+    private void addPlayers(){
+
+    }
 }

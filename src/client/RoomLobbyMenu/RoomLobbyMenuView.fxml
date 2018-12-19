@@ -10,7 +10,7 @@
             xmlns:fx="http://javafx.com/fxml"
             fx:controller="client.RoomLobbyMenu.RoomLobbyMenuController"
             stylesheets="@/styles/RoomLobbyMenu.css">
-    <GridPane GridPane.rowIndex="1" GridPane.columnIndex="1">
+    <GridPane fx:id="playersGridPane" GridPane.rowIndex="1" GridPane.columnIndex="1">
         <HBox GridPane.rowIndex="0" GridPane.columnIndex="0" alignment="CENTER_LEFT">
             <Label>
                 User0
