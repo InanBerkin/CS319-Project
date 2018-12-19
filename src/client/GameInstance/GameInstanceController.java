@@ -94,8 +94,8 @@ public class GameInstanceController extends MenuController {
         boardGroup.setTranslateX(boardGroup.getTranslateX()-WIDTH/5);
 
         Group mainGroup = new Group();
-        mainGroup.getChildren().add(boardGroup);
-        mainGroup.getChildren().add(patternGroup);
+        mainGroup.getChildren().addAll(boardGroup,patternGroup);
+
 
 
         SubScene scene = new SubScene(root, 200, 500, true, SceneAntialiasing.BALANCED);
@@ -137,6 +137,7 @@ public class GameInstanceController extends MenuController {
 //        cameraHolderBoard.rotate(CAMERA_INITIAL_Y_ANGLE, Rotate.Y_AXIS);
 
         mainGroup.getChildren().add(cameraHolderBoard);
+
     }
 
     private void buildBody() throws Exception {
@@ -163,7 +164,10 @@ public class GameInstanceController extends MenuController {
         rect[4].setRotate(90);
 
         cube.getChildren().addAll(rect[0], rect[1], rect[2], rect[3], rect[4], rect[5]);
+
         root.getChildren().add(cube);
+
+
 
         highlighter = new Highlighter(rect);
 
