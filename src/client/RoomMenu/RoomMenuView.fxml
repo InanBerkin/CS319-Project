@@ -40,13 +40,15 @@
             <Button>Search</Button>
         </HBox>
     </HBox>
-
     <TableView GridPane.rowIndex="2" GridPane.columnIndex="1"  fx:id="roomTable">
         <VBox.margin>
             <Insets left="30.0" right="30.0" />
         </VBox.margin>
     </TableView>
-    <Button GridPane.rowIndex="3" GridPane.columnIndex="0"  onAction="#gotoMainMenu">Return</Button>
+    <HBox GridPane.rowIndex="3" GridPane.columnIndex="1" alignment="CENTER_RIGHT">
+        <Button HBox.hgrow="ALWAYS" id="create-button" onAction="#createRoom">Create Room</Button>
+    </HBox>
+    <Button GridPane.rowIndex="4" GridPane.columnIndex="0"  onAction="#gotoMainMenu">Return</Button>
     <columnConstraints>
         <!-- Space -->
         <ColumnConstraints percentWidth="10.0" />
@@ -58,6 +60,7 @@
         <RowConstraints percentHeight="20.0"/>
         <RowConstraints percentHeight="10.0"/>
         <RowConstraints percentHeight="50.0"/>
-        <RowConstraints percentHeight="20.0"/>
+        <RowConstraints percentHeight="10.0"/>
+        <RowConstraints percentHeight="10.0"/>
     </rowConstraints>
 </GridPane>

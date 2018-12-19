@@ -9,10 +9,15 @@ Button{
     -fx-font-size: 80;
 }
 
-#createButton{
-
+#create-button{
+    -fx-background-color: #A4D05F;
+    -fx-pref-height: 60;
+    -fx-font-size: 20;
 }
 
+#create-button:hover{
+    -fx-background-color: #E6372E;
+}
 
 Button:hover{
     -fx-background-color: #E6372E;
@@ -33,6 +38,7 @@ GridPane{
 TableView{
     -fx-background-color: 	#99aab5;
     -fx-background-radius: 10;
+    -fx-border-radius: 10;
 }
 
 TextField{

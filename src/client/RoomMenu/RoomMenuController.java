@@ -63,7 +63,7 @@ public class RoomMenuController extends MenuController {
 
         roomTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
         roomTable.getColumns().addAll(nameColumn, modeColumn, ownerColumn,playerNoColumn,levelColumn, joinColumn);
-        roomTable.setPlaceholder(new Label("No room available"));
+        //roomTable.setPlaceholder(new Label("No room available"));
     }
 
     public ObservableList<Room> populateRoomList(JSONArray roomList){

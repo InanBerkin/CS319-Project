@@ -61,4 +61,9 @@ public class RoomCreateMenuController extends MenuController {
         QBitzApplication.getSceneController().changeScene("RoomMenu");
     }
 
+    @FXML
+    private void goBack(){
+        QBitzApplication.getSceneController().changeScene("RoomMenu");
+    }
+
 }

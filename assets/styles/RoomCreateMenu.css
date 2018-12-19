@@ -1,6 +1,29 @@
+@import "Main.css";
+
 Label{
-    -fx-font-family: "Light-45", "Helvetica Neue", "Helvetica", Arial, sans-serif;
     -fx-text-fill: #ffffff;
     -fx-font-size: 20px;
 }
 
+GridPane{
+    -fx-background-color: -backgroundDark;
+}
+
+Button{
+    -fx-background-color: #A4D05F;
+    -fx-pref-height: 60;
+    -fx-font-size: 20;
+}
+
+.return-button{
+    -fx-background-color: -danger;
+}
+
+GridPane#createTable{
+    -fx-padding: 30 30;
+    -fx-background-color: #F37E87;
+    -fx-border-width: 5;
+    -fx-border-color: #000000;
+    -fx-background-radius: 10;
+    -fx-border-radius: 10;
+}
