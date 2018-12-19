@@ -16,7 +16,7 @@ Project repository for CS319 Object-Oriented Software Engineering - Fall 2018
  Q-bitz is a puzzle game in which players try to recreate the patterns using cubes.
 The game has several different playing modes. 
 
-## Game Modes
+## client.Qbitz Modes
 
 ### Race Mode
 

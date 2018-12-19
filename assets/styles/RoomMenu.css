@@ -1,0 +1,63 @@
+@import "Main.css";
+
+Button{
+    -fx-background-color: #E6932E;
+    -fx-pref-height: 30;
+}
+
+#Title{
+    -fx-font-size: 80;
+}
+
+#create-button{
+    -fx-background-color: #A4D05F;
+    -fx-pref-height: 60;
+    -fx-font-size: 20;
+}
+
+#create-button:hover{
+    -fx-background-color: #E6372E;
+}
+
+Button:hover{
+    -fx-background-color: #E6372E;
+}
+
+VBox{
+    -fx-background-color: #2EC1E6;
+}
+
+Label{
+    -fx-text-fill: #ffffff;
+}
+
+GridPane{
+    -fx-background-color: -backgroundDark;
+}
+
+TableView{
+    -fx-background-color: 	#99aab5;
+    -fx-background-radius: 10;
+    -fx-border-radius: 10;
+}
+
+TextField{
+    -fx-background-radius: 10;
+}
+
+Region{
+    -fx-background-size: 80 80;
+    -fx-min-width: 80;
+    -fx-min-height: 80;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center center;
+    -fx-background-color: transparent;
+}
+
+Region#rightFace{
+    -fx-background-image: url("/Right.png");
+}
+
+Region#leftFace{
+    -fx-background-image: url("/Left.png");
+}

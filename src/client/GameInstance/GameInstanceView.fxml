@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<?import javafx.geometry.Insets?>
+<GridPane fx:id="gridPane" xmlns="http://javafx.com/javafx"
+          xmlns:fx="http://javafx.com/fxml"
+          fx:controller="client.GameInstance.GameInstanceController"
+          prefHeight="400.0" prefWidth="600.0"
+          stylesheets="@/styles/GameInstance.css">
+    <children>
+        <Label fx:id="timerLabel" GridPane.rowIndex="0" GridPane.columnIndex="0" style="-fx-font-size: 20" alignment="CENTER" text="Q-BITZ" textFill="BLACK">
+            <padding>
+                <Insets left="30.0" />
+            </padding>
+        </Label>
+        <Label fx:id="winText" GridPane.rowIndex="0" GridPane.columnIndex="1" style="-fx-font-size: 50" alignment="CENTER" text="" textFill="WHITE">
+            <padding>
+                <Insets left="30.0" />
+            </padding>
+        </Label>
+        <Button GridPane.rowIndex="1" GridPane.columnIndex="0" fx:id="submitButton" prefWidth="300" mnemonicParsing="false" text="Submit" onAction="#foo"/>
+    </children>
+
+    <columnConstraints>
+        <ColumnConstraints percentWidth="25.0" />
+        <ColumnConstraints percentWidth="25.0" />
+        <ColumnConstraints percentWidth="25.0" />
+        <ColumnConstraints percentWidth="25.0" />
+    </columnConstraints>
+    <rowConstraints>
+        <RowConstraints percentHeight="10.0"/>
+        <RowConstraints percentHeight="10.0"/>
+        <RowConstraints percentHeight="80.0"/>
+    </rowConstraints>
+
+</GridPane>

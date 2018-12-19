@@ -1,0 +1,19 @@
+@import "Main.css";
+
+Button{
+    -fx-background-color: -secondary;
+}
+
+
+Button:hover{
+    -fx-background-color: #ED553B;
+}
+
+GridPane{
+    -fx-background-color: -primary;
+}
+
+Label{
+    -fx-font-family: "Light-45", "Helvetica Neue", "Helvetica", Arial, sans-serif;
+    -fx-text-fill: #000000;
+}

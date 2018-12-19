@@ -1,0 +1,36 @@
+@import "Main.css";
+
+.easy{
+     -fx-background-color: -secondary;
+ }
+
+.normal{
+    -fx-background-color: -primary;
+}
+
+.hard{
+    -fx-background-color: -danger;
+}
+
+.return-button{
+    -fx-background-color: #FF1654;
+    -fx-font-size: 20;
+}
+
+GridPane{
+    /*-fx-background-color: -dark;*/
+    -fx-background-color:-backgroundDark;
+}
+
+Button{
+    -fx-pref-width: 100;
+    -fx-pref-height: 100;
+    -fx-text-fill: #ffffff;
+    -fx-font-size: 25;
+    -fx-background-radius: 10;
+}
+
+Label{
+    -fx-font-family: "Light-45", "Helvetica Neue", "Helvetica", Arial, sans-serif;
+    -fx-text-fill: #ffffff;
+}
