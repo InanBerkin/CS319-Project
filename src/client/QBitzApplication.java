@@ -61,7 +61,7 @@ public class QBitzApplication extends Application {
             NetworkAnalyzer networkAnalyzer = new NetworkAnalyzer("https://www.google.com.tr");
             if (networkAnalyzer.isOnline()) {
                 try {
-                    ClientSocketHandler clientSocketHandler = new ClientSocketHandler("139.179.206.36", 9999);
+                    ClientSocketHandler clientSocketHandler = new ClientSocketHandler("localhost", 9999);
                     clientSocketHandler.start();
                     sceneController.setSocketHandler(clientSocketHandler);
                     UserConfiguration.isOnline = true;
