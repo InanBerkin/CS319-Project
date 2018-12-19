@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<?import javafx.geometry.Insets?>
+<GridPane xmlns="http://javafx.com/javafx"
+          xmlns:fx="http://javafx.com/fxml"
+          fx:controller="client.OptionsMenu.OptionsMenuController"
+          prefHeight="400.0" prefWidth="600.0"
+          stylesheets="@/styles/OptionsMenu.css">
+    <HBox GridPane.rowIndex="0" GridPane.columnIndex="1" alignment="CENTER" spacing="50">
+        <Region id="rightFace"/>
+        <Label id="Title" alignment="CENTER" text="Options" textFill="WHITE"/>
+        <Region id="leftFace"/>
+    </HBox>
+    <GridPane id="createTable" GridPane.rowIndex="1" GridPane.columnIndex="1">
+        <Label GridPane.rowIndex="0" GridPane.columnIndex="0" text="Sound"/>
+        <Label GridPane.rowIndex="1" GridPane.columnIndex="0" text="Rotation Controls"/>
+        <Label GridPane.rowIndex="2" GridPane.columnIndex="0" text="Cycle Selected Faces Left"/>
+        <Label GridPane.rowIndex="3" GridPane.columnIndex="0" text="Cycle Selected Faces Right"/>
+        <Label GridPane.rowIndex="4" GridPane.columnIndex="0" text="Cycle Selected Faces Right"/>
+
+        <Slider GridPane.rowIndex="0" GridPane.columnIndex="1" fx:id="soundSlider"/>
+        <ComboBox GridPane.rowIndex="1" GridPane.columnIndex="1" fx:id="rotationComboBox"/>
+        <Button GridPane.rowIndex="2" GridPane.columnIndex="1" fx:id="cycleLeft"/>
+        <Button GridPane.rowIndex="3" GridPane.columnIndex="1" fx:id="cycleRight"/>
+        <TextField GridPane.rowIndex="4" GridPane.columnIndex="1" fx:id="colorSlider"/>
+
+        <columnConstraints>
+            <ColumnConstraints percentWidth="50.0" />
+            <ColumnConstraints percentWidth="50.0" />
+        </columnConstraints>
+        <rowConstraints>
+            <RowConstraints percentHeight="20.0"/>
+            <RowConstraints percentHeight="20.0"/>
+            <RowConstraints percentHeight="20.0"/>
+            <RowConstraints percentHeight="20.0"/>
+            <RowConstraints percentHeight="20.0"/>
+        </rowConstraints>
+        <padding>
+            <Insets bottom="10.0" left="10.0" right="10.0" top="30.0" />
+        </padding>
+    </GridPane>
+    <HBox GridPane.rowIndex="2" GridPane.columnIndex="1" alignment="CENTER">
+        <Button onAction="#applyOptions" HBox.hgrow="ALWAYS">Create Room</Button>
+    </HBox>
+    <Button GridPane.rowIndex="3" GridPane.columnIndex="0" styleClass="return-button" onAction="#gotoMainMenu">Return</Button>
+    <columnConstraints>
+        <ColumnConstraints percentWidth="20.0" />
+        <ColumnConstraints percentWidth="60.0" />
+        <ColumnConstraints percentWidth="20.0" />
+    </columnConstraints>
+    <rowConstraints>
+        <RowConstraints percentHeight="30.0"/>
+        <RowConstraints percentHeight="40.0"/>
+        <RowConstraints percentHeight="20.0"/>
+        <RowConstraints percentHeight="10.0"/>
+    </rowConstraints></GridPane>

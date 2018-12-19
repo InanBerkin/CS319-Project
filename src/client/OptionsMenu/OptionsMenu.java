@@ -1,4 +1,4 @@
-package client;
+package client.OptionsMenu;
 
 import javafx.scene.input.KeyCode;
 import javafx.scene.media.Media;
@@ -6,7 +6,7 @@ import javafx.scene.media.MediaPlayer;
 
 import java.nio.file.Paths;
 
-public class Options {
+public class OptionsMenu {
 
     KeyCode selectLeft;
     KeyCode selectRight;
@@ -22,7 +22,7 @@ public class Options {
 
     int cubeColor = 0;
 
-    public Options() {
+    public OptionsMenu() {
         initDefaultOptions();
     }
 
@@ -38,8 +38,8 @@ public class Options {
         musicLevel = 0;
         cubeColor = 0;
         musicUrl = "TODO";
-        music = new Media(Paths.get(musicUrl).toUri().toString());
-        musicPlayer = new MediaPlayer(music);
+        //music = new Media(Paths.get(musicUrl).toUri().toString());
+        //musicPlayer = new MediaPlayer(music);
 
     }
 
