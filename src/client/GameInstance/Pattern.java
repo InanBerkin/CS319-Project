@@ -53,10 +53,9 @@ public class Pattern {
     {
         Group boardGroupInst = new Group();
         int gridIndex;
-        if(imagesToCreatePattern.length < 7)
-            gridMatrix = (new PatternGenerator(gridDimension)).generatePattern(false);
-        else
-            gridMatrix = (new PatternGenerator(gridDimension)).generatePattern(true);
+
+        gridMatrix = (new PatternGenerator(gridDimension)).generatePattern(false);
+
 
 
         for (int i = 0; i < gridDimension; i++) {
@@ -69,7 +68,7 @@ public class Pattern {
                 gridCell[gridIndex].setId(Integer.toString(gridIndex));
 
 
-                if(imagesToCreatePattern.length < 7){
+                if(imagesToCreatePattern == null){
                     String png = Integer.toString(gridMatrix[gridIndex][0]) + ".png";
 
                     try {

@@ -4,6 +4,7 @@ import client.ImageRecreation.ImageRecreation;
 import client.MenuController;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.application.Platform;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.event.ActionEvent;
@@ -23,6 +24,7 @@ import javafx.scene.shape.Sphere;
 import javafx.scene.transform.Rotate;
 import javafx.util.Duration;
 
+import javax.sound.midi.Soundbank;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -47,11 +49,12 @@ public class GameInstanceController extends MenuController {
     private static final double CAMERA_NEAR_CLIP = 0.1;
     private static final double CAMERA_FAR_CLIP = 10000.0;
     private static final double KEY_ROTATION_STEP = 4.5;
-    private static ImageRecreation imageRecreation;
+    private static ImageRecreation imageRecreation = null;
 
     private static final int WIDTH = 1200;
     private static final int HEIGHT = 800;
-    private int gridDimension = 3;
+    private int gridDimension;
+    private int gameMode;
 
     final XGroup cube = new XGroup();
     final XGroup cameraHolder = new XGroup();
@@ -82,52 +85,63 @@ public class GameInstanceController extends MenuController {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        Platform.runLater(() -> {
+            gridDimension = payload.getInt("boardSize");
+            gameMode = payload.getInt("gameMode");
+            System.out.println(gridDimension + " " + gameMode);
 
-        try {
+            if(gameMode == 1) {
+            try {
             imageRecreation = new ImageRecreation("assets/recImage.jpg", gridDimension, rect);
-        } catch (IOException e) {
+            } catch (IOException e) {
             e.printStackTrace();
-        }
-        board = new GameBoard(gridDimension,imageRecreation);
-        pattern = new Pattern(gridDimension, imageRecreation.getImgParts().toArray(new Image[imageRecreation.getImgParts().size()]));
-        imageRecreation.imageRec();
+            }
+            board = new GameBoard(gridDimension, imageRecreation);
+            pattern = new Pattern(gridDimension, imageRecreation.getImgParts().toArray(new Image[imageRecreation.getImgParts().size()]));
+            imageRecreation.imageRec();
+            } else if(gameMode == 0)
+            {
+            board = new GameBoard(gridDimension, null);
+            pattern = new Pattern(gridDimension,null);
+            }
 
-        //pattern.setMatQuestMark();
+            //pattern.setMatQuestMark();
 
-        Group boardGroup = board.createBoardGroup();
-        Group patternGroup = pattern.createPatternGroup();
+            Group boardGroup = board.createBoardGroup();
+            Group patternGroup = pattern.createPatternGroup();
 
-        patternGroup.setTranslateX(patternGroup.getTranslateX()+ WIDTH/5);
-        patternGroup.translateZProperty().set(0);
-
-
-        boardGroup.translateZProperty().set(0);
-        boardGroup.getTransforms().add(new Rotate(-40, Rotate.X_AXIS));
-
-        boardGroup.setTranslateX(boardGroup.getTranslateX()-WIDTH/5);
-        boardGroup.getChildren().add(new AmbientLight());
-
-        Group mainGroup = new Group();
-        mainGroup.getChildren().addAll(boardGroup,patternGroup);
+            patternGroup.setTranslateX(patternGroup.getTranslateX()+ WIDTH/5);
+            patternGroup.translateZProperty().set(0);
 
 
+            boardGroup.translateZProperty().set(0);
+            boardGroup.getTransforms().add(new Rotate(-40, Rotate.X_AXIS));
+
+            boardGroup.setTranslateX(boardGroup.getTranslateX()-WIDTH/5);
+            boardGroup.getChildren().add(new AmbientLight());
+
+            Group mainGroup = new Group();
+            mainGroup.getChildren().addAll(boardGroup,patternGroup);
 
 
-        SubScene scene = new SubScene(root, 200, 500, true, SceneAntialiasing.BALANCED);
-        scene.setCamera(camera);
-        scene.setFill(Color.WHITE);
 
-        SubScene boardScene = new SubScene(mainGroup, WIDTH, HEIGHT , true, SceneAntialiasing.BALANCED);
-        boardScene.setCamera(cameraBoard);
-        boardScene.setFill(Color.WHITE);
 
-        gridPane.add(scene, 0,2);
-        gridPane.add(boardScene, 1, 2);
-        gameTimer = new GameTimer();
-        gameTimer.setGameLabel(timerLabel);
-        gameTimer.startTimer(0);
+            SubScene scene = new SubScene(root, 200, 500, true, SceneAntialiasing.BALANCED);
+            scene.setCamera(camera);
+            scene.setFill(Color.WHITE);
 
-        handleKeys(gridPane);
+            SubScene boardScene = new SubScene(mainGroup, WIDTH, HEIGHT , true, SceneAntialiasing.BALANCED);
+            boardScene.setCamera(cameraBoard);
+            boardScene.setFill(Color.WHITE);
+
+            gridPane.add(scene, 0,2);
+            gridPane.add(boardScene, 1, 2);
+            gameTimer = new GameTimer();
+            gameTimer.setGameLabel(timerLabel);
+            gameTimer.startTimer(0);
+
+            handleKeys(gridPane);
+        });
     }
 
     private void buildCamera() {

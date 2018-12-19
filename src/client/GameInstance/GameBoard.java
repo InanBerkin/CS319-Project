@@ -139,13 +139,15 @@ public class GameBoard {
             int cellId = Integer.parseInt(event.getPickResult().getIntersectedNode().getId());
 
             if(event.getButton() == MouseButton.PRIMARY) {
-                imageRecreation.imageRec();
+                if( imageRecreation != null)
+                    imageRecreation.imageRec();
                 if (!statusOfGridCells[cellId]&& selectedFaceMat.getDiffuseMap() != mainMat.getDiffuseMap()) {
                     PhongMaterial tmp = new PhongMaterial();
                     tmp.setDiffuseMap(selectedFaceMat.getDiffuseMap());
 
                     boardImageViews[cellId].setImage(selectedFaceMat.getDiffuseMap());
-                    imageRecreation.removeFace(selectedFaceMat.getDiffuseMap());
+                    if( imageRecreation != null)
+                        imageRecreation.removeFace(selectedFaceMat.getDiffuseMap());
 
 
                     gridCell.setMaterial(tmp);
@@ -155,7 +157,9 @@ public class GameBoard {
                     statusOfGridCells[cellId] = Boolean.TRUE;
                 } else {
                     statusOfGridCells[cellId] = Boolean.FALSE;
-                    imageRecreation.addFace(boardImageViews[cellId].getImage());
+
+                    if( imageRecreation != null)
+                        imageRecreation.addFace(boardImageViews[cellId].getImage());
 
                     gridCell.setMaterial(mainMat);
 
