@@ -16,12 +16,12 @@ import javafx.scene.shape.Rectangle;
 
 public class XRectangle extends Rectangle {
 
-    public static final String IMG0_URL = "assets/CubeFaces/1NoBorder.png";
-    public static final String IMG1_URL = "assets/CubeFaces/2NoBorder.png";
-    public static final String IMG2_URL = "assets/CubeFaces/3NoBorder.png";
-    public static final String IMG3_URL = "assets/CubeFaces/4NoBorder.png";
-    public static final String IMG4_URL = "assets/CubeFaces/5NoBorder.png";
-    public static final String IMG5_URL = "assets/CubeFaces/6NoBorder.png";
+    public static final String IMG0_URL = "assets/CubeFaces/1NoBorder.jpg";
+    public static final String IMG1_URL = "assets/CubeFaces/2NoBorder.jpg";
+    public static final String IMG2_URL = "assets/CubeFaces/3NoBorder.jpg";
+    public static final String IMG3_URL = "assets/CubeFaces/4NoBorder.jpg";
+    public static final String IMG4_URL = "assets/CubeFaces/5NoBorder.jpg";
+    public static final String IMG5_URL = "assets/CubeFaces/6NoBorder.jpg";
 
     private final String imgUrl;
     private final int id;
@@ -35,8 +35,9 @@ public class XRectangle extends Rectangle {
         this.id = id;
         this.imgUrl = imgUrl;
         this.faceImage = new Image(new FileInputStream(imgUrl));
-
+        System.out.println(faceImage.getHeight());
         this.faceImagePad = addBorders(this.faceImage);
+        System.out.println(faceImagePad.getHeight());
         setFill(new ImagePattern(faceImagePad));
 
         setHeight(size);
@@ -88,13 +89,17 @@ public class XRectangle extends Rectangle {
         g.dispose();
 
         Image tempImg = SwingFXUtils.toFXImage(newImage, null );
+        ImageView tempView = new ImageView(tempImg);
+        tempView.setFitWidth(img.getWidth());
+        tempView.setPreserveRatio(true);
 
-        return  tempImg;
+        return  tempView.snapshot(null, null);
+
 
     }
 
     private Image changeImageColor() {
-        BufferedImage base  =  SwingFXUtils.fromFXImage(this.faceImagePad, null);
+        BufferedImage base  =  SwingFXUtils.fromFXImage(this.faceImage, null);
             try {
 
             BufferedImage overlay = SwingFXUtils.fromFXImage(new Image(new FileInputStream("img/selected.png")),null);
@@ -131,10 +136,15 @@ public class XRectangle extends Rectangle {
 //                result.setRGB(x, y, RGB);
 //            }
 //        }
-        return SwingFXUtils.toFXImage(base, null);
+        Image tempImg = SwingFXUtils.toFXImage(base, null);
+        ImageView temp = new ImageView(tempImg);
+        temp.setFitWidth(this.faceImage.getWidth());
+        temp.setPreserveRatio(true);
+        return temp.snapshot(null, null);
     }
 
     public Image getFaceImage() {
         return this.faceImage;
     }
+
 }

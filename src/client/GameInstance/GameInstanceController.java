@@ -93,8 +93,8 @@ public class GameInstanceController extends MenuController {
         boardGroup.translateZProperty().set(0);
 
         Group mainGroup = new Group();
-        mainGroup.getChildren().add(boardGroup);
-        mainGroup.getChildren().add(patternGroup);
+        mainGroup.getChildren().addAll(boardGroup,patternGroup);
+
 
 
         SubScene scene = new SubScene(root, 200, 500, true, SceneAntialiasing.BALANCED);
