@@ -10,17 +10,13 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.image.Image?>
-<GridPane stylesheets="@/styles/MainMenu.css" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.MainMenu.MainMenuController">
+<GridPane fx:id="gridPane" stylesheets="@/styles/MainMenu.css" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.MainMenu.MainMenuController">
    <children>
-      <VBox GridPane.rowIndex="0" GridPane.columnIndex="1" alignment="CENTER">
-         <!--<Label styleClass="title" alignment="CENTER" text="Q-BITZ" textFill="WHITE"/>-->
+      <HBox GridPane.rowIndex="0" GridPane.columnIndex="1" alignment="CENTER">
          <ImageView>
             <Image url="@/Title.png"></Image>
          </ImageView>
-         <padding>
-            <Insets top="50.0" />
-         </padding>
-      </VBox>
+      </HBox>
       <VBox alignment="CENTER" spacing="20" GridPane.rowIndex="1" GridPane.columnIndex="1">
          <Button id="multiplayerButton" onAction="#gotoLogin" text="Multiplayer"/>
          <Button id="singleplayerButton" onAction="#gotoSingleplayerMenu" text="Singleplayer"/>

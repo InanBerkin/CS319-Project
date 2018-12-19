@@ -4,6 +4,8 @@
     -danger: #ED553B;
     -light :#068587;
     -dark :#112F41;
+    -background: #2EC1E6;
+    -backgroundDark: #249ab8;
     -fx-font-family: "Nexa Bold";
 }
 
@@ -11,13 +13,14 @@ Button{
     -fx-border-radius: 4px;
     -fx-text-fill: #ffffff;
     -fx-pref-height: 3.5em;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.8), 12, 0, 0, 0);
+    -fx-background-radius: 10;
 }
 
 TextField, PasswordField{
     -fx-background-color: #F2F2F2;
     -fx-border-width: 1px;
     -fx-font-size: 18px;
-    -fx-font-family: "Light-45", "Helvetica Neue", "Helvetica", Arial, sans-serif;
     -fx-font-weight: normal;
     -fx-text-overrun: ellipsis;
 }
@@ -40,4 +43,8 @@ TextField, PasswordField{
 
 .error{
     -fx-text-fill: #FF1654;
+}
+
+#Title{
+    -fx-font-size: 80;
 }

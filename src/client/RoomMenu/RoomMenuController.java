@@ -9,10 +9,7 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
-import javafx.scene.control.TableCell;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.util.Callback;
 import org.json.JSONArray;
@@ -35,9 +32,12 @@ public class RoomMenuController extends MenuController {
 
         Platform.runLater(() -> {
             getRoomList();
+            createTable();
             addButtonToTable();
         });
+    }
 
+    private void createTable(){
         TableColumn<Room, String>  nameColumn = new TableColumn<>("Room Name");
         //nameColumn.setMinWidth(200);
         nameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
@@ -63,6 +63,7 @@ public class RoomMenuController extends MenuController {
 
         roomTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
         roomTable.getColumns().addAll(nameColumn, modeColumn, ownerColumn,playerNoColumn,levelColumn, joinColumn);
+        //roomTable.setPlaceholder(new Label("No room available"));
     }
 
     public ObservableList<Room> populateRoomList(JSONArray roomList){
@@ -104,7 +105,7 @@ public class RoomMenuController extends MenuController {
             public TableCell<Room, Void> call(final TableColumn<Room, Void> param) {
                 final TableCell<Room, Void> cell = new TableCell<Room, Void>() {
 
-                    private final Button btn = new Button("Action");
+                    private final Button btn = new Button("Join");
 
                     {
                         btn.setOnAction((ActionEvent event) -> {

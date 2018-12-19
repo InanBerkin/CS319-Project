@@ -27,18 +27,18 @@ public class QBitzApplication extends Application {
             primaryStage.setFullScreenExitKeyCombination(KeyCombination.NO_MATCH);
             sceneController = new SceneController(primaryStage);
 
-            NetworkAnalyzer networkAnalyzer = new NetworkAnalyzer("https://www.google.com.tr");
-            if (networkAnalyzer.isOnline()) {
-                try {
-                    ClientSocketHandler clientSocketHandler = new ClientSocketHandler("139.179.103.35", 9999);
-                    clientSocketHandler.start();
-                    sceneController.setSocketHandler(clientSocketHandler);
-                    UserConfiguration.isOnline = true;
-                }
-                catch (IOException e) {
-                    System.out.println("» Server is unreachable.");
-                }
-            }
+//            NetworkAnalyzer networkAnalyzer = new NetworkAnalyzer("https://www.google.com.tr");
+//            if (networkAnalyzer.isOnline()) {
+//                try {
+//                    ClientSocketHandler clientSocketHandler = new ClientSocketHandler("139.179.103.35", 9999);
+//                    clientSocketHandler.start();
+//                    sceneController.setSocketHandler(clientSocketHandler);
+//                    UserConfiguration.isOnline = true;
+//                }
+//                catch (IOException e) {
+//                    System.out.println("» Server is unreachable.");
+//                }
+//            }
             sceneController.changeScene("MainMenu");
             primaryStage.show();
         } catch (Exception ex) {
