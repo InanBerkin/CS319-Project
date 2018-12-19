@@ -49,8 +49,7 @@ public class Pattern {
         return patternGroup;
     }
 
-    private Group createPattern()
-    {
+    private Group createPattern() {
         Group boardGroupInst = new Group();
         int gridIndex;
 
@@ -74,6 +73,7 @@ public class Pattern {
                     try {
                         gridMat[gridIndex].setDiffuseMap(new Image(new FileInputStream("assets/CubeFaces/" + png), SIZE, SIZE, true, false));
                         gridCell[gridIndex].getTransforms().add(new Rotate(90*gridMatrix[gridIndex][1], Rotate.Z_AXIS));
+                        patternImageViews[gridIndex] = new ImageView(gridMat[gridIndex].getDiffuseMap());
                         patternImageViews[gridIndex].setRotate( 90*gridMatrix[gridIndex][1]);
                     } catch (Exception e) {
                         System.out.println("File not found");
@@ -82,11 +82,12 @@ public class Pattern {
                 else {
                     try {
                         gridMat[gridIndex].setDiffuseMap(imagesToCreatePattern[gridIndex]);
+                        patternImageViews[gridIndex] = new ImageView(gridMat[gridIndex].getDiffuseMap());
                     } catch (Exception e) {
                         System.out.println("File not found");
                     }
                 }
-                patternImageViews[gridIndex] = new ImageView(gridMat[gridIndex].getDiffuseMap());
+
 
                 gridCell[gridIndex].setMaterial(gridMat[gridIndex]);
 
