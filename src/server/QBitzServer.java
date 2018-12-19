@@ -6,7 +6,13 @@ import org.json.JSONObject;
 import server.models.Room;
 import server.models.User;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.HashMap;
 
 /**
@@ -205,15 +211,22 @@ class QBitzServer {
 
                 Room newRoom = new Room(-1, name, gameMode, ownerId, players, maxPlayers, entranceLevel, roomType, roomCode);
 
+                // send response to user.
+                JSONObject respObj = new JSONObject();
+
+                if (gameMode == 2) {
+                    String encodedImage = getRandomImage(600);
+                    newRoom.setEncodedImage(encodedImage);
+                    respObj.put("encodedImage", encodedImage);
+                }
+
                 int id = db.addRoom(newRoom);
                 newRoom.setId(id);
 
                 rooms.add(newRoom);
 
-                // send response to user.
-                JSONObject respObj = new JSONObject();
                 respObj.put("responseType", "createRoom");
-                respObj.put("id", id);
+                respObj.put("roomID", id);
 
                 handler.sendMessage(respObj.toString());
             }
@@ -223,7 +236,7 @@ class QBitzServer {
                 for (Room iterator : rooms) {
                     if (iterator.getRoomtype() == Room.PUBLIC) {
                         JSONObject room = new JSONObject();
-                        room.put("id", iterator.getId());
+                        room.put("roomID", iterator.getId());
                         room.put("name", iterator.getName());
                         room.put("gameMode", iterator.getGamemode());
                         room.put("players", iterator.getPlayers());
@@ -242,7 +255,7 @@ class QBitzServer {
                 handler.sendMessage(respObj.toString());
             }
             else if(msgObj.getString("requestType").equals("joinRoom")) {
-                int id = msgObj.getInt("id");
+                int id = msgObj.getInt("roomID");
                 Room room = findRoomFromID(id);
 
                 JSONObject respObj = new JSONObject();
@@ -253,7 +266,7 @@ class QBitzServer {
                         if (room.getEntranceLevel() <= handler.getUser().getLevel()) {
                             respObj.put("result", 0);
 
-                            respObj.put("id", room.getId());
+                            respObj.put("roomID", room.getId());
                             respObj.put("name", room.getName());
                             respObj.put("gameMode", room.getGamemode());
                             respObj.put("players", room.getPlayers());
@@ -277,20 +290,32 @@ class QBitzServer {
                                 userList.put(userObj);
                             }
                             respObj.put("userList", userList);
+
+                            handler.sendMessage(respObj.toString());
+                            sendAnnouncementToOthers(room);
                         }
                         else {
                             respObj.put("result", 2);
+                            handler.sendMessage(respObj.toString());
                         }
                     }
                     else {
                         respObj.put("result", 1);
+                        handler.sendMessage(respObj.toString());
                     }
                 }
                 else {
                     respObj.put("result", 3);
+                    handler.sendMessage(respObj.toString());
                 }
+            }
+            else if (msgObj.getString("requestType").equals("exitRoom")) {
+                int roomID = msgObj.getInt("roomID");
+                Room room = findRoomFromID(roomID);
 
-                handler.sendMessage(respObj.toString());
+                room.getUsers().remove(handler);
+                room.setPlayers(room.getPlayers() - 1);
+
                 sendAnnouncementToOthers(room);
             }
         }
@@ -330,7 +355,7 @@ class QBitzServer {
 
     private void sendAnnouncementToOthers(Room room) {
         JSONObject json = new JSONObject();
-        json.put("responseType", "joinAnnouncement");
+        json.put("responseType", "userAnnouncement");
 
         JSONArray userList = new JSONArray();
 
@@ -355,5 +380,40 @@ class QBitzServer {
     private void populateRoomsFromDB() {
         rooms = db.getRoomList();
         System.out.println("Game rooms are populated from DB.");
+    }
+
+    private String getRandomImage(int size) {
+        String encodedImage = "";
+        try {
+            URL url = new URL("https://picsum.photos/" + size + "/" + size + "/?random");
+            BufferedImage image = ImageIO.read(url);
+
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            ImageIO.write(image, "jpg", baos);
+
+            byte[] imgArray = baos.toByteArray();
+
+            encodedImage = Base64.getEncoder().encodeToString(imgArray);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return encodedImage;
+    }
+
+    public void onExit(ServerSocketHandler handler) {
+        for (Room room : rooms) {
+            for (ServerSocketHandler userHandler : room.getUsers()) {
+                if (userHandler == handler) {
+                    room.getUsers().remove(handler);
+                }
+            }
+        }
+
+        System.out.println("QBitzApplication exit!");
+    }
+
+    public void onConnect(ServerSocketHandler handler) {
+        System.out.println("QBitzApplication connected: " + handler.getConnectionIP());
     }
 }
