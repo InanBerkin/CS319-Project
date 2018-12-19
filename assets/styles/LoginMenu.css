@@ -4,6 +4,10 @@ Button{
     -fx-background-color: -secondary;
 }
 
+TextField{
+    -fx-pref-width: 200;
+}
+
 #RegisterButton{
     -fx-background-color: -primary;
 }
@@ -13,15 +17,13 @@ Button:hover{
 }
 
 GridPane{
-    -fx-background-color: #112F41;
+    -fx-background-color: -backgroundDark;
 }
 
 Label{
-    -fx-font-family: "Light-45", "Helvetica Neue", "Helvetica", Arial, sans-serif;
     -fx-text-fill: #ffffff;
 }
 
 
-AnchorPane{
-    -fx-background-color: -dark;
-}
+
+

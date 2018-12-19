@@ -6,33 +6,12 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<GridPane xmlns="http://javafx.com/javafx"
+<GridPane fx:id="background" xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
             fx:controller="client.RoomLobbyMenu.RoomLobbyMenuController"
             stylesheets="@/styles/RoomLobbyMenu.css">
     <GridPane fx:id="playersGridPane" GridPane.rowIndex="1" GridPane.columnIndex="1">
-        <HBox GridPane.rowIndex="0" GridPane.columnIndex="0" alignment="CENTER_LEFT">
-            <Label>
-                User0
-            </Label>
-        </HBox>
-        <HBox GridPane.rowIndex="1" GridPane.columnIndex="0" alignment="CENTER_LEFT">
-            <Label>
-                User0
-            </Label>
-        </HBox>
-        <HBox GridPane.rowIndex="2" GridPane.columnIndex="0" alignment="CENTER_LEFT">
-            <Label>
-                User0
-            </Label>
-        </HBox>
-        <HBox GridPane.rowIndex="3" GridPane.columnIndex="0" alignment="CENTER_LEFT">
-            <Label>
-                User0
-            </Label>
-        </HBox>
-
-
+        <!--Users-->
         <columnConstraints>
             <ColumnConstraints percentWidth="50.0" />
             <ColumnConstraints percentWidth="50.0" />
@@ -45,8 +24,7 @@
         </rowConstraints>
     </GridPane>
 
-
-
+    <Button GridPane.rowIndex="2" GridPane.columnIndex="0" styleClass="return-button" onAction="#goBack">Return</Button>
     <columnConstraints>
         <!-- Space -->
         <ColumnConstraints percentWidth="20.0" />
