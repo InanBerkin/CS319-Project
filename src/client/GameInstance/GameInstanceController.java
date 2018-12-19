@@ -9,6 +9,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.*;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
@@ -87,8 +88,8 @@ public class GameInstanceController extends MenuController {
         patternGroup.translateYProperty().set(HEIGHT/2);
         patternGroup.translateZProperty().set(0);
 
-        boardGroup.translateXProperty().set((WIDTH)*0.25);
-        boardGroup.translateYProperty().set((HEIGHT)/2);
+        boardGroup.translateXProperty().set((WIDTH)/32);
+        boardGroup.translateYProperty().set((HEIGHT)/32);
         boardGroup.translateZProperty().set(0);
 
         Group mainGroup = new Group();
@@ -167,7 +168,9 @@ public class GameInstanceController extends MenuController {
 
         highlighter.updateInFront();
 
-       // buildAxes();
+
+
+        // buildAxes();
     }
 
     private void buildAxes() {
@@ -329,6 +332,7 @@ public class GameInstanceController extends MenuController {
                 highlighter.highlight();
 
             } else if (event.getCode() == KeyCode.SPACE) {
+                board.setSelectedFaceMat(rect[highlighter.getSelectedFace()].getFaceImage());
                 System.out.println("Face: " + highlighter.getSelectedFace());
             }
         });
