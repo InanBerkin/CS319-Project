@@ -1,12 +1,17 @@
 package client.GameInstance;
 
+import javafx.embed.swing.SwingFXUtils;
 import javafx.scene.Group;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.paint.PhongMaterial;
 import javafx.scene.shape.Box;
 import javafx.scene.transform.Rotate;
 import javafx.scene.transform.Transform;
 
+
+import java.awt.image.BufferedImage;
+import java.awt.image.Raster;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 
@@ -71,6 +76,41 @@ public class Pattern {
         }
         System.out.println(boardGroupInst);
         return boardGroupInst;
+    }
+
+    public boolean checkPattern(ImageView[] boardImages, ImageView[] patternImages){
+
+        if( boardImages.length != patternImages.length)
+            return false;
+
+
+        for( int i = 0 ; i <  boardImages.length && i < patternImages.length; i++ ) {
+
+            BufferedImage boardImage = SwingFXUtils.fromFXImage(boardImages[i].snapshot(null, null), null);
+            BufferedImage patternImage = SwingFXUtils.fromFXImage(patternImages[i].snapshot(null, null), null);
+
+            Raster rasterBoard = boardImage.getRaster();
+            Raster rasterPattern = patternImage.getRaster();
+
+
+            for (int x = 0; x < boardImage.getWidth() && x < patternImage.getWidth(); x++) {
+                for (int y = 0; y < boardImage.getHeight() && y < patternImage.getHeight(); y++) {
+                    int boardR = rasterBoard.getSample(x, y, 0);
+                    int boardG = rasterBoard.getSample(x, y, 1);
+                    int boardB = rasterBoard.getSample(x, y, 2);
+
+                    int patternR = rasterPattern.getSample(x, y, 0);
+                    int patternG = rasterPattern.getSample(x, y, 1);
+                    int patternB = rasterPattern.getSample(x, y, 2);
+
+
+                    if (boardR != patternR || boardG != patternG || boardB != patternB)
+                        return false;
+                }
+            }
+        }
+                return true;
+
     }
     public void setMatQuestMark()
     {

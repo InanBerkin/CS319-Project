@@ -9,6 +9,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.*;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
@@ -83,17 +84,18 @@ public class GameInstanceController extends MenuController {
         Group boardGroup = board.createBoardGroup();
         Group patternGroup = pattern.createPatternGroup();
 
-        patternGroup.translateXProperty().set((WIDTH)*0.70);
-        patternGroup.translateYProperty().set(HEIGHT/2);
+        patternGroup.setTranslateX(patternGroup.getTranslateX()+WIDTH/5);
         patternGroup.translateZProperty().set(0);
 
-        boardGroup.translateXProperty().set((WIDTH)*0.25);
-        boardGroup.translateYProperty().set((HEIGHT)/2);
+
         boardGroup.translateZProperty().set(0);
+        boardGroup.getTransforms().add(new Rotate(-40, Rotate.X_AXIS));
+        //boardGroup.getTransforms().add(new Rotate(-15, Rotate.Y_AXIS));
+        boardGroup.setTranslateX(boardGroup.getTranslateX()-WIDTH/5);
 
         Group mainGroup = new Group();
-        mainGroup.getChildren().add(boardGroup);
-        mainGroup.getChildren().add(patternGroup);
+        mainGroup.getChildren().addAll(boardGroup,patternGroup);
+
 
 
         SubScene scene = new SubScene(root, 200, 500, true, SceneAntialiasing.BALANCED);
@@ -135,6 +137,7 @@ public class GameInstanceController extends MenuController {
 //        cameraHolderBoard.rotate(CAMERA_INITIAL_Y_ANGLE, Rotate.Y_AXIS);
 
         mainGroup.getChildren().add(cameraHolderBoard);
+
     }
 
     private void buildBody() throws Exception {
@@ -161,13 +164,18 @@ public class GameInstanceController extends MenuController {
         rect[4].setRotate(90);
 
         cube.getChildren().addAll(rect[0], rect[1], rect[2], rect[3], rect[4], rect[5]);
+
         root.getChildren().add(cube);
+
+
 
         highlighter = new Highlighter(rect);
 
         highlighter.updateInFront();
 
-       // buildAxes();
+
+
+        // buildAxes();
     }
 
     private void buildAxes() {
@@ -329,6 +337,7 @@ public class GameInstanceController extends MenuController {
                 highlighter.highlight();
 
             } else if (event.getCode() == KeyCode.SPACE) {
+                board.setSelectedFaceMat(rect[highlighter.getSelectedFace()].getFaceImage());
                 System.out.println("Face: " + highlighter.getSelectedFace());
             }
         });

@@ -291,6 +291,7 @@ class QBitzServer {
                 }
 
                 handler.sendMessage(respObj.toString());
+                sendAnnouncementToOthers(room);
             }
         }
     }
@@ -325,6 +326,30 @@ class QBitzServer {
         }
 
         return null;
+    }
+
+    private void sendAnnouncementToOthers(Room room) {
+        JSONObject json = new JSONObject();
+        json.put("responseType", "joinAnnouncement");
+
+        JSONArray userList = new JSONArray();
+
+        for (ServerSocketHandler userHandler : room.getUsers()) {
+            User user = userHandler.getUser();
+
+            JSONObject userObj = new JSONObject();
+            userObj.put("name", user.getUsername());
+            userObj.put("id", user.getId());
+            userObj.put("level", user.getLevel());
+
+            userList.put(userObj);
+        }
+
+        json.put("userList", userList);
+
+        for (ServerSocketHandler userHandler : room.getUsers()) {
+            userHandler.sendMessage(json.toString());
+        }
     }
 
     private void populateRoomsFromDB() {

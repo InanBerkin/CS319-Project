@@ -3,6 +3,7 @@ package client.GameInstance;
 
 import javafx.scene.Group;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.PhongMaterial;
@@ -14,7 +15,7 @@ import java.io.FileInputStream;
 public class GameBoard {
 
 
-    private static final int BOARD_LENGTH = 400;
+    private static final int BOARD_LENGTH = 200;
     private static final int BOARD_DEPTH = 5;
     private static final int BOARD_WIDTH = 5;
     private static int gridDimension;
@@ -24,9 +25,7 @@ public class GameBoard {
     private static PhongMaterial selectedFaceMat;
     private static Group boardGroup;
     private static Boolean[] statusOfGridCells;
-    private static int[][] faceStates;
-    private static int filledFaces = 0;
-    private static int faceName = 0;
+    private static ImageView[] boardImageViews;
 
     public GameBoard(int gridDimension)
     {
@@ -35,11 +34,11 @@ public class GameBoard {
 
         statusOfGridCells = new Boolean[gridDimension*gridDimension];
 
-        faceStates = new int[gridDimension*gridDimension][2];
+        boardImageViews = new ImageView[gridDimension*gridDimension];
 
         mainMat = new PhongMaterial();
         try {
-            mainMat.setDiffuseMap(new Image(new FileInputStream("assets/CubeFaces/2.jpg")));
+            mainMat.setDiffuseMap(new Image(new FileInputStream("assets/Asset 3@2x-100.jpg")));
         }
         catch (Exception e){
             System.out.println("No file ");
@@ -76,10 +75,11 @@ public class GameBoard {
         Group boardGroupInst = new Group();
 
         Box mainBoard = new Box(BOARD_LENGTH, BOARD_LENGTH, BOARD_DEPTH );
-        Box frameRight = new Box(BOARD_WIDTH, BOARD_LENGTH + 20, BOARD_DEPTH + 10);
-        Box frameLeft = new Box(BOARD_WIDTH, BOARD_LENGTH + 20, BOARD_DEPTH + 10);
-        Box frameTop = new Box(BOARD_LENGTH + 20, BOARD_WIDTH, BOARD_DEPTH + 10);
-        Box frameBottom = new Box(BOARD_LENGTH + 20, BOARD_WIDTH, BOARD_DEPTH + 10);
+        Box frameRight = new Box(BOARD_WIDTH, BOARD_LENGTH + 10, BOARD_DEPTH + 10);
+        Box frameLeft = new Box(BOARD_WIDTH, BOARD_LENGTH + 10, BOARD_DEPTH + 10);
+        Box frameTop = new Box(BOARD_LENGTH + 10, BOARD_WIDTH, BOARD_DEPTH + 10);
+        Box frameBottom = new Box(BOARD_LENGTH + 10, BOARD_WIDTH, BOARD_DEPTH + 10);
+
 
         Box[] gridCell = new Box[(gridDimension) * (gridDimension)];
 
@@ -117,31 +117,12 @@ public class GameBoard {
                 gridCell[gridIndex] = new Box(BOARD_LENGTH / gridDimension, BOARD_LENGTH / gridDimension, BOARD_DEPTH + 10);
                 gridCell[gridIndex].setId(Integer.toString(gridIndex));
                 gridCell[gridIndex].setMaterial(mainMat);
-
+                boardImageViews[gridIndex] = new ImageView();
+                boardImageViews[gridIndex].setImage(mainMat.getDiffuseMap());
 
                 placeAndRotate(gridCell[gridIndex]);
 
-                /*gridCell[gridIndex].setOnMouseEntered(event -> {
-                    int cellId = Integer.parseInt(event.getPickResult().getIntersectedNode().getId());
-                    if(previewMat.getDiffuseMap() != mainMat.getDiffuseMap())
-                        previewMat.setDiffuseColor(new Color(0.5,0.5,0.5,0.8));
-                    else
-                        previewMat.setDiffuseColor(new Color(1,1,1,1));
-                    for(int r = 0; r < gridDimension*gridDimension; r++)
-                    {
-                        if(r != cellId) {
-                            if (gridCell[r].getMaterial() == previewMat) {
-                                gridCell[r].setMaterial(mainMat);
-                            }
-                        }
-                        else {
-                            if(gridCell[r].getMaterial() == mainMat){
 
-                                gridCell[r].setMaterial(previewMat);
-                            }
-                        }
-                    }
-                });*/
                 previewSelectedFace(gridCell,gridIndex);
                 gridCell[gridIndex].translateXProperty().set(((BOARD_LENGTH / gridDimension) * (j + 0.5)) + (-BOARD_LENGTH / 2));
                 gridCell[gridIndex].translateYProperty().set(((BOARD_LENGTH / gridDimension) * (i + 0.5)) + (-BOARD_LENGTH / 2));
@@ -155,35 +136,32 @@ public class GameBoard {
             int cellId = Integer.parseInt(event.getPickResult().getIntersectedNode().getId());
 
             if(event.getButton() == MouseButton.PRIMARY) {
+
                 if (!statusOfGridCells[cellId]&& selectedFaceMat.getDiffuseMap() != mainMat.getDiffuseMap()) {
                     PhongMaterial tmp = new PhongMaterial();
                     tmp.setDiffuseMap(selectedFaceMat.getDiffuseMap());
-                    faceStates[cellId][0] = faceName;
-                    faceStates[cellId][1] = 0;
+
+                    boardImageViews[cellId].setImage(selectedFaceMat.getDiffuseMap());
+
                     gridCell.setMaterial(tmp);
                     selectedFaceMat.setDiffuseMap(mainMat.getDiffuseMap());
-                    filledFaces++;
+
                     previewMat.setDiffuseMap(mainMat.getDiffuseMap());
                     statusOfGridCells[cellId] = Boolean.TRUE;
-                    for(int m = 0; m < gridDimension*gridDimension; m++)
-                    {
-                        System.out.println("face name: " + faceStates[m][0]);
-                        System.out.println("face state: " + faceStates[m][1]);
-                    }
                 } else {
                     statusOfGridCells[cellId] = Boolean.FALSE;
                     gridCell.setMaterial(mainMat);
-                    faceStates[cellId][0] = 0;
-                    faceStates[cellId][1] = 0;
-                    filledFaces--;
+
+
+
                 }
             }
             else if( event.getButton() == MouseButton.SECONDARY)
             {
                 System.out.println("right");
                 if (statusOfGridCells[cellId]) {
-                    faceStates[cellId][1] = (faceStates[cellId][1] + 1)%4;
-                    System.out.println(faceStates[cellId][1]);
+
+                    boardImageViews[cellId].setRotate((boardImageViews[cellId].getRotate() + 90)%360);
 
                     gridCell.getTransforms().add(new Rotate(90, Rotate.Z_AXIS));
                 }
@@ -209,24 +187,18 @@ public class GameBoard {
                     if(gridCell[r].getMaterial() == mainMat){
 
                         gridCell[r].setMaterial(previewMat);
+
                     }
                 }
             }
         });
     }
-    public void setSelectedFaceMat( int faceName)
+    public void setSelectedFaceMat( Image selectedFace)
     {
-        this.faceName = faceName;
-        selectedFaceMat.setDiffuseMap(new Image(getClass().getResourceAsStream(Integer.toString(faceName) + ".jpg")));
-        previewMat.setDiffuseMap(selectedFaceMat.getDiffuseMap());
+
+        selectedFaceMat.setDiffuseMap(selectedFace);
+        previewMat.setDiffuseMap(selectedFace);
     }
 
 
-    public static int[][] getFaceStates() {
-        return faceStates;
-    }
-
-    public static int getFilledFaces() {
-        return filledFaces;
-    }
 }
