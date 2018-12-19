@@ -36,7 +36,6 @@ public class XRectangle extends Rectangle {
         this.imgUrl = imgUrl;
         this.faceImage = new Image(new FileInputStream(imgUrl),SIZE,SIZE,true,false);
         this.faceImagePad = addBorders(this.faceImage);
-        System.out.println(faceImagePad.getHeight());
         setFill(new ImagePattern(faceImagePad));
 
         setHeight(size);
