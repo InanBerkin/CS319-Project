@@ -21,7 +21,7 @@
          <Button id="multiplayerButton" onAction="#gotoLogin" text="Multiplayer"/>
          <Button id="singleplayerButton" onAction="#gotoSingleplayerMenu" text="Singleplayer"/>
          <Button id="howtoplayButton" text="How To Play"/>
-         <Button id="optionsButton" text="Options"/>
+         <Button id="optionsButton" onAction="#gotoOptionsMenu" text="Options"/>
          <padding>
             <Insets left="30.0" right="30.0" />
          </padding>

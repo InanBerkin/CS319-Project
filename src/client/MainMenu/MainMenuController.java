@@ -19,6 +19,7 @@ import javafx.scene.shape.Circle;
 import javafx.stage.Popup;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import org.json.JSONObject;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -40,6 +41,10 @@ public class MainMenuController extends MenuController {
     @FXML
     public void gotoSingleplayerMenu(){
         QBitzApplication.getSceneController().changeScene("SingleplayerMenu");
+    }
+
+    public void gotoOptionsMenu(){
+        QBitzApplication.getSceneController().changeScene("OptionsMenu");
     }
 
     public void gotoLogin(){

@@ -2,6 +2,7 @@ package client.SingleplayerMenu;
 
 import client.MenuController;
 import client.QBitzApplication;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import netscape.javascript.JSObject;

@@ -1,0 +1,9 @@
+@import "Main.css";
+
+Label{
+    -fx-font-size: 30;
+}
+
+GridPane{
+    -fx-background-color: -backgroundDark;
+}
