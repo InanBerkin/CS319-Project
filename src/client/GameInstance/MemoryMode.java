@@ -2,6 +2,8 @@ package client.GameInstance;
 
 import client.MenuController;
 import javafx.application.Platform;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.*;
@@ -19,6 +21,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+import client.ImageRecreation.ImageRecreation;
 import javafx.scene.control.Button;
 
 public class MemoryMode extends MenuController implements TimerSignable {
@@ -52,17 +55,27 @@ public class MemoryMode extends MenuController implements TimerSignable {
     private static final double CAMERA_FAR_CLIP = 10000.0;
     private static final double KEY_ROTATION_STEP = 9;
 
+
+    private static final int WIDTH = 1200;
+    private static final int HEIGHT = 800;
     private int gridDimension;
 
-    private Cube cube;
-    private XGroup cameraHolder = new XGroup();
-    private PerspectiveCamera camera = new PerspectiveCamera(true);
 
-    private XGroup cameraHolderBoard = new XGroup();
-    private PerspectiveCamera cameraBoard = new PerspectiveCamera(true);
+    Cube cube;
+    final XGroup cameraHolder = new XGroup();
+    final PerspectiveCamera camera = new PerspectiveCamera(true);
 
-    private XGroup cameraHolderPattern = new XGroup();
-    private PerspectiveCamera cameraPattern = new PerspectiveCamera(true);
+    final XGroup cameraHolderBoard = new XGroup();
+    final PerspectiveCamera cameraBoard = new PerspectiveCamera(true);
+
+    final XGroup cameraHolderPattern = new XGroup();
+    final PerspectiveCamera cameraPattern = new PerspectiveCamera(true);
+
+    final BooleanProperty isRotating = new SimpleBooleanProperty(false);
+
+    private XRectangle[] rect;
+
+    private Highlighter highlighter;
 
     private GameTimer gameTimer;
 
@@ -73,12 +86,16 @@ public class MemoryMode extends MenuController implements TimerSignable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+
+
+
         try {
             cube = new Cube(200, KEY_ROTATION_STEP, 0, 0, 0);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
-        gameTimer = new GameTimer(this, timerLabelMemory);
+        gameTimer = new GameTimer(this);
+        gameTimer.setGameLabel(timerLabelMemory);
 
         root.setDepthTest(DepthTest.ENABLE);
         buildCamera();
@@ -102,7 +119,9 @@ public class MemoryMode extends MenuController implements TimerSignable {
             boardGroup = board.createBoardGroup();
             patternGroup = pattern.createPatternGroup();
 
+
             patternGroup.translateZProperty().set(0);
+
 
             boardGroup.translateZProperty().set(0);
 
@@ -124,6 +143,10 @@ public class MemoryMode extends MenuController implements TimerSignable {
             sceneHboxMemory.setSpacing(40);
             sceneHboxMemory.setAlignment(Pos.CENTER);
             sceneHboxMemory.getChildren().addAll(cubeScene, boardScene, patternScene);
+
+
+
+            handleKeys(vBoxMemory);
         });
     }
 
@@ -138,6 +161,7 @@ public class MemoryMode extends MenuController implements TimerSignable {
 
         root.getChildren().add(cameraHolder);
 
+
         cameraBoard.setNearClip(CAMERA_NEAR_CLIP);
         cameraBoard.setFarClip(CAMERA_FAR_CLIP);
         cameraBoard.setTranslateZ(CAMERA_INITIAL_DISTANCE);
@@ -146,6 +170,7 @@ public class MemoryMode extends MenuController implements TimerSignable {
 
         boardGroup.getChildren().add(cameraHolderBoard);
 
+
         cameraPattern.setNearClip(CAMERA_NEAR_CLIP);
         cameraPattern.setFarClip(CAMERA_FAR_CLIP);
         cameraPattern.setTranslateZ(CAMERA_INITIAL_DISTANCE);
@@ -153,12 +178,15 @@ public class MemoryMode extends MenuController implements TimerSignable {
         cameraHolderPattern.getChildren().add(cameraPattern);
 
         patternGroup.getChildren().add(cameraHolderPattern);
+
     }
 
     private void buildBody()  {
         root.getChildren().add(cube);
         cube.updateFrontFaces();
+
     }
+
 
     private void handleKeys(VBox vBox) {
         vBox.addEventFilter(KeyEvent.KEY_PRESSED, event-> {
@@ -181,27 +209,34 @@ public class MemoryMode extends MenuController implements TimerSignable {
         });
     }
 
+
+
+    public void foo() {
+        System.out.println("Is pattern correct? : " + pattern.checkPattern(board.getBoardImageViews()));
+        System.out.println("Submit Button!");
+    }
+
     @Override
     public void timerStopped() {
-        handleKeys(vBoxMemory);
-
-            try {
-            pattern.setMatQuestMark();
+        System.out.println("time stopped");
+        try {
+            this.pattern.setMatQuestMark();
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-        gameTimer = new GameTimer(this, timerLabelMemory);
-        gameTimer.startTimer();
+        this.gameTimer.startTimer();
     }
 
-    public int memoryTime(int dimension) {
+    public int memoryTime(int dimension ){
+
         if (dimension == 3)
             return 5;
-        else if (dimension == 4 )
+        else if (dimension == 4 ) {
             return 15;
+        }
         else
             return 30;
+
     }
     @FXML
     public boolean startShowPattern(){
