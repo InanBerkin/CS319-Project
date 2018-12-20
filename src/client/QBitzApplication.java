@@ -4,7 +4,6 @@ import client.SceneController.SceneController;
 import javafx.application.Application;
 import javafx.scene.input.KeyCombination;
 import javafx.stage.Stage;
-import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.logging.Level;
@@ -37,6 +36,7 @@ public class QBitzApplication extends Application {
                 }
                 catch (IOException e) {
                     System.out.println("» Server is unreachable.");
+                    UserConfiguration.isOnline = false;
                 }
             }
             sceneController.changeScene("SingleplayerMenu");

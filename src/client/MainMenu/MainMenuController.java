@@ -43,7 +43,6 @@ public class MainMenuController extends MenuController {
     }
 
     public void gotoLogin(){
-        QBitzApplication.getSceneController().changeScene("RoomMenu");
         if (UserConfiguration.isOnline){
             if(UserConfiguration.isLoggedIn){
                 QBitzApplication.getSceneController().changeScene("RoomMenu");
