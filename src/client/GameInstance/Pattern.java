@@ -17,7 +17,7 @@ import java.io.FileNotFoundException;
 
 public class Pattern {
 
-    private static final int BOARD_LENGTH = 200;
+    private static final int BOARD_LENGTH = 500;
     private static final int BOARD_DEPTH = 5;
     private static final int BOARD_WIDTH = 5;
     private static final int SIZE = 128;
@@ -54,7 +54,6 @@ public class Pattern {
         int gridIndex;
 
         gridMatrix = (new PatternGenerator(gridDimension)).generatePattern(false);
-
 
 
         for (int i = 0; i < gridDimension; i++) {

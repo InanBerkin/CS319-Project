@@ -6,12 +6,15 @@ import javafx.application.Platform;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.fxml.FXML;
+import javafx.geometry.Pos;
 import javafx.scene.*;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.PhongMaterial;
 import javafx.scene.shape.Sphere;
@@ -26,10 +29,14 @@ import java.util.ResourceBundle;
 public class GameInstanceController extends MenuController implements TimerSignable {
 
     private final Group root = new Group();
-    private final Group mainGroup = new Group();
+    private Group boardGroup = new Group();
+    private Group patternGroup = new Group();
 
     @FXML
-    private GridPane gridPane;
+    private VBox vBox;
+
+    @FXML
+    private HBox sceneHbox;
 
     @FXML
     private Label timerLabel;
@@ -42,6 +49,7 @@ public class GameInstanceController extends MenuController implements TimerSigna
     private static final double CAMERA_INITIAL_Y_ANGLE = 60.0;
     private static final double CAMERA_NEAR_CLIP = 0.1;
     private static final double CAMERA_FAR_CLIP = 10000.0;
+    private static final double KEY_ROTATION_STEP = 9;
     private static ImageRecreation imageRecreation = null;
 
     private static final int WIDTH = 1200;
@@ -55,6 +63,9 @@ public class GameInstanceController extends MenuController implements TimerSigna
 
     final XGroup cameraHolderBoard = new XGroup();
     final PerspectiveCamera cameraBoard = new PerspectiveCamera(true);
+
+    final XGroup cameraHolderPattern = new XGroup();
+    final PerspectiveCamera cameraPattern = new PerspectiveCamera(true);
 
     final BooleanProperty isRotating = new SimpleBooleanProperty(false);
 
@@ -72,7 +83,7 @@ public class GameInstanceController extends MenuController implements TimerSigna
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         try {
-            cube = new Cube(100, 4.5, 0, 0, 0);
+            cube = new Cube(200, KEY_ROTATION_STEP, 0, 0, 0);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
@@ -104,40 +115,39 @@ public class GameInstanceController extends MenuController implements TimerSigna
             }
 
 
-            Group boardGroup = board.createBoardGroup();
-            Group patternGroup = pattern.createPatternGroup();
+            boardGroup = board.createBoardGroup();
+            patternGroup = pattern.createPatternGroup();
 
-            patternGroup.setTranslateX(patternGroup.getTranslateX()+ WIDTH/5);
+//            patternGroup.setTranslateX(patternGroup.getTranslateX() + WIDTH/8);
             patternGroup.translateZProperty().set(0);
 
-
+//            patternGroup.setTranslateX(patternGroup.getTranslateX() - WIDTH/8);
             boardGroup.translateZProperty().set(0);
-            boardGroup.getTransforms().add(new Rotate(-40, Rotate.X_AXIS));
 
-            boardGroup.setTranslateX(boardGroup.getTranslateX()-WIDTH/5);
             boardGroup.getChildren().add(new AmbientLight());
+            patternGroup.getChildren().add(new AmbientLight());
 
-            Group mainGroup = new Group();
-            mainGroup.getChildren().addAll(boardGroup,patternGroup);
+            SubScene cubeScene = new SubScene(root, 400, 400, true, SceneAntialiasing.BALANCED);
+            cubeScene.setCamera(camera);
+            cubeScene.setFill(Color.SPRINGGREEN);
 
-
-
-
-            SubScene scene = new SubScene(root, 200, 500, true, SceneAntialiasing.BALANCED);
-            scene.setCamera(camera);
-            scene.setFill(Color.WHITE);
-
-            SubScene boardScene = new SubScene(mainGroup, WIDTH, HEIGHT , true, SceneAntialiasing.BALANCED);
+            SubScene boardScene = new SubScene(boardGroup, 400, 400 , true, SceneAntialiasing.BALANCED);
             boardScene.setCamera(cameraBoard);
             boardScene.setFill(Color.WHITE);
 
-            gridPane.add(scene, 0,2);
-            gridPane.add(boardScene, 1, 2);
+            SubScene patternScene = new SubScene(patternGroup, 400, 400 , true, SceneAntialiasing.BALANCED);
+            patternScene.setCamera(cameraPattern);
+            patternScene.setFill(Color.WHITE);
+
+            sceneHbox.setSpacing(40);
+            sceneHbox.setAlignment(Pos.CENTER);
+            sceneHbox.getChildren().addAll(cubeScene, boardScene, patternScene);
+
             gameTimer = new GameTimer(this);
             gameTimer.setGameLabel(timerLabel);
             gameTimer.startTimer();
 
-            handleKeys(gridPane);
+            handleKeys(vBox);
         });
     }
 
@@ -147,11 +157,11 @@ public class GameInstanceController extends MenuController implements TimerSigna
         camera.setTranslateZ(CAMERA_INITIAL_DISTANCE);
 
         cameraHolder.getChildren().add(camera);
-
         cameraHolder.rotate(CAMERA_INITIAL_X_ANGLE, Rotate.X_AXIS);
         cameraHolder.rotate(CAMERA_INITIAL_Y_ANGLE, Rotate.Y_AXIS);
 
         root.getChildren().add(cameraHolder);
+
 
         cameraBoard.setNearClip(CAMERA_NEAR_CLIP);
         cameraBoard.setFarClip(CAMERA_FAR_CLIP);
@@ -159,8 +169,16 @@ public class GameInstanceController extends MenuController implements TimerSigna
 
         cameraHolderBoard.getChildren().add(cameraBoard);
 
+        boardGroup.getChildren().add(cameraHolderBoard);
 
-        mainGroup.getChildren().add(cameraHolderBoard);
+
+        cameraPattern.setNearClip(CAMERA_NEAR_CLIP);
+        cameraPattern.setFarClip(CAMERA_FAR_CLIP);
+        cameraPattern.setTranslateZ(CAMERA_INITIAL_DISTANCE);
+
+        cameraHolderPattern.getChildren().add(cameraPattern);
+
+        patternGroup.getChildren().add(cameraHolderPattern);
 
     }
 
@@ -213,8 +231,8 @@ public class GameInstanceController extends MenuController implements TimerSigna
         }
     }
 
-    private void handleKeys(GridPane gridPane) {
-        gridPane.addEventFilter(KeyEvent.KEY_PRESSED, event-> {
+    private void handleKeys(VBox vBox) {
+        vBox.addEventFilter(KeyEvent.KEY_PRESSED, event-> {
             event.consume();
             if (event.getCode() == KeyCode.W) {
                 cube.rotate1();
