@@ -71,10 +71,11 @@ public class Pattern {
                     String png = Integer.toString(gridMatrix[gridIndex][0]) + ".png";
 
                     try {
-                        gridMat[gridIndex].setDiffuseMap(new Image(new FileInputStream("assets/CubeFaces/" + png), SIZE, SIZE, true, false));
-                        gridCell[gridIndex].getTransforms().add(new Rotate(90*gridMatrix[gridIndex][1], Rotate.Z_AXIS));
-                        patternImageViews[gridIndex] = new ImageView(gridMat[gridIndex].getDiffuseMap());
+                        //gridMat[gridIndex].setDiffuseMap(new Image(new FileInputStream("assets/CubeFaces/" + png), SIZE, SIZE, true, false));
+                        //gridCell[gridIndex].getTransforms().add(new Rotate(90*gridMatrix[gridIndex][1], Rotate.Z_AXIS));
+                        patternImageViews[gridIndex] = new ImageView(new Image(new FileInputStream("assets/CubeFaces/" + png), SIZE, SIZE, true, false));
                         patternImageViews[gridIndex].setRotate( 90*gridMatrix[gridIndex][1]);
+                        gridMat[gridIndex].setDiffuseMap(patternImageViews[gridIndex].snapshot(null,null));
                     } catch (Exception e) {
                         System.out.println("File not found");
                     }
