@@ -18,13 +18,14 @@
         <Label GridPane.rowIndex="1" GridPane.columnIndex="0" text="Rotation Controls"/>
         <Label GridPane.rowIndex="2" GridPane.columnIndex="0" text="Cycle Selected Faces Left"/>
         <Label GridPane.rowIndex="3" GridPane.columnIndex="0" text="Cycle Selected Faces Right"/>
-        <Label GridPane.rowIndex="4" GridPane.columnIndex="0" text="Cycle Selected Faces Right"/>
+        <Label GridPane.rowIndex="4" GridPane.columnIndex="0" text="Cube Color"/>
 
         <Slider GridPane.rowIndex="0" GridPane.columnIndex="1" fx:id="soundSlider"/>
         <ComboBox GridPane.rowIndex="1" GridPane.columnIndex="1" fx:id="rotationComboBox"/>
-        <Button GridPane.rowIndex="2" GridPane.columnIndex="1" fx:id="cycleLeft"/>
-        <Button GridPane.rowIndex="3" GridPane.columnIndex="1" fx:id="cycleRight"/>
-        <TextField GridPane.rowIndex="4" GridPane.columnIndex="1" fx:id="colorSlider"/>
+        <Button GridPane.rowIndex="2" GridPane.columnIndex="1" onAction="#setLeftCycleBtn" fx:id="cycleLeft"/>
+        <Button GridPane.rowIndex="3" GridPane.columnIndex="1" onAction="#setRightCycleBtn" fx:id="cycleRight"/>
+        <Slider GridPane.rowIndex="4" GridPane.columnIndex="1" fx:id="colorSlider"/>
+
 
         <columnConstraints>
             <ColumnConstraints percentWidth="50.0" />
@@ -42,7 +43,7 @@
         </padding>
     </GridPane>
     <HBox GridPane.rowIndex="2" GridPane.columnIndex="1" alignment="CENTER">
-        <Button onAction="#applyOptions" HBox.hgrow="ALWAYS">Create Room</Button>
+        <Button onAction="#applyOptions" HBox.hgrow="ALWAYS">Apply</Button>
     </HBox>
     <Button GridPane.rowIndex="3" GridPane.columnIndex="0" styleClass="return-button" onAction="#gotoMainMenu">Return</Button>
     <columnConstraints>
