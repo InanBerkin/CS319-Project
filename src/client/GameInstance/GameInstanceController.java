@@ -12,7 +12,6 @@ import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
@@ -51,6 +50,7 @@ public class GameInstanceController extends MenuController implements TimerSigna
     private static final double CAMERA_FAR_CLIP = 10000.0;
     private static final double KEY_ROTATION_STEP = 9;
     private static ImageRecreation imageRecreation = null;
+    private static MemoryMode memoryMode = null ;
 
     private static final int WIDTH = 1200;
     private static final int HEIGHT = 800;
@@ -87,6 +87,9 @@ public class GameInstanceController extends MenuController implements TimerSigna
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
+        gameTimer = new GameTimer(this);
+        gameTimer.setGameLabel(timerLabel);
+        gameTimer.startTimer();
         gameTimer = new GameTimer(this, timerLabel);
         gameTimer.startTimer();
         root.setDepthTest(DepthTest.ENABLE);
@@ -100,6 +103,12 @@ public class GameInstanceController extends MenuController implements TimerSigna
             gridDimension = payload.getInt("boardSize");
             gameMode = payload.getInt("gameMode");
 
+//            if (gameMode == 2 ) {
+//                board = new GameBoard(gridDimension, null);
+//                pattern = new Pattern(gridDimension,null);
+//                memoryMode = new MemoryMode(gridDimension, gameTimer, pattern);
+//
+//            }
 
             if (gameMode == 1) {
                 try {
