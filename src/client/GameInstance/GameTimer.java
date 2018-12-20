@@ -67,7 +67,7 @@ public class GameTimer {
     }
 
     public void startTimer(long time) {
-        moveToTime(time);
+        moveToTime(time * 1000 );
         isTiming = true;
 
         timeline.getKeyFrames().add(
@@ -116,7 +116,11 @@ public class GameTimer {
     }
 
     public long getTime() {
-        return time;
+        return time / 1000 ;
+    }
+
+    public void setCallback(TimerSignable callback) {
+        this.callback = callback;
     }
 
     public SimpleStringProperty getGameTime() {
