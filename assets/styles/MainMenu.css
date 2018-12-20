@@ -12,7 +12,7 @@ Button {
 
 
 Button:hover{
-    -fx-background-color: -error;
+    -fx-background-color: -light;
 }
 
 #multiplayerButton{
