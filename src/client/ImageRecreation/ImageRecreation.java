@@ -1,14 +1,16 @@
 package client.ImageRecreation;
 
+import client.GameInstance.XRectangle;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.scene.image.Image;
+import javafx.scene.paint.ImagePattern;
 
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
 
-
+import java.io.FileInputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -17,13 +19,14 @@ import java.util.List;
 public class ImageRecreation
 {
 
-    private final int SIZE = 600;
+    private final int SIZE = 640;
 
     private Image img;
     private BufferedImage buffImg;
 
     private ArrayList<Image> imgParts;
     private BufferedImage[] buffImgParts;
+    private XRectangle[] cube;
 
 
     private int dimension;
@@ -31,10 +34,11 @@ public class ImageRecreation
     private List<Integer> remainingList;
 
 
-    public ImageRecreation(String img_path, int dimension ) throws java.io.IOException {
+    public ImageRecreation(String img_path, int dimension, XRectangle[] rect) throws java.io.IOException {
 
         //initialize values
-        this.img = new Image(getClass().getResourceAsStream(img_path), SIZE, SIZE, false, false);
+        this.img = new Image(new FileInputStream(img_path), SIZE, SIZE, false, false);
+        cube = rect;
         //dimension of image image parts
         this.dimension = dimension;
         //javafx.image.Image to BufferedImage to split parts
@@ -74,7 +78,14 @@ public class ImageRecreation
 
         return cubeFaces ;
     }
-
+    public void imageRec()
+    {
+        Image[] tmp = getCubeFaces();
+        for(int i = 0; i < 6; i++) {
+            cube[i].setFill(new ImagePattern(tmp[i]));
+            cube[i].setFaceImage(tmp[i]);
+        }
+    }
     public void addFace(Image newImg){
         if( this.imgParts.size() <= this.dimension * this.dimension  - 1 ){
             this.imgParts.add(newImg);
@@ -118,8 +129,6 @@ public class ImageRecreation
         return empty;
 
     }
-
-
 
 
     public ArrayList<Image> convertBuffToImage(BufferedImage[] images, int dimension ){

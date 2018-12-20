@@ -16,12 +16,13 @@ import javafx.scene.shape.Rectangle;
 
 public class XRectangle extends Rectangle {
 
-    public static final String IMG0_URL = "assets/CubeFaces/1NoBorder.jpg";
-    public static final String IMG1_URL = "assets/CubeFaces/2NoBorder.jpg";
-    public static final String IMG2_URL = "assets/CubeFaces/3NoBorder.jpg";
-    public static final String IMG3_URL = "assets/CubeFaces/4NoBorder.jpg";
-    public static final String IMG4_URL = "assets/CubeFaces/5NoBorder.jpg";
-    public static final String IMG5_URL = "assets/CubeFaces/6NoBorder.jpg";
+    public static final String IMG0_URL = "assets/CubeFaces/1.png";
+    public static final String IMG1_URL = "assets/CubeFaces/2.png";
+    public static final String IMG2_URL = "assets/CubeFaces/3.png";
+    public static final String IMG3_URL = "assets/CubeFaces/4.png";
+    public static final String IMG4_URL = "assets/CubeFaces/5.png";
+    public static final String IMG5_URL = "assets/CubeFaces/6.png";
+    private static final int SIZE = 128;
 
     private final String imgUrl;
     private final int id;
@@ -34,8 +35,7 @@ public class XRectangle extends Rectangle {
 
         this.id = id;
         this.imgUrl = imgUrl;
-        this.faceImage = new Image(new FileInputStream(imgUrl));
-        System.out.println(faceImage.getHeight());
+        this.faceImage = new Image(new FileInputStream(imgUrl),SIZE,SIZE,true,false);
         this.faceImagePad = addBorders(this.faceImage);
         System.out.println(faceImagePad.getHeight());
         setFill(new ImagePattern(faceImagePad));
@@ -47,8 +47,6 @@ public class XRectangle extends Rectangle {
         setTranslateY(posY);
         setTranslateZ(posZ);
     }
-
-
 
     public void hl(boolean isHL) throws FileNotFoundException {
         if (isHL) {
@@ -145,6 +143,12 @@ public class XRectangle extends Rectangle {
 
     public Image getFaceImage() {
         return this.faceImage;
+    }
+
+    public void setFaceImage(Image img){
+        this.faceImage = img;
+        this.faceImagePad = addBorders(this.faceImage);
+
     }
 
 }

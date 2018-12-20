@@ -1,34 +1,42 @@
 package client.GameInstance;
 
+import client.ImageRecreation.ImageRecreation;
 import client.MenuController;
-import javafx.animation.KeyFrame;
-import javafx.animation.Timeline;
+import javafx.application.Platform;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.geometry.Pos;
 import javafx.scene.*;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.PhongMaterial;
 import javafx.scene.shape.Sphere;
 import javafx.scene.transform.Rotate;
-import javafx.util.Duration;
+
+import java.io.FileNotFoundException;
+
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class GameInstanceController extends MenuController {
+public class GameInstanceController extends MenuController implements TimerSignable {
 
     private final Group root = new Group();
-    private final Group mainGroup = new Group();
+    private Group boardGroup = new Group();
+    private Group patternGroup = new Group();
 
     @FXML
-    private GridPane gridPane;
+    private VBox vBox;
+
+    @FXML
+    private HBox sceneHbox;
 
     @FXML
     private Label timerLabel;
@@ -41,18 +49,23 @@ public class GameInstanceController extends MenuController {
     private static final double CAMERA_INITIAL_Y_ANGLE = 60.0;
     private static final double CAMERA_NEAR_CLIP = 0.1;
     private static final double CAMERA_FAR_CLIP = 10000.0;
-    private static final double KEY_ROTATION_STEP = 4.5;
+    private static final double KEY_ROTATION_STEP = 9;
+    private static ImageRecreation imageRecreation = null;
 
     private static final int WIDTH = 1200;
     private static final int HEIGHT = 800;
-    private int gridDimension = 3;
+    private int gridDimension;
+    private int gameMode;
 
-    final XGroup cube = new XGroup();
+    Cube cube;
     final XGroup cameraHolder = new XGroup();
     final PerspectiveCamera camera = new PerspectiveCamera(true);
 
     final XGroup cameraHolderBoard = new XGroup();
     final PerspectiveCamera cameraBoard = new PerspectiveCamera(true);
+
+    final XGroup cameraHolderPattern = new XGroup();
+    final PerspectiveCamera cameraPattern = new PerspectiveCamera(true);
 
     final BooleanProperty isRotating = new SimpleBooleanProperty(false);
 
@@ -69,6 +82,12 @@ public class GameInstanceController extends MenuController {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        try {
+            cube = new Cube(200, KEY_ROTATION_STEP, 0, 0, 0);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+
         root.setDepthTest(DepthTest.ENABLE);
         buildCamera();
         try {
@@ -76,43 +95,60 @@ public class GameInstanceController extends MenuController {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        Platform.runLater(() -> {
+            gridDimension = payload.getInt("boardSize");
+            gameMode = payload.getInt("gameMode");
 
-        board = new GameBoard(gridDimension);
-        pattern = new Pattern(gridDimension);
-        //pattern.setMatQuestMark();
-
-        Group boardGroup = board.createBoardGroup();
-        Group patternGroup = pattern.createPatternGroup();
-
-        patternGroup.setTranslateX(patternGroup.getTranslateX()+WIDTH/5);
-        patternGroup.translateZProperty().set(0);
-
-
-        boardGroup.translateZProperty().set(0);
-        boardGroup.getTransforms().add(new Rotate(-40, Rotate.X_AXIS));
-        //boardGroup.getTransforms().add(new Rotate(-15, Rotate.Y_AXIS));
-        boardGroup.setTranslateX(boardGroup.getTranslateX()-WIDTH/5);
-
-        Group mainGroup = new Group();
-        mainGroup.getChildren().addAll(boardGroup,patternGroup);
-
+            if (gameMode == 1) {
+                try {
+                    imageRecreation = new ImageRecreation("assets/recImage.jpg", gridDimension, cube.getFaces());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                board = new GameBoard(gridDimension, imageRecreation);
+                pattern = new Pattern(gridDimension, imageRecreation.getImgParts().toArray(new Image[imageRecreation.getImgParts().size()]));
+                imageRecreation.imageRec();
+            }
+            else if (gameMode == 0) {
+                board = new GameBoard(gridDimension, null);
+                pattern = new Pattern(gridDimension,null);
+            }
 
 
-        SubScene scene = new SubScene(root, 200, 500, true, SceneAntialiasing.BALANCED);
-        scene.setCamera(camera);
-        scene.setFill(Color.WHITE);
+            boardGroup = board.createBoardGroup();
+            patternGroup = pattern.createPatternGroup();
 
-        SubScene boardScene = new SubScene(mainGroup, WIDTH, HEIGHT , true, SceneAntialiasing.BALANCED);
-        boardScene.setCamera(cameraBoard);
-        boardScene.setFill(Color.WHITE);
+//            patternGroup.setTranslateX(patternGroup.getTranslateX() + WIDTH/8);
+            patternGroup.translateZProperty().set(0);
 
-        gridPane.add(scene, 0,2);
-        gridPane.add(boardScene, 1, 2);
-        gameTimer = new GameTimer();
-        gameTimer.setGameLabel(timerLabel);
-        gameTimer.startTimer(0);
+//            patternGroup.setTranslateX(patternGroup.getTranslateX() - WIDTH/8);
+            boardGroup.translateZProperty().set(0);
 
-        handleKeys(gridPane);
+            boardGroup.getChildren().add(new AmbientLight());
+            patternGroup.getChildren().add(new AmbientLight());
+
+            SubScene cubeScene = new SubScene(root, 400, 400, true, SceneAntialiasing.BALANCED);
+            cubeScene.setCamera(camera);
+            cubeScene.setFill(Color.SPRINGGREEN);
+
+            SubScene boardScene = new SubScene(boardGroup, 400, 400 , true, SceneAntialiasing.BALANCED);
+            boardScene.setCamera(cameraBoard);
+            boardScene.setFill(Color.WHITE);
+
+            SubScene patternScene = new SubScene(patternGroup, 400, 400 , true, SceneAntialiasing.BALANCED);
+            patternScene.setCamera(cameraPattern);
+            patternScene.setFill(Color.WHITE);
+
+            sceneHbox.setSpacing(40);
+            sceneHbox.setAlignment(Pos.CENTER);
+            sceneHbox.getChildren().addAll(cubeScene, boardScene, patternScene);
+
+            gameTimer = new GameTimer(this);
+            gameTimer.setGameLabel(timerLabel);
+            gameTimer.startTimer();
+
+            handleKeys(vBox);
+        });
     }
 
     private void buildCamera() {
@@ -121,60 +157,34 @@ public class GameInstanceController extends MenuController {
         camera.setTranslateZ(CAMERA_INITIAL_DISTANCE);
 
         cameraHolder.getChildren().add(camera);
-
         cameraHolder.rotate(CAMERA_INITIAL_X_ANGLE, Rotate.X_AXIS);
         cameraHolder.rotate(CAMERA_INITIAL_Y_ANGLE, Rotate.Y_AXIS);
 
         root.getChildren().add(cameraHolder);
+
 
         cameraBoard.setNearClip(CAMERA_NEAR_CLIP);
         cameraBoard.setFarClip(CAMERA_FAR_CLIP);
         cameraBoard.setTranslateZ(CAMERA_INITIAL_DISTANCE);
 
         cameraHolderBoard.getChildren().add(cameraBoard);
-//
-//        cameraHolderBoard.rotate(CAMERA_INITIAL_X_ANGLE, Rotate.X_AXIS);
-//        cameraHolderBoard.rotate(CAMERA_INITIAL_Y_ANGLE, Rotate.Y_AXIS);
 
-        mainGroup.getChildren().add(cameraHolderBoard);
+        boardGroup.getChildren().add(cameraHolderBoard);
+
+
+        cameraPattern.setNearClip(CAMERA_NEAR_CLIP);
+        cameraPattern.setFarClip(CAMERA_FAR_CLIP);
+        cameraPattern.setTranslateZ(CAMERA_INITIAL_DISTANCE);
+
+        cameraHolderPattern.getChildren().add(cameraPattern);
+
+        patternGroup.getChildren().add(cameraHolderPattern);
 
     }
 
     private void buildBody() throws Exception {
-        double size = 100;
-
-        rect = new XRectangle[6];
-        rect[0] = new XRectangle(0, XRectangle.IMG0_URL, size, -0.5 * size, -0.5 * size, 0.5 * size);
-        rect[1] = new XRectangle(1, XRectangle.IMG1_URL, size, -0.5 * size, 0, 0);
-        rect[2] = new XRectangle(2, XRectangle.IMG2_URL, size, -1 * size, -0.5 * size, 0);
-        rect[3] = new XRectangle(3, XRectangle.IMG3_URL, size, 0, -0.5 * size, 0);
-        rect[4] = new XRectangle(4, XRectangle.IMG4_URL, size, -0.5 * size, -1 * size, 0);
-        rect[5] = new XRectangle(5, XRectangle.IMG5_URL, size, -0.5 * size, -0.5 * size, -0.5 * size);
-
-        rect[1].setRotationAxis(Rotate.X_AXIS);
-        rect[1].setRotate(90);
-
-        rect[2].setRotationAxis(Rotate.Y_AXIS);
-        rect[2].setRotate(90);
-
-        rect[3].setRotationAxis(Rotate.Y_AXIS);
-        rect[3].setRotate(90);
-
-        rect[4].setRotationAxis(Rotate.X_AXIS);
-        rect[4].setRotate(90);
-
-        cube.getChildren().addAll(rect[0], rect[1], rect[2], rect[3], rect[4], rect[5]);
-
         root.getChildren().add(cube);
-
-
-
-        highlighter = new Highlighter(rect);
-
-        highlighter.updateInFront();
-
-
-
+        cube.updateFrontFaces();
         // buildAxes();
     }
 
@@ -221,129 +231,34 @@ public class GameInstanceController extends MenuController {
         }
     }
 
-    private void handleKeys(GridPane gridPane) {
-        gridPane.addEventFilter(KeyEvent.KEY_PRESSED, event-> {
+    private void handleKeys(VBox vBox) {
+        vBox.addEventFilter(KeyEvent.KEY_PRESSED, event-> {
             event.consume();
             if (event.getCode() == KeyCode.W) {
-                if (!isRotating.get()) {
-                    isRotating.set(true);
-
-                    Timeline timeline = new Timeline();
-                    timeline.setCycleCount(Timeline.INDEFINITE);
-                    timeline.getKeyFrames().add(
-                            new KeyFrame(Duration.millis(10), new EventHandler<ActionEvent>() {
-                                double i = 0;
-
-                                @Override
-                                public void handle(ActionEvent event) {
-                                    if (i < 90) {
-                                        cube.rotate(KEY_ROTATION_STEP, Rotate.Z_AXIS);
-                                    } else {
-                                        timeline.stop();
-                                        isRotating.set(false);
-                                        highlighter.updateInFront();
-                                    }
-
-                                    i += KEY_ROTATION_STEP;
-                                }
-                            }));
-                    timeline.play();
-                }
-
+                cube.rotate1();
             } else if (event.getCode() == KeyCode.S) {
-                if (!isRotating.get()) {
-                    isRotating.set(true);
-
-                    Timeline timeline = new Timeline();
-                    timeline.setCycleCount(Timeline.INDEFINITE);
-                    timeline.getKeyFrames().add(
-                            new KeyFrame(Duration.millis(10), new EventHandler<ActionEvent>() {
-                                double i = 0;
-
-                                @Override
-                                public void handle(ActionEvent event) {
-                                    if (i < 90) {
-                                        cube.rotate(-KEY_ROTATION_STEP, Rotate.Z_AXIS);
-                                    } else {
-                                        timeline.stop();
-                                        isRotating.set(false);
-                                        highlighter.updateInFront();
-                                    }
-
-                                    i += KEY_ROTATION_STEP;
-                                }
-                            }));
-                    timeline.play();
-                }
-
+                cube.rotate2();
             } else if (event.getCode() == KeyCode.A) {
-                if (!isRotating.get()) {
-                    isRotating.set(true);
-                    Timeline timeline = new Timeline();
-                    timeline.setCycleCount(Timeline.INDEFINITE);
-                    timeline.getKeyFrames().add(
-                            new KeyFrame(Duration.millis(10), new EventHandler<ActionEvent>() {
-                                double i = 0;
-
-                                @Override
-                                public void handle(ActionEvent event) {
-                                    if (i < 90) {
-                                        cube.rotate(KEY_ROTATION_STEP, Rotate.Y_AXIS);
-                                    } else {
-                                        timeline.stop();
-                                        isRotating.set(false);
-                                        highlighter.updateInFront();
-                                    }
-
-                                    i += KEY_ROTATION_STEP;
-                                }
-
-                            }));
-                    timeline.play();
-                }
-
+                cube.rotate3();
             } else if (event.getCode() == KeyCode.D) {
-                if (!isRotating.get()) {
-                    isRotating.set(true);
-                    Timeline timeline = new Timeline();
-                    timeline.setCycleCount(Timeline.INDEFINITE);
-
-                    timeline.getKeyFrames().add(
-                            new KeyFrame(Duration.millis(10), new EventHandler<ActionEvent>() {
-                                double i = 0;
-
-                                @Override
-                                public void handle(ActionEvent event) {
-                                    if (i < 90) {
-                                        cube.rotate(-KEY_ROTATION_STEP, Rotate.Y_AXIS);
-                                    } else {
-                                        timeline.stop();
-                                        isRotating.set(false);
-                                        highlighter.updateInFront();
-                                    }
-                                    i += KEY_ROTATION_STEP;
-                                }
-
-                            }));
-                    timeline.play();
-                }
-
+                cube.rotate4();
             } else if (event.getCode() == KeyCode.Q) {
-                highlighter.changeHLIndex(false);
-                highlighter.highlight();
-
+               cube.highlight(Cube.BACKWARD);
             } else if (event.getCode() == KeyCode.E) {
-                highlighter.changeHLIndex(true);
-                highlighter.highlight();
-
+                cube.highlight(Cube.FORWARD);
             } else if (event.getCode() == KeyCode.SPACE) {
-                board.setSelectedFaceMat(rect[highlighter.getSelectedFace()].getFaceImage());
-                System.out.println("Face: " + highlighter.getSelectedFace());
+                board.setSelectedFaceMat(cube.selectFace());
             }
         });
     }
 
+    @Override
+    public void timerStopped() {
+
+    }
+
     public void foo() {
+        System.out.println("Is pattern correct? : " + pattern.checkPattern(board.getBoardImageViews()));
         System.out.println("Submit Button!");
     }
 

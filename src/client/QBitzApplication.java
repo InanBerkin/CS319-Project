@@ -39,7 +39,7 @@ public class QBitzApplication extends Application {
                     System.out.println("» Server is unreachable.");
                 }
             }
-            sceneController.changeScene("MainMenu");
+            sceneController.changeScene("SingleplayerMenu");
             primaryStage.show();
         } catch (Exception ex) {
             Logger.getLogger(QBitzApplication.class.getName()).log(Level.SEVERE, null, ex);

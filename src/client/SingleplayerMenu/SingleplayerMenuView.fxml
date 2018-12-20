@@ -15,25 +15,24 @@
         <HBox GridPane.rowIndex="0" GridPane.columnIndex="1" alignment="CENTER">
             <Label style="-fx-font-size: 80" alignment="CENTER" text="Singleplayer" textFill="WHITE"/>
         </HBox>
-        <VBox alignment="TOP_CENTER" spacing="20" GridPane.rowIndex="1" GridPane.columnIndex="1">
+        <VBox alignment="TOP_CENTER" spacing="30" GridPane.rowIndex="1" GridPane.columnIndex="1">
             <Label style="-fx-font-size: 40" alignment="CENTER" text="Time Attack" textFill="WHITE"/>
             <HBox spacing="60" alignment="CENTER">
-                <Button styleClass="easy" onAction="#startGame" text="3x3"
-                />
-                <Button styleClass="normal" text="4x4"/>
-                <Button styleClass="hard" text="5x5"/>
+                <Button fx:id="taEasy"   styleClass="easy" text="3x3"/>
+                <Button fx:id="taNormal" styleClass="normal" text="4x4"/>
+                <Button fx:id="taHard"   styleClass="hard" text="5x5"/>
             </HBox>
             <Label style="-fx-font-size: 40" alignment="CENTER" text="Image Recreation" textFill="WHITE"/>
             <HBox spacing="60" alignment="CENTER">
-                <Button styleClass="easy" text="3x3"/>
-                <Button styleClass="normal" text="4x4"/>
-                <Button styleClass="hard" text="5x5"/>
+                <Button  fx:id="irEasy"  styleClass="easy" text="3x3"/>
+                <Button  fx:id="irNormal" styleClass="normal" text="4x4"/>
+                <Button  fx:id="irHard"  styleClass="hard" text="5x5"/>
             </HBox>
             <Label style="-fx-font-size: 40" alignment="CENTER" text="Memory" textFill="WHITE"/>
             <HBox spacing="60" alignment="CENTER">
-                <Button styleClass="easy" text="3x3"/>
-                <Button styleClass="normal" text="4x4"/>
-                <Button styleClass="hard" text="5x5"/>
+                <Button  fx:id="memEasy"   styleClass="easy" text="3x3"/>
+                <Button  fx:id="memNormal" styleClass="normal" text="4x4"/>
+                <Button  fx:id="memHard"   styleClass="hard" text="5x5"/>
             </HBox>
         </VBox>
         <HBox GridPane.rowIndex="2" GridPane.columnIndex="0">

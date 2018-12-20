@@ -17,9 +17,10 @@ import java.io.FileNotFoundException;
 
 public class Pattern {
 
-    private static final int BOARD_LENGTH = 400;
+    private static final int BOARD_LENGTH = 500;
     private static final int BOARD_DEPTH = 5;
     private static final int BOARD_WIDTH = 5;
+    private static final int SIZE = 128;
     private static PhongMaterial[] gridMat;
     private static int gridDimension;
     private static Group patternGroup;
@@ -27,27 +28,33 @@ public class Pattern {
     private static int[][] gridMatrix;
     private static Rotate r;
     private static final Transform t = new Rotate();
+    private ImageView[] patternImageViews;
+    private Image[] imagesToCreatePattern;
 
-    public Pattern(int gridDimension)
+    public Pattern(int gridDimension, Image[] imagesToCreatePattern)
     {
         this.gridDimension = gridDimension;
+        this.imagesToCreatePattern = imagesToCreatePattern;
 
-        gridMatrix = (new PatternGenerator(gridDimension)).generatePattern(false);
 
         gridMat = new PhongMaterial[gridDimension*gridDimension];
-        //gridMat.setDiffuseMap( new Image(getClass().getResourceAsStream("questionMark.png")));
+        patternImageViews =  new ImageView[gridDimension*gridDimension];
+
         gridCell = new Box[(gridDimension) * (gridDimension)];
         patternGroup = createPattern();
     }
+
     public Group createPatternGroup()
     {
         return patternGroup;
     }
 
-    private Group createPattern()
-    {
+    private Group createPattern() {
         Group boardGroupInst = new Group();
         int gridIndex;
+
+        gridMatrix = (new PatternGenerator(gridDimension)).generatePattern(false);
+
 
         for (int i = 0; i < gridDimension; i++) {
             for (int j = 0; j < gridDimension; j++) {
@@ -57,17 +64,32 @@ public class Pattern {
                 gridCell[gridIndex] = new Box(BOARD_LENGTH / gridDimension, BOARD_LENGTH / gridDimension, 0);
                 gridMat[gridIndex] = new PhongMaterial();
                 gridCell[gridIndex].setId(Integer.toString(gridIndex));
-                System.out.println(gridMatrix[gridIndex][0]);
-                String png = Integer.toString(gridMatrix[gridIndex][0]) + "NoBorder.png";
-                System.out.println(png+ " " + gridMatrix[gridIndex][1]);
-                try {
-                    gridMat[gridIndex].setDiffuseMap(new Image(new FileInputStream("assets/CubeFaces/" + png)));
+
+
+                if(imagesToCreatePattern == null){
+                    String png = Integer.toString(gridMatrix[gridIndex][0]) + ".png";
+
+                    try {
+                        //gridMat[gridIndex].setDiffuseMap(new Image(new FileInputStream("assets/CubeFaces/" + png), SIZE, SIZE, true, false));
+                        //gridCell[gridIndex].getTransforms().add(new Rotate(90*gridMatrix[gridIndex][1], Rotate.Z_AXIS));
+                        patternImageViews[gridIndex] = new ImageView(new Image(new FileInputStream("assets/CubeFaces/" + png), SIZE, SIZE, true, false));
+                        patternImageViews[gridIndex].setRotate( 90*gridMatrix[gridIndex][1]);
+                        gridMat[gridIndex].setDiffuseMap(patternImageViews[gridIndex].snapshot(null,null));
+                    } catch (Exception e) {
+                        System.out.println("File not found");
+                    }
                 }
-                catch(Exception e){
-                    System.out.println("File not found");
+                else {
+                    try {
+                        gridMat[gridIndex].setDiffuseMap(imagesToCreatePattern[gridIndex]);
+                        patternImageViews[gridIndex] = new ImageView(gridMat[gridIndex].getDiffuseMap());
+                    } catch (Exception e) {
+                        System.out.println("File not found");
+                    }
                 }
+
+
                 gridCell[gridIndex].setMaterial(gridMat[gridIndex]);
-                gridCell[gridIndex].getTransforms().add(new Rotate(90*gridMatrix[gridIndex][1], Rotate.Z_AXIS));
 
                 gridCell[gridIndex].translateXProperty().set(((BOARD_LENGTH / gridDimension) * (j + 0.5)) + (-BOARD_LENGTH / 2));
                 gridCell[gridIndex].translateYProperty().set(((BOARD_LENGTH / gridDimension) * (i + 0.5)) + (-BOARD_LENGTH / 2));
@@ -78,16 +100,16 @@ public class Pattern {
         return boardGroupInst;
     }
 
-    public boolean checkPattern(ImageView[] boardImages, ImageView[] patternImages){
+    public boolean checkPattern(ImageView[] boardImages){
 
-        if( boardImages.length != patternImages.length)
+        if( boardImages.length != patternImageViews.length)
             return false;
 
 
-        for( int i = 0 ; i <  boardImages.length && i < patternImages.length; i++ ) {
+        for( int i = 0 ; i <  boardImages.length && i < patternImageViews.length; i++ ) {
 
             BufferedImage boardImage = SwingFXUtils.fromFXImage(boardImages[i].snapshot(null, null), null);
-            BufferedImage patternImage = SwingFXUtils.fromFXImage(patternImages[i].snapshot(null, null), null);
+            BufferedImage patternImage = SwingFXUtils.fromFXImage(patternImageViews[i].snapshot(null, null), null);
 
             Raster rasterBoard = boardImage.getRaster();
             Raster rasterPattern = patternImage.getRaster();
@@ -104,14 +126,20 @@ public class Pattern {
                     int patternB = rasterPattern.getSample(x, y, 2);
 
 
-                    if (boardR != patternR || boardG != patternG || boardB != patternB)
+                    if (boardR != patternR || boardG != patternG || boardB != patternB) {
+                        System.out.println("Wrong one: " + i);
+                        System.out.println("x: " + x + " y: " + y);
+                        System.out.println(patternImageViews[i].getRotate() + " rot" + boardImages[i].getRotate());
                         return false;
+                    }
                 }
             }
+
         }
                 return true;
 
     }
+
     public void setMatQuestMark()
     {
         for(int i = 0; i < gridDimension*gridDimension; i++)
