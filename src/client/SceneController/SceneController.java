@@ -11,6 +11,7 @@ import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
+import javafx.stage.Window;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -65,6 +66,10 @@ public class SceneController {
 
     public MenuController getController(){
         return loader.getController();
+    }
+
+    public Window getWindow(){
+        return stage;
     }
 
     public void setSocketHandler(ClientSocketHandler socketHandler) {

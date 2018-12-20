@@ -15,7 +15,7 @@
         <HBox GridPane.rowIndex="0" GridPane.columnIndex="1" alignment="CENTER">
             <Label style="-fx-font-size: 80" alignment="CENTER" text="Singleplayer" textFill="WHITE"/>
         </HBox>
-        <VBox alignment="TOP_CENTER" spacing="20" GridPane.rowIndex="1" GridPane.columnIndex="1">
+        <VBox alignment="TOP_CENTER" spacing="30" GridPane.rowIndex="1" GridPane.columnIndex="1">
             <Label style="-fx-font-size: 40" alignment="CENTER" text="Time Attack" textFill="WHITE"/>
             <HBox spacing="60" alignment="CENTER">
                 <Button fx:id="taEasy"   styleClass="easy" text="3x3"/>

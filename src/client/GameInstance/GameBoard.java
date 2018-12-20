@@ -16,7 +16,7 @@ import java.io.FileInputStream;
 public class GameBoard {
 
 
-    private static final int BOARD_LENGTH = 200;
+    private static final int BOARD_LENGTH = 500;
     private static final int BOARD_DEPTH = 5;
     private static final int BOARD_WIDTH = 5;
     private static int gridDimension;
@@ -41,11 +41,12 @@ public class GameBoard {
 
         mainMat = new PhongMaterial();
         try {
-            mainMat.setDiffuseMap(new Image(new FileInputStream("assets/Asset 3@2x-100.jpg")));
+            mainMat.setDiffuseMap(new Image(new FileInputStream("assets/CubeFaces/2.png")));
         }
         catch (Exception e){
             System.out.println("No file ");
         }
+
 
         frameMat = new PhongMaterial();
 
