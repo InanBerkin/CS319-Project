@@ -27,7 +27,7 @@ public class GameTimer {
     private Timeline timeline;
     private Label gameLabel;
 
-    public GameTimer(TimerSignable callback) {
+    public GameTimer(TimerSignable callback, Label gameLabel) {
         this.simpleDateFormat = new SimpleDateFormat("mm:ss:S");
         this.gameTime = new SimpleStringProperty("00:00:00");
         this.time = 0;
@@ -35,16 +35,12 @@ public class GameTimer {
         this.timeline.setCycleCount(Timeline.INDEFINITE);
         this.gameLabel = null;
         this.callback = callback;
-    }
-
-    public void setGameLabel(Label label) {
-        this.gameLabel = label;
+        this.gameLabel = gameLabel;
     }
 
     public void startTimer() {
         this.time = 0;
-
-        this.timeline = new Timeline();
+        System.out.println("started.");
         timeline.getKeyFrames().add(
                 new KeyFrame(Duration.millis(10), new EventHandler<ActionEvent>() {
 
@@ -62,7 +58,6 @@ public class GameTimer {
     public void startTimer(long time) {
         moveToTime(time * 1000);
 
-        this.timeline = new Timeline();
         timeline.getKeyFrames().add(
                 new KeyFrame(Duration.millis(10), new EventHandler<ActionEvent>() {
 
@@ -110,15 +105,15 @@ public class GameTimer {
         timeline.stop();
     }
 
-    public long getTime() {
-        return time / 1000;
-    }
-
     private boolean isZero(){
         return time <= 0;
     }
 
     public SimpleStringProperty getGameTime() {
         return gameTime;
+    }
+
+    public long getTime() {
+        return time / 1000;
     }
 }
