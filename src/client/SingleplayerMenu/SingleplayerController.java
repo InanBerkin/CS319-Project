@@ -52,9 +52,9 @@ public class SingleplayerController extends MenuController {
         irEasy.setOnAction(e-> startGame(3,1));
         irNormal.setOnAction(e-> startGame(4,1));
         irHard.setOnAction(e-> startGame(5,1));
-        memEasy.setOnAction(e-> startGame(3,2));
-        memNormal.setOnAction(e-> startGame(4,2));
-        memHard.setOnAction(e-> startGame(5,2));
+        memEasy.setOnAction(e-> startMemoryGame(3));
+        memNormal.setOnAction(e-> startMemoryGame(4));
+        memHard.setOnAction(e-> startMemoryGame(5));
     }
 
     @FXML
@@ -63,6 +63,13 @@ public class SingleplayerController extends MenuController {
         payload.put("boardSize", boardSize);
         payload.put("gameMode", gameMode);
         QBitzApplication.getSceneController().changeScene("GameInstance", payload);
+    }
+
+    @FXML
+    public void startMemoryGame(int boardSize){
+        JSONObject payload = new JSONObject();
+        payload.put("boardSize", boardSize);
+        QBitzApplication.getSceneController().changeScene("MemoryMode", payload);
     }
 
 
