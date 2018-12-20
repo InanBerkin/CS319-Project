@@ -47,8 +47,6 @@ public class GameBoard {
             System.out.println("No file ");
         }
 
-
-
         frameMat = new PhongMaterial();
 
         try {

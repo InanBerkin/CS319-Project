@@ -2,36 +2,28 @@ package client.GameInstance;
 
 import client.ImageRecreation.ImageRecreation;
 import client.MenuController;
-import javafx.animation.KeyFrame;
-import javafx.animation.Timeline;
 import javafx.application.Platform;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.*;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
-import javafx.scene.paint.ImagePattern;
 import javafx.scene.paint.PhongMaterial;
 import javafx.scene.shape.Sphere;
 import javafx.scene.transform.Rotate;
 
 import java.io.FileNotFoundException;
-import javafx.util.Duration;
 
-import javax.sound.midi.Soundbank;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class GameInstanceController extends MenuController {
+public class GameInstanceController extends MenuController implements TimerSignable {
 
     private final Group root = new Group();
     private final Group mainGroup = new Group();
@@ -50,7 +42,6 @@ public class GameInstanceController extends MenuController {
     private static final double CAMERA_INITIAL_Y_ANGLE = 60.0;
     private static final double CAMERA_NEAR_CLIP = 0.1;
     private static final double CAMERA_FAR_CLIP = 10000.0;
-    private static final double KEY_ROTATION_STEP = 4.5;
     private static ImageRecreation imageRecreation = null;
 
     private static final int WIDTH = 1200;
@@ -142,9 +133,9 @@ public class GameInstanceController extends MenuController {
 
             gridPane.add(scene, 0,2);
             gridPane.add(boardScene, 1, 2);
-            gameTimer = new GameTimer();
+            gameTimer = new GameTimer(this);
             gameTimer.setGameLabel(timerLabel);
-            gameTimer.startTimer(0);
+            gameTimer.startTimer();
 
             handleKeys(gridPane);
         });
@@ -241,6 +232,11 @@ public class GameInstanceController extends MenuController {
                 board.setSelectedFaceMat(cube.selectFace());
             }
         });
+    }
+
+    @Override
+    public void timerStopped() {
+
     }
 
     public void foo() {
