@@ -10,6 +10,7 @@ import javafx.event.EventHandler;
 import javafx.scene.control.Label;
 import javafx.util.Duration;
 
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -23,10 +24,7 @@ public class GameTimer {
     private SimpleDateFormat simpleDateFormat;
     private SimpleStringProperty gameTime;
     private long time;
-
     private Timeline timeline;
-
-    private boolean isTiming;
     private Label gameLabel;
 
     public GameTimer(TimerSignable callback) {
@@ -35,7 +33,6 @@ public class GameTimer {
         this.time = 0;
         this.timeline = new Timeline();
         this.timeline.setCycleCount(Timeline.INDEFINITE);
-        this.isTiming = false;
         this.gameLabel = null;
         this.callback = callback;
     }
@@ -45,49 +42,47 @@ public class GameTimer {
     }
 
     public void startTimer() {
-        time = 0;
-        isTiming = true;
+        this.time = 0;
 
+        this.timeline = new Timeline();
         timeline.getKeyFrames().add(
                 new KeyFrame(Duration.millis(10), new EventHandler<ActionEvent>() {
 
                     @Override
                     public void handle(ActionEvent event) {
-                        if (!isTiming) {
-                            timeline.stop();
-                        } else {
-                            Platform.runLater(() -> {
-                                gameLabel.setText(getGameTime().getValue());
-                            });
-                            updateTime(FORWARD);
-                        }
+                        Platform.runLater(() -> {
+                            gameLabel.setText(getGameTime().getValue());
+                        });
+                        updateTime(FORWARD);
                     }
                 }));
         timeline.play();
     }
 
     public void startTimer(long time) {
-        moveToTime(time * 1000 );
-        isTiming = true;
+        moveToTime(time * 1000);
 
+        this.timeline = new Timeline();
         timeline.getKeyFrames().add(
                 new KeyFrame(Duration.millis(10), new EventHandler<ActionEvent>() {
 
                     @Override
                     public void handle(ActionEvent event) {
-                        if (!isTiming) {
-                            timeline.stop();
-                        } else {
-                            Platform.runLater(() -> {
-                                gameLabel.setText(getGameTime().getValue());
-                            });
+                        Platform.runLater(() -> {
+                            gameLabel.setText(getGameTime().getValue());
+                        });
 
-                            if (time > 0)
-                                updateTime(BACKWARD);
-                            else {
-                                isTiming = false;
+                        if (!isZero()) {
+                            updateTime(BACKWARD);
+                        }
+                        else {
+                            try {
                                 callback.timerStopped();
+                            } catch (IOException e) {
+                                e.printStackTrace();
                             }
+
+                            stopTimer();
                         }
                     }
                 }));
@@ -112,15 +107,15 @@ public class GameTimer {
     }
 
     public void stopTimer() {
-        isTiming = false;
+        timeline.stop();
     }
 
     public long getTime() {
-        return time / 1000 ;
+        return time / 1000;
     }
 
-    public void setCallback(TimerSignable callback) {
-        this.callback = callback;
+    private boolean isZero(){
+        return time <= 0;
     }
 
     public SimpleStringProperty getGameTime() {
