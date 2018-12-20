@@ -87,8 +87,7 @@ public class GameInstanceController extends MenuController implements TimerSigna
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
-        gameTimer = new GameTimer(this);
-        gameTimer.setGameLabel(timerLabel);
+        gameTimer = new GameTimer(this, timerLabel);
         gameTimer.startTimer();
         root.setDepthTest(DepthTest.ENABLE);
         buildCamera();
