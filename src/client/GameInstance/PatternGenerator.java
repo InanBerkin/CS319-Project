@@ -19,7 +19,6 @@ public class PatternGenerator {
     public int[][] generatePattern(boolean hard)
     {
         if(!hard) {
-            System.out.println("easy");
             if (gridDimension == 3) {
                 for (int i = 0; i < 2; i++) {
                     png = (int) ((Math.random() * numOfPng) + 1);
