@@ -71,6 +71,7 @@ public class QBitzApplication extends Application {
                 }
                 catch (IOException e) {
                     System.out.println("» Server is unreachable.");
+                    UserConfiguration.isOnline = false;
                 }
             }
             primaryStage.setOnCloseRequest( e -> {
