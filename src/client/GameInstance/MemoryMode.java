@@ -22,9 +22,11 @@ import java.util.ResourceBundle;
 import javafx.scene.control.Button;
 
 public class MemoryMode extends MenuController implements TimerSignable {
+
+
     private int memoryTime;
 
-    private Group root = new Group();
+    private final Group root = new Group();
     private Group boardGroup = new Group();
     private Group patternGroup = new Group();
 
@@ -209,4 +211,9 @@ public class MemoryMode extends MenuController implements TimerSignable {
 
         return true;
     }
+
+
+
+
+
 }
