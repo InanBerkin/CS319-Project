@@ -41,7 +41,7 @@ public class GameBoard {
 
         mainMat = new PhongMaterial();
         try {
-            mainMat.setDiffuseMap(new Image(new FileInputStream("assets/CubeFaces/2.png")));
+            mainMat.setDiffuseMap(new Image(new FileInputStream("assets/CubeFaces/boardImage.png")));
         }
         catch (Exception e){
             System.out.println("No file ");

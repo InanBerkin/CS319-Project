@@ -19,6 +19,9 @@ public class RoomLobbyMenuController extends MenuController {
     @FXML
     private GridPane playersGridPane;
 
+    @FXML
+    private Label roomName;
+
     @Override
     public void onMessageReceived(String message) {
         JSONObject responseJSON = new JSONObject(message);
@@ -33,6 +36,7 @@ public class RoomLobbyMenuController extends MenuController {
     public void initialize(URL location, ResourceBundle resources) {
         Platform.runLater(() ->{
             addPlayers(payload.getJSONArray("userList"));
+            roomName.setText(payload.getString("name"));
         });
     }
 
