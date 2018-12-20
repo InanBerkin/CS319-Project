@@ -87,7 +87,7 @@ public class ImageRecreation
         }
     }
     public void addFace(Image newImg){
-        if( this.imgParts.size() <= this.dimension * this.dimension  - 1 ){
+        if( this.imgParts.size() <= this.dimension * this.dimension  - 1 && !this.imgParts.contains(newImg) ){
             this.imgParts.add(newImg);
         }
         else {
@@ -96,7 +96,7 @@ public class ImageRecreation
     }
 
     public void removeFace(Image delImg){
-        if( this.imgParts.size() >= 7 ){
+        if( this.imgParts.size() >= 7  && this.imgParts.contains(delImg)){
             this.imgParts.remove(delImg);
         }
         else {
