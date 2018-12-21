@@ -1,7 +1,5 @@
 package server.models;
 
-import org.json.JSONObject;
-
 public class User {
 
     private String username;
