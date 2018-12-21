@@ -6,14 +6,15 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<GridPane fx:id="background" xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="client.Menus.RoomLobbyMenu.RoomLobbyMenuController"
-            stylesheets="@/styles/RoomLobbyMenu.css">
-    <HBox GridPane.rowIndex="0" GridPane.columnIndex="1" alignment="CENTER">
-        <Label id="title" fx:id="roomName"></Label>
+<?import javafx.geometry.Insets?>
+<VBox fx:id="background" xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="client.Menus.RoomLobbyMenu.RoomLobbyMenuController"
+      stylesheets="@/styles/RoomLobbyMenu.css" spacing="30">
+    <HBox alignment="CENTER">
+        <Label id="Title" fx:id="roomName"></Label>
     </HBox>
-    <GridPane fx:id="playersGridPane" GridPane.rowIndex="1" GridPane.columnIndex="1">
+    <GridPane fx:id="playersGridPane">
         <!--Users-->
         <columnConstraints>
             <ColumnConstraints percentWidth="50.0" />
@@ -25,19 +26,16 @@
             <RowConstraints percentHeight="25.0"/>
             <RowConstraints percentHeight="25.0"/>
         </rowConstraints>
+        <padding>
+            <Insets top="25" bottom="25"/>
+        </padding>
     </GridPane>
 
-    <Button GridPane.rowIndex="2" GridPane.columnIndex="0" styleClass="return-button" onAction="#goBack">Return</Button>
-    <columnConstraints>
-        <!-- Space -->
-        <ColumnConstraints percentWidth="15.0" />
-        <ColumnConstraints percentWidth="70.0" />
-        <!-- Space -->
-        <ColumnConstraints percentWidth="15.0" />
-    </columnConstraints>
-    <rowConstraints>
-        <RowConstraints percentHeight="20.0"/>
-        <RowConstraints percentHeight="60.0"/>
-        <RowConstraints percentHeight="20.0"/>
-    </rowConstraints>
-</GridPane>
+    <HBox alignment="CENTER">
+        <Button fx:id="startButton" visible="false" disable="true" styleClass="start-button" HBox.hgrow="ALWAYS">Start Game!</Button>
+    </HBox>
+
+    <HBox VBox.vgrow="ALWAYS" alignment="CENTER_LEFT">
+        <Button styleClass="return-button" onAction="#goBack">Return</Button>
+    </HBox>
+</VBox>
