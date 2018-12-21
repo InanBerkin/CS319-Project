@@ -110,4 +110,8 @@ public class SocketServer extends Thread {
             }
         }
     }
+
+    public ArrayList<ServerSocketHandler> getClientList() {
+        return clientList;
+    }
 }

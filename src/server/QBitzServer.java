@@ -212,6 +212,7 @@ class QBitzServer {
                 int ownerId = handler.getUser().getId();
 
                 Room newRoom = new Room(-1, name, gameMode, ownerId, players, maxPlayers, entranceLevel, roomType, roomCode);
+                newRoom.setOwnername(handler.getUser().getUsername());
 
                 // send response to user.
                 JSONObject respObj = new JSONObject();
@@ -231,6 +232,7 @@ class QBitzServer {
                 respObj.put("roomID", id);
 
                 handler.sendMessage(respObj.toString());
+                refreshRooms();
             }
             else if(msgObj.getString("requestType").equals("displayRooms")) {
                 JSONArray roomList = new JSONArray();
@@ -277,7 +279,6 @@ class QBitzServer {
                             respObj.put("entranceLevel", room.getEntranceLevel());
                             respObj.put("name", room.getName());
                             respObj.put("isOwner", room.getOwnerid() == handler.getUser().getId());
-                            respObj.put("isStartable", room.getPlayers() + 1 == room.getMaxPlayers());
 
                             room.addUser(handler);
                             room.setPlayers(room.getPlayers() + 1);
@@ -298,6 +299,7 @@ class QBitzServer {
 
                             handler.sendMessage(respObj.toString());
                             sendAnnouncementToOthers(room);
+                            refreshRooms();
                         }
                         else {
                             respObj.put("result", 2);
@@ -322,6 +324,13 @@ class QBitzServer {
                 room.setPlayers(room.getPlayers() - 1);
 
                 sendAnnouncementToOthers(room);
+                refreshRooms();
+            }
+            else if (msgObj.getString("requestType").equals("startCounter")) {
+                int roomID = msgObj.getInt("roomID");
+                Room room = findRoomFromID(roomID);
+
+                startRoomCounter(room);
             }
         }
     }
@@ -376,6 +385,7 @@ class QBitzServer {
         }
 
         json.put("userList", userList);
+        json.put("isStartable", room.getPlayers() == room.getMaxPlayers());
 
         for (ServerSocketHandler userHandler : room.getUsers()) {
             userHandler.sendMessage(json.toString());
@@ -428,15 +438,58 @@ class QBitzServer {
         Counter counter = new Counter(Counter.BACKWARD, 5, 1, new CounterSignable() {
             @Override
             public void counterStopped() {
+                JSONObject json = new JSONObject();
 
+                json.put("responseType", "startGame");
+
+                for (ServerSocketHandler userHandler : room.getUsers()) {
+                    userHandler.sendMessage(json.toString());
+                }
             }
 
             @Override
             public void counterSignal(int count) {
+                JSONObject json = new JSONObject();
 
+                json.put("responseType", "startCounter");
+                json.put("count", count);
+
+                for (ServerSocketHandler userHandler : room.getUsers()) {
+                    userHandler.sendMessage(json.toString());
+                }
             }
         });
 
         counter.start();
+    }
+
+    public void refreshRooms() {
+        for (ServerSocketHandler socketHandler : socketServer.getClientList()) {
+            if (socketHandler.getUser() != null) {
+                JSONArray roomList = new JSONArray();
+
+                for (Room iterator : rooms) {
+                    if (iterator.getRoomtype() == Room.PUBLIC) {
+                        JSONObject room = new JSONObject();
+                        room.put("roomID", iterator.getId());
+                        room.put("name", iterator.getName());
+                        room.put("gameMode", iterator.getGamemode());
+                        room.put("players", iterator.getPlayers());
+                        room.put("maxPlayers", iterator.getMaxPlayers());
+                        room.put("entranceLevel", iterator.getEntranceLevel());
+                        room.put("ownerName", iterator.getOwnername());
+
+                        roomList.put(room);
+                    }
+                }
+
+                JSONObject respObj = new JSONObject();
+                respObj.put("responseType", "displayRooms");
+                respObj.put("roomList", roomList);
+                respObj.put("result", !roomList.isEmpty());
+
+                socketHandler.sendMessage(respObj.toString());
+            }
+        }
     }
 }
