@@ -2,6 +2,7 @@ package client.GameInstance;
 
 import javafx.embed.swing.SwingFXUtils;
 import javafx.scene.Group;
+import javafx.scene.effect.GaussianBlur;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.paint.PhongMaterial;
@@ -31,12 +32,14 @@ public class Pattern {
     private static final Transform t = new Rotate();
     private ImageView[] patternImageViews;
     private Image[] imagesToCreatePattern;
+    private GaussianBlur gaussianBlur = new GaussianBlur();
 
     public Pattern(int gridDimension, Image[] imagesToCreatePattern)
     {
         this.gridDimension = gridDimension;
         this.imagesToCreatePattern = imagesToCreatePattern;
 
+        gaussianBlur.setRadius(2);
 
         gridMat = new PhongMaterial[gridDimension*gridDimension];
         patternImageViews =  new ImageView[gridDimension*gridDimension];
@@ -75,6 +78,7 @@ public class Pattern {
                         //gridCell[gridIndex].getTransforms().add(new Rotate(90*gridMatrix[gridIndex][1], Rotate.Z_AXIS));
                         patternImageViews[gridIndex] = new ImageView(new Image(new FileInputStream("assets/CubeFaces/" + png), SIZE, SIZE, true, false));
                         patternImageViews[gridIndex].setRotate( 90*gridMatrix[gridIndex][1]);
+                        this.smoothImageView(patternImageViews[gridIndex]);
                         gridMat[gridIndex].setDiffuseMap(patternImageViews[gridIndex].snapshot(null,null));
                     } catch (Exception e) {
                         System.out.println("File not found");
@@ -109,6 +113,7 @@ public class Pattern {
 
         for( int i = 0 ; i <  boardImages.length && i < patternImageViews.length; i++ ) {
 
+            this.smoothImageView(boardImages[i]);
             BufferedImage boardImage = SwingFXUtils.fromFXImage(boardImages[i].snapshot(null, null), null);
             BufferedImage patternImage = SwingFXUtils.fromFXImage(patternImageViews[i].snapshot(null, null), null);
 
@@ -156,6 +161,11 @@ public class Pattern {
             gridMat[i].setDiffuseMap(patternImageViews[i].snapshot(null, null));
             gridCell[i].setMaterial(gridMat[i]);
         }
+    }
+    public void smoothImageView(ImageView imageView){
+
+        imageView.setEffect(gaussianBlur);
+        imageView.setFitWidth(128);
     }
 
     public static int[][] getGridMatrix() {
