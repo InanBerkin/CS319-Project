@@ -5,6 +5,7 @@ import client.QBitzApplication;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
@@ -15,11 +16,15 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 public class RoomLobbyMenuController extends MenuController {
+
     @FXML
     private GridPane playersGridPane;
 
     @FXML
     private Label roomName;
+
+    @FXML
+    private Button startButton;
 
     @Override
     public void onMessageReceived(String message) {
@@ -27,6 +32,14 @@ public class RoomLobbyMenuController extends MenuController {
         if(responseJSON.getString("responseType").equals("userAnnouncement")){
             Platform.runLater(() -> {
                 addPlayers(responseJSON.getJSONArray("userList"));
+                if (responseJSON.getBoolean("isStartable")){
+                    startButton.setDisable(false);
+                }
+            });
+        }
+        else if(responseJSON.getString("responseType").equals("startGame")){
+            Platform.runLater(() -> {
+                roomName.setText(responseJSON.getString("timer"));
             });
         }
     }
@@ -36,6 +49,7 @@ public class RoomLobbyMenuController extends MenuController {
         Platform.runLater(() ->{
             addPlayers(payload.getJSONArray("userList"));
             roomName.setText(payload.getString("name"));
+            startButton.setVisible(payload.getBoolean("isOwner") ? true : false);
         });
     }
 
@@ -54,10 +68,19 @@ public class RoomLobbyMenuController extends MenuController {
             name = playerJSON.getString("name");
             player = new Player(id,level,name);
             hBox = new HBox();
+            hBox.setStyle("-fx-background-color: #ffffff;");
             hBox.setAlignment(Pos.CENTER_LEFT);
             hBox.getChildren().add(new Label(player.getName()));
             playersGridPane.add(hBox,i/4 , i);
         }
+    }
+
+    @FXML
+    private void sendStartRequest(){
+        JSONObject startJSON = new JSONObject();
+        startJSON.put("requestType", "startGame");
+        startJSON.put("roomID", payload.getInt("roomID"));
+        QBitzApplication.getSceneController().sendMessageToServer(startJSON);
     }
 
     @FXML
