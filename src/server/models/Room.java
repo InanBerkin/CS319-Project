@@ -23,6 +23,7 @@ public class Room {
     private ArrayList<ServerSocketHandler> users;
     private String encodedImage;
     private int boardSize;
+    private ArrayList<FinishTime> finishTimes;
 
     public Room(String name, int gamemode, int ownerid, int players, int entranceLevel) {
         this.id = 0;
@@ -37,6 +38,7 @@ public class Room {
         this.users = new ArrayList<>();
         this.encodedImage = "";
         this.boardSize = -1;
+        this.finishTimes = new ArrayList<>();
     }
 
     public Room(int id, String name, int gamemode, int ownerid, int players, int maxPlayers, int entranceLevel, int roomtype, String roomcode) {
@@ -52,12 +54,14 @@ public class Room {
         this.users = new ArrayList<>();
         this.encodedImage = "";
         this.boardSize = -1;
+        this.finishTimes = new ArrayList<>();
     }
 
     public Room() {
         this.users = new ArrayList<>();
         this.encodedImage = "";
         this.boardSize = -1;
+        this.finishTimes = new ArrayList<>();
     }
 
     public String getEncodedImage() {
@@ -166,5 +170,27 @@ public class Room {
 
     public void setBoardSize(int boardSize) {
         this.boardSize = boardSize;
+    }
+
+    public void addFinishTime(String time, User user) {
+        finishTimes.add(new FinishTime(time, user));
+    }
+
+    public ArrayList<FinishTime> getFinishTimes() {
+        return finishTimes;
+    }
+
+    public void clearFinishTimes() {
+        finishTimes.clear();
+    }
+
+    public FinishTime getFromUser(User user) {
+        for (FinishTime finishTime : finishTimes) {
+            if (finishTime.user == user) {
+                return finishTime;
+            }
+        }
+
+        return null;
     }
 }

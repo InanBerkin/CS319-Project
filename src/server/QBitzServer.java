@@ -433,6 +433,36 @@ class QBitzServer {
                     handler.sendMessage(respObj.toString());
                 }
             }
+            else if(msgObj.getString("requestType").equals("submit")) {
+                int roomID = msgObj.getInt("roomID");
+                String finishTime = msgObj.getString("finishTime");
+
+                Room room = findRoomFromID(roomID);
+                room.addFinishTime(finishTime, handler.getUser());
+
+                JSONObject respObj = new JSONObject();
+
+                JSONArray userList = new JSONArray();
+
+                for (ServerSocketHandler userHandler : room.getUsers()) {
+                    User user = userHandler.getUser();
+
+                    FinishTime finish = room.getFromUser(user);
+
+                    if (finish != null) {
+                        JSONObject userObj = new JSONObject();
+                        userObj.put("name", user.getUsername());
+                        userObj.put("id", user.getId());
+                        userObj.put("level", user.getLevel());
+                        userObj.put("finishTime", finish.time);
+                        userObj.put("rank", room.getFinishTimes().indexOf(finish) + 1);
+
+                        userList.put(userObj);
+                    }
+                }
+                respObj.put("finishList", userList);
+                handler.sendMessage(respObj.toString());
+            }
         }
     }
 
