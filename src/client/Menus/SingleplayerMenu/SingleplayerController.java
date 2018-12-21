@@ -45,22 +45,22 @@ public class SingleplayerController extends MenuController {
 
     private void setButtonMethods()
     {
-        taEasy.setOnAction(e-> startGame(3,0));
-        taNormal.setOnAction(e-> startGame(4,0));
-        taHard.setOnAction(e-> startGame(5,0));
-        irEasy.setOnAction(e-> startGame(3,1));
-        irNormal.setOnAction(e-> startGame(4,1));
-        irHard.setOnAction(e-> startGame(5,1));
+        taEasy.setOnAction(e-> startTimeGame(3));
+        taNormal.setOnAction(e-> startTimeGame(4));
+        taHard.setOnAction(e-> startTimeGame(5));
+        irEasy.setOnAction(e-> startImageGame(3));
+        irNormal.setOnAction(e-> startImageGame(4));
+        irHard.setOnAction(e-> startImageGame(5));
         memEasy.setOnAction(e-> startMemoryGame(3));
         memNormal.setOnAction(e-> startMemoryGame(4));
         memHard.setOnAction(e-> startMemoryGame(5));
     }
 
     @FXML
-    public void startGame(int boardSize, int gameMode){
+    public void startTimeGame(int boardSize){
         JSONObject payload = new JSONObject();
         payload.put("boardSize", boardSize);
-        payload.put("gameMode", gameMode);
+
         QBitzApplication.getSceneController().gotoGameMode(SceneController.SP, "TimeAttackMode", payload);
     }
 
@@ -71,5 +71,10 @@ public class SingleplayerController extends MenuController {
         QBitzApplication.getSceneController().gotoGameMode(SceneController.SP, "MemoryMode", payload);
     }
 
-
+    @FXML
+    public void startImageGame(int boardSize){
+        JSONObject payload = new JSONObject();
+        payload.put("boardSize", boardSize);
+        QBitzApplication.getSceneController().gotoGameMode(SceneController.SP, "ImageRecreationMode", payload);
+    }
 }

@@ -24,6 +24,9 @@ public class RoomMenuController extends MenuController {
     @FXML
     private TableView<Room> roomTable;
 
+    @FXML
+    private TextField roomCodeText;
+
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -95,6 +98,11 @@ public class RoomMenuController extends MenuController {
     }
 
     public void enterPrivateRoom(ActionEvent actionEvent) {
+            String roomCode = roomCodeText.getText();
+            JSONObject roomJSON = new JSONObject();
+            roomJSON.put("requestType", "joinPrivateRoom");
+            roomJSON.put("roomCode", roomCode);
+            QBitzApplication.getSceneController().sendMessageToServer(roomJSON);
     }
 
     private void addButtonToTable() {

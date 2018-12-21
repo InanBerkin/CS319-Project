@@ -86,7 +86,9 @@ public class Pattern {
                 else {
                     try {
                         gridMat[gridIndex].setDiffuseMap(imagesToCreatePattern[gridIndex]);
+
                         patternImageViews[gridIndex] = new ImageView(gridMat[gridIndex].getDiffuseMap());
+                        this.smoothImageView(patternImageViews[gridIndex]);
                     } catch (Exception e) {
                         System.out.println("File not found");
                     }

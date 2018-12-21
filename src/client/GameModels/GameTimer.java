@@ -46,9 +46,7 @@ public class GameTimer {
 
                     @Override
                     public void handle(ActionEvent event) {
-                        Platform.runLater(() -> {
-                            gameLabel.setText(getGameTime().getValue());
-                        });
+                        Platform.runLater(() -> gameLabel.setText(getGameTime().getValue()));
                         updateTime(FORWARD);
                     }
                 }));

@@ -103,6 +103,10 @@ class DatabaseConnector {
             return false;
     }
 
+    boolean removeRoom(int roomID) {
+        return executeUpdate(ROOM_TABLE,"DELETE FROM ### WHERE `id` = ?", roomID);
+    }
+
     int addRoom(Room room) {
         executeUpdate(ROOM_TABLE,"INSERT INTO ### (`name`, `gamemode`, `ownerid`, `players`, `maxplayers`, `entrance_level`, `roomtype`, `roomcode`) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
                 room.getName(), room.getGamemode(), room.getOwnerid(), room.getPlayers(), room.getMaxPlayers(), room.getEntranceLevel(), room.getRoomtype(), room.getRoomcode());
