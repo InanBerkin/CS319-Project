@@ -1,7 +1,8 @@
-package client.GameModes.MPGameModes.RaceMode;
+package client.GameModes.MPGameModes.ImageRecreationMode;
 
+import client.GameModels.GameBoard;
+import client.GameModels.Pattern;
 import client.GameModes.GameInstance;
-import client.GameModels.*;
 import client.QBitzApplication;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
@@ -12,8 +13,7 @@ import javafx.scene.layout.VBox;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-public class RaceModeController extends GameInstance {
-
+public class ImageRecreationModeController extends GameInstance {
     @FXML
     private HBox playersBar;
 
@@ -56,7 +56,7 @@ public class RaceModeController extends GameInstance {
     private void updatePlayers(JSONArray playersList){
         playersBar.getChildren().clear();
         int players = playersList.length();
-        Player player;
+        client.GameModes.MPGameModes.ImageRecreationMode.ImageRecreationModeController.Player player;
         VBox vBox;
         int id;
         String finishTime = "Solving...";
@@ -72,7 +72,7 @@ public class RaceModeController extends GameInstance {
             if(playerJSON.has("rank")){
                 rank = playerJSON.getInt("rank");
             }
-            player = new Player(id,name, finishTime, rank);
+            player = new client.GameModes.MPGameModes.ImageRecreationMode.ImageRecreationModeController.Player(id,name, finishTime, rank);
             vBox = new VBox(20);
             vBox.setAlignment(Pos.CENTER);
             vBox.getChildren().add(new Label(player.getName()));
