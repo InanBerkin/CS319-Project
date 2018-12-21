@@ -22,6 +22,7 @@ public class Room {
     private String roomcode;
     private ArrayList<ServerSocketHandler> users;
     private String encodedImage;
+    private int boardSize;
 
     public Room(String name, int gamemode, int ownerid, int players, int entranceLevel) {
         this.id = 0;
@@ -35,6 +36,7 @@ public class Room {
         this.roomcode = "";
         this.users = new ArrayList<>();
         this.encodedImage = "";
+        this.boardSize = -1;
     }
 
     public Room(int id, String name, int gamemode, int ownerid, int players, int maxPlayers, int entranceLevel, int roomtype, String roomcode) {
@@ -49,11 +51,13 @@ public class Room {
         this.roomcode = roomcode;
         this.users = new ArrayList<>();
         this.encodedImage = "";
+        this.boardSize = -1;
     }
 
     public Room() {
         this.users = new ArrayList<>();
         this.encodedImage = "";
+        this.boardSize = -1;
     }
 
     public String getEncodedImage() {
@@ -154,5 +158,13 @@ public class Room {
 
     public void setOwnername(String ownername) {
         this.ownername = ownername;
+    }
+
+    public int getBoardSize() {
+        return boardSize;
+    }
+
+    public void setBoardSize(int boardSize) {
+        this.boardSize = boardSize;
     }
 }
