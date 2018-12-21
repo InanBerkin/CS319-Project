@@ -96,7 +96,7 @@ public abstract class GameInstance extends MenuController implements TimerSignab
             initializeGameMode();
 
             boardGroup = board.createBoardGroup();
-            //patternGroup = pattern.createPatternGroup();
+            patternGroup = pattern.createPatternGroup();
             patternGroup.translateZProperty().set(0);
             boardGroup.translateZProperty().set(0);
 

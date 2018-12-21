@@ -21,8 +21,8 @@ public class RaceModeController extends GameInstance {
     public void initializeGameMode() {
         gameTimer.startTimer();
         board = new GameBoard(gridDimension, null);
-        pattern = new Pattern(gridDimension,generatedArray);
-        patternGroup = pattern.createPatternGroup();
+        pattern = new Pattern(gridDimension);
+        pattern.setGivenPattern(generatedArray);
     }
 
     private void addPlayers(JSONArray playersList){

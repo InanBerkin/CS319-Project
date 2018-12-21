@@ -47,7 +47,7 @@ public class MemoryModeController extends GameInstance {
         //**********************FOR_MEMORY************************************
         this.memoryTime = memoryTime(gridDimension);
         board = new GameBoard(gridDimension, null);
-        pattern = new Pattern(gridDimension,null);
+        pattern = new Pattern(gridDimension);
         try {
             pattern.setMatQuestMark();
         } catch (IOException e) {

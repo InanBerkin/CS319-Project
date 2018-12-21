@@ -27,16 +27,14 @@ public class Pattern {
     private static Group patternGroup;
     private static Box[] gridCell;
     private static int[][] gridMatrix;
-    private static Rotate r;
     private static final Transform t = new Rotate();
     private ImageView[] patternImageViews;
     private Image[] imagesToCreatePattern = null;
     private GaussianBlur gaussianBlur = new GaussianBlur();
 
-    public Pattern(int gridDimension, Image[] imagesToCreatePattern)
+    public Pattern(int gridDimension)
     {
         this.gridDimension = gridDimension;
-        this.imagesToCreatePattern = imagesToCreatePattern;
 
         gaussianBlur.setRadius(2);
 
@@ -45,22 +43,19 @@ public class Pattern {
 
         gridCell = new Box[(gridDimension) * (gridDimension)];
         gridMatrix = (new PatternGenerator(gridDimension)).generatePattern(false);
-        patternGroup = createPattern();
+
+
     }
-    public Pattern(int gridDimension, int[][] givenPattern){
-        this.gridDimension = gridDimension;
-        gaussianBlur.setRadius(2);
 
-        gridMat = new PhongMaterial[gridDimension*gridDimension];
-        patternImageViews =  new ImageView[gridDimension*gridDimension];
-
-        gridCell = new Box[(gridDimension) * (gridDimension)];
+    public void setImagesToCreatePattern(Image[] imagesToCreatePattern){
+        this.imagesToCreatePattern = imagesToCreatePattern;
+    }
+    public void setGivenPattern(int[][] givenPattern){
         gridMatrix = givenPattern;
-        patternGroup = createPattern();
     }
-
     public Group createPatternGroup()
     {
+        patternGroup = createPattern();
         return patternGroup;
     }
 
@@ -115,9 +110,6 @@ public class Pattern {
         }
         System.out.println(boardGroupInst);
         return boardGroupInst;
-    }
-    public void multiplayerPattern(int [][] givenPattern){
-        gridMatrix = givenPattern;
     }
 
     public boolean checkPattern(ImageView[] boardImages){
