@@ -1,19 +1,14 @@
 package client;
 
-import client.OptionsMenu.OptionsMenu;
-import client.SceneController.SceneController;
+import client.Menus.OptionsMenu.OptionsMenu;
+import client.Network.ClientSocketHandler;
+import client.Network.NetworkAnalyzer;
 import javafx.application.Application;
 import javafx.application.Platform;
-import javafx.event.EventHandler;
 import javafx.scene.input.KeyCombination;
 import javafx.stage.Stage;
-import javafx.stage.WindowEvent;
-import org.json.JSONObject;
 
 import java.io.*;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -78,7 +73,7 @@ public class QBitzApplication extends Application {
                 Platform.exit();
                 System.exit(0);
             });
-            sceneController.changeScene("MainMenu");
+            sceneController.gotoMenu("MainMenu");
             primaryStage.show();
         } catch (Exception ex) {
             Logger.getLogger(QBitzApplication.class.getName()).log(Level.SEVERE, null, ex);
