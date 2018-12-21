@@ -68,25 +68,25 @@ public class QBitzApplication extends Application {
             primaryStage.setFullScreen(true);
             primaryStage.setFullScreenExitKeyCombination(KeyCombination.NO_MATCH);
             sceneController = new SceneController(primaryStage);
-//
-//            NetworkAnalyzer networkAnalyzer = new NetworkAnalyzer("https://www.google.com.tr");
-//            if (networkAnalyzer.isOnline()) {
-//                try {
-//                    ClientSocketHandler clientSocketHandler = new ClientSocketHandler("139.179.206.36", 9999);
-//                    clientSocketHandler.start();
-//                    sceneController.setSocketHandler(clientSocketHandler);
-//                    UserConfiguration.isOnline = true;
-//                }
-//                catch (IOException e) {
-//                    System.out.println("» Server is unreachable.");
-//                    UserConfiguration.isOnline = false;
-//                }
-//            }
+
+            NetworkAnalyzer networkAnalyzer = new NetworkAnalyzer("https://www.google.com.tr");
+            if (networkAnalyzer.isOnline()) {
+                try {
+                    ClientSocketHandler clientSocketHandler = new ClientSocketHandler("139.179.206.36", 9999);
+                    clientSocketHandler.start();
+                    sceneController.setSocketHandler(clientSocketHandler);
+                    UserConfiguration.isOnline = true;
+                }
+                catch (IOException e) {
+                    System.out.println("» Server is unreachable.");
+                    UserConfiguration.isOnline = false;
+                }
+            }
             primaryStage.setOnCloseRequest( e -> {
                 Platform.exit();
                 System.exit(0);
             });
-            sceneController.gotoMenu("MainMenu");
+            sceneController.gotoMenu("PostGameMenu");
             primaryStage.show();
         } catch (Exception ex) {
             Logger.getLogger(QBitzApplication.class.getName()).log(Level.SEVERE, null, ex);

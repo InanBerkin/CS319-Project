@@ -12,7 +12,7 @@ import javafx.scene.layout.VBox;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-public class ImageRecreationModeController extends GameInstance {
+public class RaceModeController extends GameInstance {
 
     @FXML
     private HBox playersBar;
@@ -23,6 +23,9 @@ public class ImageRecreationModeController extends GameInstance {
         if(responseJSON.getString("responseType").equals("submit")){
             Platform.runLater(() -> {
                 updatePlayers(responseJSON.getJSONArray("finishList"));
+                if(responseJSON.getBoolean("isGameFinished")){
+                    QBitzApplication.getSceneController().gotoMenu("PostGameMenu", responseJSON);
+                }
             });
         }
     }
