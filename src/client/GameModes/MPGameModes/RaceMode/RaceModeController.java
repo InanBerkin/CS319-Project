@@ -3,6 +3,7 @@ package client.GameModes.MPGameModes.RaceMode;
 import client.GameModes.GameInstance;
 import client.GameModels.*;
 import client.Menus.RoomLobbyMenu.RoomLobbyMenuController;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
@@ -17,23 +18,29 @@ public class RaceModeController extends GameInstance {
     private HBox playersbar;
     private int[][] generatedArray;
 
+
+    @Override
+    public void onMessageReceived(String message) {
+
+    }
+
     @Override
     public void initializeGameMode() {
         gameTimer.startTimer();
         board = new GameBoard(gridDimension, null);
         pattern = new Pattern(gridDimension);
-        pattern.setGivenPattern(generatedArray);
+        pattern.setGivenPattern(jsonArrayToMatrix(payload.getJSONArray("patternMatrix"), gridDimension));
     }
 
     private void addPlayers(JSONArray playersList){
-        playersbar.getChildren().clear();
-        int players = playersList.length();
-        Player player;
-        VBox vBox;
-        int id;
-        int level;
-        String name;
-        for (int i = 0; i < players; i++){
+//        playersbar.getChildren().clear();
+//        int players = playersList.length();
+//        Player player;
+//        VBox vBox;
+//        int id;
+//        int level;
+//        String name;
+//        for (int i = 0; i < players; i++){
 //            JSONObject playerJSON = (JSONObject) playersList.get(i);
 //            id = playerJSON.getInt("id");
 //            level = playerJSON.getInt("level");
@@ -43,7 +50,7 @@ public class RaceModeController extends GameInstance {
 //            vBox.setAlignment(Pos.CENTER_LEFT);
 //            vBox.getChildren().add(new Label(player.getName()));
 //            playersbar.add(,i/4 ,hBox i);
-        }
+//        }
     }
 
     private class Player{

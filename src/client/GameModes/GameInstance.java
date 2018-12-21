@@ -21,6 +21,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.paint.PhongMaterial;
 import javafx.scene.shape.Sphere;
 import javafx.scene.transform.Rotate;
+import org.json.JSONArray;
 
 import java.io.FileNotFoundException;
 
@@ -231,5 +232,23 @@ public abstract class GameInstance extends MenuController implements TimerSignab
 
         return pattern.checkPattern(board.getBoardImageViews());
     }
+
+    public int[][] jsonArrayToMatrix(JSONArray array, int dimension) {
+        int size = dimension * dimension;
+        int[][] result = new int[size][2];
+
+        int cur1 = 0;
+        for (Object iterator1 : array) {
+            int cur2 = 0;
+            for (Object iterator2 : (JSONArray) iterator1) {
+                result[cur1][cur2] = (int) iterator2;
+                cur2++;
+            }
+            cur1++;
+        }
+
+        return result;
+    }
+
 
 }
