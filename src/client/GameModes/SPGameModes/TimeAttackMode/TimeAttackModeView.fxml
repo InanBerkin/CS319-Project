@@ -17,7 +17,7 @@
         <!--Space-->
         <HBox fx:id="sceneHbox"/>
         <HBox alignment="CENTER">
-            <Button HBox.hgrow="ALWAYS" fx:id="submitButton" text="Submit" onAction="#foo"/>
+            <Button HBox.hgrow="ALWAYS" fx:id="submitButton" text="Submit" onAction="#submit"/>
         </HBox>
     <padding>
         <Insets bottom="50.0" left="10.0" right="10.0" top="60.0" />
