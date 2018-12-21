@@ -33,7 +33,7 @@ public class RaceModeController extends GameInstance {
         board = new GameBoard(gridDimension, null);
         pattern = new Pattern(gridDimension);
         pattern.setGivenPattern(jsonArrayToMatrix(payload.getJSONArray("patternMatrix"), gridDimension));
-        addPlayers(payload.getJSONArray("userList"));
+        updatePlayers(payload.getJSONArray("userList"));
     }
 
     @Override
@@ -52,29 +52,6 @@ public class RaceModeController extends GameInstance {
         }
     }
 
-    private void addPlayers(JSONArray playersList){
-        playersBar.getChildren().clear();
-        int players = playersList.length();
-        Player player;
-        VBox vBox;
-        int id;
-        String name;
-        for (int i = 0; i < players; i++){
-            JSONObject playerJSON = (JSONObject) playersList.get(i);
-            id = playerJSON.getInt("id");
-            name = playerJSON.getString("name");
-            player = new Player(id,name);
-            vBox = new VBox(20);
-            vBox.setAlignment(Pos.CENTER);
-            vBox.getChildren().add(new Label(player.getName()));
-            if(!player.getFinishTime().isEmpty()){
-                vBox.getChildren().add(new Label(player.getFinishTime()));
-                vBox.getChildren().add(new Label(player.getRank() + ""));
-            }
-            vBox.setStyle("-fx-background-color: #000");
-            playersBar.getChildren().add(vBox);
-        }
-    }
 
     private void updatePlayers(JSONArray playersList){
         playersBar.getChildren().clear();
@@ -82,22 +59,30 @@ public class RaceModeController extends GameInstance {
         Player player;
         VBox vBox;
         int id;
-        String finishTime;
-        int rank;
+        String finishTime = "Solving...";
+        int rank = 0;
         String name;
         for (int i = 0; i < players; i++){
             JSONObject playerJSON = (JSONObject) playersList.get(i);
             id = playerJSON.getInt("id");
             name = playerJSON.getString("name");
-            finishTime = playerJSON.getString("finishTime");
-            rank = playerJSON.getInt("rank");
+            if(playerJSON.has("finishTime")){
+                finishTime = playerJSON.getString("finishTime");
+            }
+            if(playerJSON.has("rank")){
+                rank = playerJSON.getInt("rank");
+            }
             player = new Player(id,name, finishTime, rank);
             vBox = new VBox(20);
             vBox.setAlignment(Pos.CENTER);
             vBox.getChildren().add(new Label(player.getName()));
             vBox.getChildren().add(new Label(player.getFinishTime()));
-            vBox.getChildren().add(new Label(player.getRank() + ""));
+            if(player.getRank() != 0){
+                vBox.getChildren().add(new Label(player.getRank() + ""));
+            }
             vBox.setStyle("-fx-background-color: #000");
+            vBox.setStyle("-fx-background-radius: 5");
+            vBox.setStyle("-fx-padding: 20 20;");
             playersBar.getChildren().add(vBox);
         }
     }

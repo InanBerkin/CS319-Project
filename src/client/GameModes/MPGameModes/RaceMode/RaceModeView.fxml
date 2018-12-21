@@ -3,7 +3,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.geometry.Insets?>
-<VBox fx:id="vBox" xmlns="http://javafx.com/javafx"
+<VBox id="main" fx:id="vBox" xmlns="http://javafx.com/javafx"
       xmlns:fx="http://javafx.com/fxml"
       fx:controller="client.GameModes.MPGameModes.RaceMode.RaceModeController"
       stylesheets="@/styles/GameInstance.css"
@@ -19,8 +19,10 @@
         <HBox alignment="CENTER">
             <Button HBox.hgrow="ALWAYS" fx:id="submitButton" text="Submit" onAction="#submit"/>
         </HBox>
-        <HBox fx:id="playersBar" alignment="CENTER">
-
+        <HBox fx:id="playersBar" alignment="CENTER_LEFT" spacing="20">
+            <padding>
+                <Insets left="30.0" right="30.0"/>
+            </padding>
         </HBox>
     <padding>
         <Insets bottom="50.0" left="10.0" right="10.0" top="60.0" />
