@@ -32,7 +32,7 @@ public class RoomLobbyMenuController extends MenuController {
 
     private int ownerID;
 
-    private boolean boardSize;
+    private JSONArray userList;
 
 
     @Override
@@ -40,7 +40,8 @@ public class RoomLobbyMenuController extends MenuController {
         JSONObject responseJSON = new JSONObject(message);
         if(responseJSON.getString("responseType").equals("userAnnouncement")){
             Platform.runLater(() -> {
-                addPlayers(responseJSON.getJSONArray("userList"));
+                userList = responseJSON.getJSONArray("userList");
+                addPlayers(userList);
                 if (responseJSON.getBoolean("isStartable")){
                     startButton.setDisable(false);
                 }
@@ -62,6 +63,8 @@ public class RoomLobbyMenuController extends MenuController {
                 JSONObject gamePayload = new JSONObject();
                 gamePayload.put("boardSize", responseJSON.getInt("boardSize"));
                 gamePayload.put("patternMatrix", responseJSON.getJSONArray("patternMatrix"));
+                gamePayload.put("roomID", payload.getInt("roomID"));
+                gamePayload.put("userList", userList);
                 QBitzApplication.getSceneController().gotoGameMode(false, "RaceMode", gamePayload);
             });
         }
