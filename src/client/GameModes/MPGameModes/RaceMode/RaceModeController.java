@@ -16,9 +16,7 @@ import org.json.JSONObject;
 public class RaceModeController extends GameInstance {
 
     @FXML
-    private HBox playersbar;
-    private int[][] generatedArray;
-
+    private HBox playersBar;
 
     @Override
     public void onMessageReceived(String message) {
@@ -56,7 +54,7 @@ public class RaceModeController extends GameInstance {
     }
 
     private void addPlayers(JSONArray playersList){
-        playersbar.getChildren().clear();
+        playersBar.getChildren().clear();
         int players = playersList.length();
         Player player;
         VBox vBox;
@@ -71,7 +69,7 @@ public class RaceModeController extends GameInstance {
             vBox = new VBox();
             vBox.setAlignment(Pos.CENTER);
             vBox.getChildren().add(new Label(player.getName()));
-            playersbar.getChildren().add(vBox);
+            playersBar.getChildren().add(vBox);
         }
     }
 

@@ -559,6 +559,21 @@ class QBitzServer {
                 json.put("boardSize", room.getBoardSize());
                 json.put("patternMatrix", patternMatrix);
 
+                JSONArray userList = new JSONArray();
+
+                for (ServerSocketHandler userHandler : room.getUsers()) {
+                    User user = userHandler.getUser();
+
+                    JSONObject userObj = new JSONObject();
+                    userObj.put("name", user.getUsername());
+                    userObj.put("id", user.getId());
+                    userObj.put("level", user.getLevel());
+
+                    userList.put(userObj);
+                }
+
+                json.put("userList", userList);
+
                 for (ServerSocketHandler userHandler : room.getUsers()) {
                     userHandler.sendMessage(json.toString());
                 }
