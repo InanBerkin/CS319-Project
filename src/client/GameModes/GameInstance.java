@@ -32,7 +32,7 @@ public abstract class GameInstance extends MenuController implements TimerSignab
 
     private final Group root = new Group();
     private Group boardGroup = new Group();
-    private Group patternGroup = new Group();
+    public Group patternGroup = new Group();
 
     @FXML
     private VBox vBox;

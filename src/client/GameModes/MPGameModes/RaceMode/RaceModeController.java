@@ -15,12 +15,14 @@ public class RaceModeController extends GameInstance {
 
     @FXML
     private HBox playersbar;
+    private int[][] generatedArray;
 
     @Override
     public void initializeGameMode() {
         gameTimer.startTimer();
         board = new GameBoard(gridDimension, null);
-        pattern = new Pattern(gridDimension,null);
+        pattern = new Pattern(gridDimension);
+        pattern.setGivenPattern(generatedArray);
     }
 
     private void addPlayers(JSONArray playersList){

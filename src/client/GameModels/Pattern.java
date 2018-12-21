@@ -27,16 +27,14 @@ public class Pattern {
     private static Group patternGroup;
     private static Box[] gridCell;
     private static int[][] gridMatrix;
-    private static Rotate r;
     private static final Transform t = new Rotate();
     private ImageView[] patternImageViews;
-    private Image[] imagesToCreatePattern;
+    private Image[] imagesToCreatePattern = null;
     private GaussianBlur gaussianBlur = new GaussianBlur();
 
-    public Pattern(int gridDimension, Image[] imagesToCreatePattern)
+    public Pattern(int gridDimension)
     {
         this.gridDimension = gridDimension;
-        this.imagesToCreatePattern = imagesToCreatePattern;
 
         gaussianBlur.setRadius(2);
 
@@ -44,11 +42,20 @@ public class Pattern {
         patternImageViews =  new ImageView[gridDimension*gridDimension];
 
         gridCell = new Box[(gridDimension) * (gridDimension)];
-        patternGroup = createPattern();
+        gridMatrix = (new PatternGenerator(gridDimension)).generatePattern(false);
+
+
     }
 
+    public void setImagesToCreatePattern(Image[] imagesToCreatePattern){
+        this.imagesToCreatePattern = imagesToCreatePattern;
+    }
+    public void setGivenPattern(int[][] givenPattern){
+        gridMatrix = givenPattern;
+    }
     public Group createPatternGroup()
     {
+        patternGroup = createPattern();
         return patternGroup;
     }
 
@@ -56,7 +63,6 @@ public class Pattern {
         Group boardGroupInst = new Group();
         int gridIndex;
 
-        gridMatrix = (new PatternGenerator(gridDimension)).generatePattern(false);
 
 
         for (int i = 0; i < gridDimension; i++) {

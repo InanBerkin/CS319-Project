@@ -57,7 +57,8 @@ public class ImageRecreationModeController extends GameInstance implements  Time
         this.imgParts = convertBuffToImage(buffImgParts, gridDimension);
 
         board = new GameBoard(gridDimension, this);
-        pattern = new Pattern(gridDimension, this.imgParts.toArray(new Image[this.imgParts.size()]));
+        pattern = new Pattern(gridDimension);
+        pattern.setImagesToCreatePattern(this.imgParts.toArray(new Image[this.imgParts.size()]));
         this.imageRec();
     }
 
