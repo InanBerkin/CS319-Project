@@ -11,6 +11,7 @@ import java.io.ByteArrayOutputStream;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Base64;
+import java.util.Comparator;
 import java.util.Random;
 
 /**
@@ -433,6 +434,55 @@ class QBitzServer {
                     handler.sendMessage(respObj.toString());
                 }
             }
+            else if(msgObj.getString("requestType").equals("submit")) {
+                int roomID = msgObj.getInt("roomID");
+                String finishTime = msgObj.getString("finishTime");
+
+                Room room = findRoomFromID(roomID);
+                room.addFinishTime(finishTime, handler.getUser());
+
+                JSONObject respObj = new JSONObject();
+
+                JSONArray userList = new JSONArray();
+
+                ArrayList<JSONObject> tempForSort = new ArrayList<>();
+
+                for (ServerSocketHandler userHandler : room.getUsers()) {
+                    User user = userHandler.getUser();
+
+                    FinishTime finish = room.getFromUser(user);
+                    JSONObject userObj = new JSONObject();
+                    userObj.put("name", user.getUsername());
+                    userObj.put("id", user.getId());
+
+                    if (finish != null) {
+                        userObj.put("finishTime", finish.time);
+                        userObj.put("rank", room.getFinishTimes().indexOf(finish) + 1);
+                    }
+                    else {
+                        userObj.put("finishTime", "Solving...");
+                        userObj.put("rank", 0);
+                    }
+                    tempForSort.add(userObj);
+                }
+
+                tempForSort.sort(new Comparator<JSONObject>() {
+                    @Override
+                    public int compare(JSONObject o1, JSONObject o2) {
+                        return o1.getInt("rank") - o2.getInt("rank");
+                    }
+                });
+
+                for (JSONObject obj : tempForSort)
+                    userList.put(obj);
+
+                respObj.put("finishList", userList);
+                respObj.put("responseType", "submit");
+
+                for (ServerSocketHandler userHandler : room.getUsers()) {
+                    userHandler.sendMessage(respObj.toString());
+                }
+            }
         }
     }
 
@@ -528,6 +578,21 @@ class QBitzServer {
                 json.put("responseType", "startGame");
                 json.put("boardSize", room.getBoardSize());
                 json.put("patternMatrix", patternMatrix);
+
+                JSONArray userList = new JSONArray();
+
+                for (ServerSocketHandler userHandler : room.getUsers()) {
+                    User user = userHandler.getUser();
+
+                    JSONObject userObj = new JSONObject();
+                    userObj.put("name", user.getUsername());
+                    userObj.put("id", user.getId());
+                    userObj.put("level", user.getLevel());
+
+                    userList.put(userObj);
+                }
+
+                json.put("userList", userList);
 
                 for (ServerSocketHandler userHandler : room.getUsers()) {
                     userHandler.sendMessage(json.toString());
