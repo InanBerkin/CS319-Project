@@ -107,12 +107,16 @@ class DatabaseConnector {
         return executeUpdate(ROOM_TABLE,"DELETE FROM ### WHERE `id` = ?", roomID);
     }
 
-    int addRoom(Room room) {
-        executeUpdate(ROOM_TABLE,"INSERT INTO ### (`name`, `gamemode`, `ownerid`, `players`, `maxplayers`, `entrance_level`, `roomtype`, `roomcode`) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
-                room.getName(), room.getGamemode(), room.getOwnerid(), room.getPlayers(), room.getMaxPlayers(), room.getEntranceLevel(), room.getRoomtype(), room.getRoomcode());
+    boolean changeRoomOwner(int roomID, int ownerID) {
+        return executeUpdate(ROOM_TABLE,"UPDATE ### SET `ownerid` = ? WHERE `id` = ?", ownerID, roomID);
+    }
 
-        ResultSet result = executeQuery(ROOM_TABLE,"SELECT `id` FROM ### WHERE `name` = ? AND `gamemode` = ? AND `ownerid` = ? AND `players` = ? AND `maxplayers` = ? AND `entrance_level` = ? AND `roomtype` = ? AND `roomcode` = ?",
-                room.getName(), room.getGamemode(), room.getOwnerid(), room.getPlayers(), room.getMaxPlayers(), room.getEntranceLevel(), room.getRoomtype(), room.getRoomcode());
+    int addRoom(Room room) {
+        executeUpdate(ROOM_TABLE,"INSERT INTO ### (`name`, `gamemode`, `ownerid`, `players`, `maxplayers`, `entrance_level`, `roomtype`, `roomcode`, `boardSize`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)",
+                room.getName(), room.getGamemode(), room.getOwnerid(), room.getPlayers(), room.getMaxPlayers(), room.getEntranceLevel(), room.getRoomtype(), room.getRoomcode(), room.getBoardSize());
+
+        ResultSet result = executeQuery(ROOM_TABLE,"SELECT `id` FROM ### WHERE `name` = ? AND `gamemode` = ? AND `ownerid` = ? AND `players` = ? AND `maxplayers` = ? AND `entrance_level` = ? AND `roomtype` = ? AND `roomcode` = ? AND `boardSize` = ?",
+                room.getName(), room.getGamemode(), room.getOwnerid(), room.getPlayers(), room.getMaxPlayers(), room.getEntranceLevel(), room.getRoomtype(), room.getRoomcode(), room.getBoardSize());
 
         try {
             if (result.next())
