@@ -1,4 +1,4 @@
-package client.GameModes.SPGameModes.ImageRecreation;
+package client.GameModes.SPGameModes.ImageRecreationMode;
 
 import client.GameModels.XRectangle;
 import javafx.embed.swing.SwingFXUtils;
@@ -15,9 +15,31 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class ImageRecreation
-{
+import client.GameModes.SPGameModes.MemoryMode.MemoryModeController;
+import client.Menus.MenuController;
+import client.GameModels.*;
+import javafx.application.Platform;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
+import javafx.fxml.FXML;
+import javafx.geometry.Pos;
+import javafx.scene.*;
+import javafx.scene.control.Label;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import javafx.scene.transform.Rotate;
 
+import java.io.FileNotFoundException;
+
+import java.io.IOException;
+import java.net.URL;
+import java.util.ResourceBundle;
+public class ImageRecreationModeController extends  MenuController implements  TimerSignable
+{
+    ///**********************FOR_IMAGE_RECREATION************************************
     private final int SIZE = 640;
 
     private Image img;
@@ -25,40 +47,234 @@ public class ImageRecreation
 
     private ArrayList<Image> imgParts;
     private BufferedImage[] buffImgParts;
-    private XRectangle[] cube;
 
 
     private int dimension;
 
     private List<Integer> remainingList;
+    ///**********************FOR_IMAGE_RECREATION************************************
+
+    private final Group root = new Group();
+    private Group boardGroup = new Group();
+    private Group patternGroup = new Group();
+
+    @FXML
+    private VBox vBox;
+
+    @FXML
+    private HBox sceneHbox;
+
+    @FXML
+    private Label timerLabel;
+
+    private GameBoard board;
+    private Pattern pattern;
+
+    private static final double CAMERA_INITIAL_DISTANCE = -1000;
+    private static final double CAMERA_INITIAL_X_ANGLE = -30.0;
+    private static final double CAMERA_INITIAL_Y_ANGLE = 60.0;
+    private static final double CAMERA_NEAR_CLIP = 0.1;
+    private static final double CAMERA_FAR_CLIP = 10000.0;
+    private static final double KEY_ROTATION_STEP = 9;
 
 
-    public ImageRecreation(String img_path, int dimension, XRectangle[] rect) throws java.io.IOException {
-
-        //initialize values
-        this.img = new Image(new FileInputStream(img_path), SIZE, SIZE, false, false);
-        cube = rect;
-        //dimension of image image parts
-        this.dimension = dimension;
-        //javafx.image.Image to BufferedImage to split parts
-        this.buffImg = SwingFXUtils.fromFXImage(img, null);
-
-        remainingList = new ArrayList<>();
-        for( int i = 0 ; i < dimension * dimension ; i++)
-            remainingList.add(i);
-        Collections.shuffle(remainingList);
-
-        //image parts save in bufferedimagearray
-        buffImgParts = new BufferedImage[ dimension * dimension ];
-        buffImgParts = splitImage(buffImg, dimension);
+    private int gridDimension;
 
 
-        this.imgParts = new ArrayList<>();
-        this.imgParts = convertBuffToImage(buffImgParts, dimension);
+    Cube cube;
+    final XGroup cameraHolder = new XGroup();
+    final PerspectiveCamera camera = new PerspectiveCamera(true);
+
+    final XGroup cameraHolderBoard = new XGroup();
+    final PerspectiveCamera cameraBoard = new PerspectiveCamera(true);
+
+    final XGroup cameraHolderPattern = new XGroup();
+    final PerspectiveCamera cameraPattern = new PerspectiveCamera(true);
+
+
+    private GameTimer gameTimer;
+
+    private String img_path = "assets/recImage.jpg";
+
+    @Override
+    public void timerStopped() {
 
     }
 
+    @Override
+    public void onMessageReceived(String message) {
 
+    }
+
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+
+        try {
+            cube = new Cube(200, KEY_ROTATION_STEP, 0, 0, 0);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        gameTimer = new GameTimer(this,timerLabel);
+
+        gameTimer.startTimer();
+        gameTimer = new GameTimer(this, timerLabel);
+        gameTimer.startTimer();
+        root.setDepthTest(DepthTest.ENABLE);
+        buildCamera();
+        try {
+            buildBody();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        Platform.runLater(() -> {
+            gridDimension = payload.getInt("boardSize");
+            ///**********************FOR_IMAGE_RECREATION************************************
+            //initialize values
+            try {
+                this.img = new Image(new FileInputStream(img_path), SIZE, SIZE, false, false);
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
+
+
+            //dimension of image image parts
+            this.dimension = gridDimension;
+            //javafx.image.Image to BufferedImage to split parts
+            this.buffImg = SwingFXUtils.fromFXImage(img, null);
+
+            remainingList = new ArrayList<>();
+            for( int i = 0 ; i < dimension * dimension ; i++)
+                remainingList.add(i);
+            Collections.shuffle(remainingList);
+
+            //image parts save in bufferedimagearray
+            buffImgParts = new BufferedImage[ dimension * dimension ];
+            buffImgParts = splitImage(buffImg, dimension);
+
+
+            this.imgParts = new ArrayList<>();
+            this.imgParts = convertBuffToImage(buffImgParts, dimension);
+
+            //**********************FOR_IMAGE_RECREATION************************************
+
+
+
+
+            board = new GameBoard(gridDimension, this);
+            pattern = new Pattern(gridDimension, this.imgParts.toArray(new Image[this.imgParts.size()]));
+            this.imageRec();
+
+
+
+
+
+            boardGroup = board.createBoardGroup();
+            patternGroup = pattern.createPatternGroup();
+
+//            patternGroup.setTranslateX(patternGroup.getTranslateX() + WIDTH/8);
+            patternGroup.translateZProperty().set(0);
+
+//            patternGroup.setTranslateX(patternGroup.getTranslateX() - WIDTH/8);
+            boardGroup.translateZProperty().set(0);
+
+            boardGroup.getChildren().add(new AmbientLight());
+            patternGroup.getChildren().add(new AmbientLight());
+
+            SubScene cubeScene = new SubScene(root, 400, 400, true, SceneAntialiasing.BALANCED);
+            cubeScene.setCamera(camera);
+            cubeScene.setFill(Color.SPRINGGREEN);
+
+            SubScene boardScene = new SubScene(boardGroup, 400, 400 , true, SceneAntialiasing.BALANCED);
+            boardScene.setCamera(cameraBoard);
+            boardScene.setFill(Color.WHITE);
+
+            SubScene patternScene = new SubScene(patternGroup, 400, 400 , true, SceneAntialiasing.BALANCED);
+            patternScene.setCamera(cameraPattern);
+            patternScene.setFill(Color.WHITE);
+
+            sceneHbox.setSpacing(40);
+            sceneHbox.setAlignment(Pos.CENTER);
+            sceneHbox.getChildren().addAll(cubeScene, boardScene, patternScene);
+
+
+
+            handleKeys(vBox);
+        });
+
+
+        }
+
+
+    private void buildCamera() {
+        camera.setNearClip(CAMERA_NEAR_CLIP);
+        camera.setFarClip(CAMERA_FAR_CLIP);
+        camera.setTranslateZ(CAMERA_INITIAL_DISTANCE);
+
+        cameraHolder.getChildren().add(camera);
+        cameraHolder.rotate(CAMERA_INITIAL_X_ANGLE, Rotate.X_AXIS);
+        cameraHolder.rotate(CAMERA_INITIAL_Y_ANGLE, Rotate.Y_AXIS);
+
+        root.getChildren().add(cameraHolder);
+
+
+        cameraBoard.setNearClip(CAMERA_NEAR_CLIP);
+        cameraBoard.setFarClip(CAMERA_FAR_CLIP);
+        cameraBoard.setTranslateZ(CAMERA_INITIAL_DISTANCE);
+
+        cameraHolderBoard.getChildren().add(cameraBoard);
+
+        boardGroup.getChildren().add(cameraHolderBoard);
+
+
+        cameraPattern.setNearClip(CAMERA_NEAR_CLIP);
+        cameraPattern.setFarClip(CAMERA_FAR_CLIP);
+        cameraPattern.setTranslateZ(CAMERA_INITIAL_DISTANCE);
+
+        cameraHolderPattern.getChildren().add(cameraPattern);
+
+        patternGroup.getChildren().add(cameraHolderPattern);
+
+    }
+
+    private void buildBody()  {
+        root.getChildren().add(cube);
+        cube.updateFrontFaces();
+    }
+
+
+    private void handleKeys(VBox vBox) {
+        vBox.addEventFilter(KeyEvent.KEY_PRESSED, event-> {
+            event.consume();
+            if (event.getCode() == KeyCode.W) {
+                cube.rotate1();
+            } else if (event.getCode() == KeyCode.S) {
+                cube.rotate2();
+            } else if (event.getCode() == KeyCode.A) {
+                cube.rotate3();
+            } else if (event.getCode() == KeyCode.D) {
+                cube.rotate4();
+            } else if (event.getCode() == KeyCode.Q) {
+                cube.highlight(Cube.BACKWARD);
+            } else if (event.getCode() == KeyCode.E) {
+                cube.highlight(Cube.FORWARD);
+            } else if (event.getCode() == KeyCode.SPACE) {
+                board.setSelectedFaceMat(cube.selectFace());
+            }
+        });
+    }
+
+
+
+    public void foo() {
+        System.out.println("Is pattern correct? : " + pattern.checkPattern(board.getBoardImageViews()));
+        System.out.println("Submit Button!");
+    }
+
+
+
+
+
+    ///**********************FOR_IMAGE_RECREATION************************************
     public Image[] getCubeFaces(){
 
         Image[] cubeFaces = new Image[6];
@@ -74,8 +290,8 @@ public class ImageRecreation
     {
         Image[] tmp = getCubeFaces();
         for(int i = 0; i < 6; i++) {
-            cube[i].setFill(new ImagePattern(tmp[i]));
-            cube[i].setFaceImage(tmp[i]);
+            cube.getFaces()[i].setFill(new ImagePattern(tmp[i]));
+            cube.getFaces()[i].setFaceImage(tmp[i]);
         }
     }
     public void addFace(Image newImg){
@@ -182,7 +398,7 @@ public class ImageRecreation
         this.remainingList = remainingList;
     }
 
-
+    ///**********************FOR_IMAGE_RECREATION************************************
 
 
 
@@ -534,7 +750,7 @@ public class ImageRecreation
 //
 //    public static void main( String [] args){
 //        try {
-//            ImageRecreation img = new ImageRecreation("yildiz.jpg", 4);
+//            ImageRecreationModeController img = new ImageRecreationModeController("yildiz.jpg", 4);
 //
 //
 //            //double a = img.compareHist(hist1, hist2);

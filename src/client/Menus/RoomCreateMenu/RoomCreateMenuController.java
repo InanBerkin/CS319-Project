@@ -51,7 +51,7 @@ public class RoomCreateMenuController extends MenuController {
 
     private void initializeGameModeComboBox(){
         gameModeComboBox.getItems().addAll(
-                "Race",
+                "RaceModeController",
                 "Elimination",
                 "Image Rec"
         );
