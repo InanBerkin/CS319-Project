@@ -2,7 +2,6 @@ package client.GameModes.MPGameModes.RaceMode;
 
 import client.GameModes.GameInstance;
 import client.GameModels.*;
-import client.Menus.RoomLobbyMenu.RoomLobbyMenuController;
 import client.QBitzApplication;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
@@ -23,7 +22,7 @@ public class RaceModeController extends GameInstance {
         JSONObject responseJSON = new JSONObject(message);
         if(responseJSON.getString("responseType").equals("submit")){
             Platform.runLater(() -> {
-
+                updatePlayers(responseJSON.getJSONArray("finishList"));
             });
         }
     }
@@ -59,16 +58,46 @@ public class RaceModeController extends GameInstance {
         Player player;
         VBox vBox;
         int id;
-        int level;
         String name;
         for (int i = 0; i < players; i++){
             JSONObject playerJSON = (JSONObject) playersList.get(i);
             id = playerJSON.getInt("id");
             name = playerJSON.getString("name");
             player = new Player(id,name);
-            vBox = new VBox();
+            vBox = new VBox(20);
             vBox.setAlignment(Pos.CENTER);
             vBox.getChildren().add(new Label(player.getName()));
+            if(!player.getFinishTime().isEmpty()){
+                vBox.getChildren().add(new Label(player.getFinishTime()));
+                vBox.getChildren().add(new Label(player.getRank() + ""));
+            }
+            vBox.setStyle("-fx-background-color: #000");
+            playersBar.getChildren().add(vBox);
+        }
+    }
+
+    private void updatePlayers(JSONArray playersList){
+        playersBar.getChildren().clear();
+        int players = playersList.length();
+        Player player;
+        VBox vBox;
+        int id;
+        String finishTime;
+        int rank;
+        String name;
+        for (int i = 0; i < players; i++){
+            JSONObject playerJSON = (JSONObject) playersList.get(i);
+            id = playerJSON.getInt("id");
+            name = playerJSON.getString("name");
+            finishTime = playerJSON.getString("finishTime");
+            rank = playerJSON.getInt("rank");
+            player = new Player(id,name, finishTime, rank);
+            vBox = new VBox(20);
+            vBox.setAlignment(Pos.CENTER);
+            vBox.getChildren().add(new Label(player.getName()));
+            vBox.getChildren().add(new Label(player.getFinishTime()));
+            vBox.getChildren().add(new Label(player.getRank() + ""));
+            vBox.setStyle("-fx-background-color: #000");
             playersBar.getChildren().add(vBox);
         }
     }
@@ -76,7 +105,15 @@ public class RaceModeController extends GameInstance {
     private class Player{
         private int id;
         private String name;
-        private String time;
+        private String finishTime;
+        private int rank;
+
+        public Player(int id, String name, String finishTime, int rank) {
+            this.id = id;
+            this.name = name;
+            this.finishTime = finishTime;
+            this.rank = rank;
+        }
 
         public Player(int id, String name) {
             this.id = id;
@@ -87,16 +124,24 @@ public class RaceModeController extends GameInstance {
             return id;
         }
 
-        public String getTime() {
-            return time;
+        public String getFinishTime() {
+            return finishTime;
         }
 
         public String getName() {
             return name;
         }
 
-        public void setTime(String time) {
-            this.time = time;
+        public void setFinishTime(String finishTime) {
+            this.finishTime = finishTime;
+        }
+
+        public int getRank() {
+            return rank;
+        }
+
+        public void setRank(int rank) {
+            this.rank = rank;
         }
     }
 }
