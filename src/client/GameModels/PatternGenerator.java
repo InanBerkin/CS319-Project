@@ -18,52 +18,17 @@ public class PatternGenerator {
     {
         if(!hard) {
             if (gridDimension == 3) {
-                int[][] tmp = new int[2][2];
-
                 for (int i = 0; i < 2; i++) {
                     png = (int) ((Math.random() * numOfPng) + 1);
                     state = (int) ((Math.random() * numOfStates));
-
-                    tmp[i][0] = png;
-                    tmp[i][1] = state;
-                }
-                int patternRandom  = (int) ((Math.random() * 1 ) + 1);
-                int patternRandom2  = (int) ((Math.random() * 1 ) + 1);
-                if( patternRandom == 1 && patternRandom2 == 1)
-                    patternRandom = 0;
-                for(int i = 0 ; i< 2 ; i++) {
-                    int multiplier = 0;
-                    if (i == 0) {
-                        multiplier = numOfPng;
-                        gridMatrix[0][i] = ((tmp[0][i] + i+patternRandom2) % multiplier)+1;
-                        gridMatrix[1][i] = ((tmp[1][i] + i+patternRandom)  % multiplier)+1;
-                        gridMatrix[2][i] = ((tmp[0][i] + i+patternRandom)  % multiplier)+1;
-                        gridMatrix[3][i] = ((tmp[1][i] + i+patternRandom2) % multiplier)+1;
-
-                        gridMatrix[5][i] = ((tmp[1][i] + i+patternRandom2) % multiplier)+1;
-                        gridMatrix[6][i] = ((tmp[0][i] + i+patternRandom)  % multiplier)+1;
-                        gridMatrix[7][i] = ((tmp[1][i] + i+patternRandom)  % multiplier)+1;
-                        gridMatrix[8][i] = ((tmp[0][i] + i+patternRandom2) % multiplier)+1;
-
-
-
-                    } else {
-                        multiplier = numOfStates;
-                        gridMatrix[0][i] = (tmp[0][i] + 0) % multiplier;
-                        gridMatrix[1][i] = (tmp[1][i] + 1) % multiplier;
-                        gridMatrix[2][i] = (tmp[0][i] + 1) % multiplier;
-                        gridMatrix[3][i] = (tmp[1][i] + 0) % multiplier;
-
-                        gridMatrix[5][i] = (tmp[1][i] + 2) % multiplier;
-                        gridMatrix[6][i] = (tmp[0][i] + 3) % multiplier;
-                        gridMatrix[7][i] = (tmp[1][i] + 3) % multiplier;
-                        gridMatrix[8][i] = (tmp[0][i] + 2) % multiplier;
-
+                    for (int j = 0; j < 2; j++) {
+                        gridMatrix[j + (i * 2)][0] = png;
+                        gridMatrix[j + (i * 2)][1] = (state + 3)%numOfStates;
+                        gridMatrix[j + (i * 2) + 5][0] = png;
+                        gridMatrix[j + (i * 2) + 5][1] = (state + 3)%numOfStates;
 
                     }
                 }
-
-
                 png = (int) ((Math.random() * numOfPng) + 1);
                 state = (int) ((Math.random() * numOfStates));
                 gridMatrix[4][0] = png;
@@ -79,55 +44,20 @@ public class PatternGenerator {
                     tmp[i][0] = png;
                     tmp[i][1] = state;
                 }
-                int patternRandom  = (int) ((Math.random() * 1 ) + 1);
-                int patternRandom2  = (int) ((Math.random() * 1 ) + 1);
-                if( patternRandom == 1 && patternRandom2 == 1)
-                    patternRandom = 0;
+                for (int i = 0; i < 2; i++)
+                    for (int j = 0; j < 2; j++) {
+                        gridMatrix[i + (j * 4)][0] = tmp[j + (i * 2)][0];
+                        gridMatrix[i + (j * 4)][1] = tmp[j + (i * 2)][1];
 
-                for(int i = 0 ; i< 2 ; i++) {
-                    int multiplier = 0;
-                    if (i == 0) {
-                        multiplier = numOfPng;
-                        gridMatrix[0][i]  = ((tmp[0][i] + i+patternRandom2)  % multiplier)+1;
-                        gridMatrix[1][i]  = ((tmp[1][i] + i+patternRandom2)  % multiplier)+1;
-                        gridMatrix[2][i]  = ((tmp[2][i] + i+patternRandom)   % multiplier)+1;
-                        gridMatrix[3][i]  = ((tmp[0][i] + i+patternRandom)   % multiplier)+1;
-                        gridMatrix[4][i]  = ((tmp[2][i] + i+patternRandom2)  % multiplier)+1;
-                        gridMatrix[5][i]  = ((tmp[3][i] + i+patternRandom2)  % multiplier)+1;
-                        gridMatrix[6][i]  = ((tmp[3][i] + i+patternRandom)   % multiplier)+1;
-                        gridMatrix[7][i]  = ((tmp[1][i] + i+patternRandom)   % multiplier)+1;
-                        gridMatrix[8][i]  = ((tmp[1][i] + i+patternRandom)  % multiplier)+1;
-                        gridMatrix[9][i]  = ((tmp[3][i] + i+patternRandom)  % multiplier)+1;
-                        gridMatrix[10][i] = ((tmp[3][i] + i+patternRandom2) % multiplier)+1;
-                        gridMatrix[11][i] = ((tmp[2][i] + i+patternRandom2) % multiplier)+1;
-                        gridMatrix[12][i] = ((tmp[0][i] + i+patternRandom)  % multiplier)+1;
-                        gridMatrix[13][i] = ((tmp[2][i] + i+patternRandom)  % multiplier)+1;
-                        gridMatrix[14][i] = ((tmp[1][i] + i+patternRandom2) % multiplier)+1;
-                        gridMatrix[15][i] = ((tmp[0][i] + i+patternRandom2) % multiplier)+1;
+                        gridMatrix[i + (j * 4) + 10][0] = tmp[j + (i * 2)][0];
+                        gridMatrix[i + (j * 4) + 10][1] = tmp[j + (i * 2)][1];
 
-                    } else {
-                        multiplier = numOfStates;
-                        gridMatrix[0][i] = (tmp[0][i] + 0) % multiplier;
-                        gridMatrix[1][i] = (tmp[1][i] + 0) % multiplier;
-                        gridMatrix[2][i] = (tmp[2][i] + 1) % multiplier;
-                        gridMatrix[3][i] = (tmp[0][i] + 1) % multiplier;
+                        gridMatrix[j + (i * 4) + 2][0] = tmp[j + (i * 2)][0];
+                        gridMatrix[j + (i * 4) + 2][1] = (tmp[j + (i * 2)][1]+ 3)%numOfStates;
 
-                        gridMatrix[4][i] = (tmp[2][i] + 0) % multiplier;
-                        gridMatrix[5][i] = (tmp[3][i] + 0) % multiplier;
-                        gridMatrix[6][i] = (tmp[3][i] + 1) % multiplier;
-                        gridMatrix[7][i] = (tmp[1][i] + 1) % multiplier;
-
-                        gridMatrix[8][i] = (tmp[1][i] + 3) % multiplier;
-                        gridMatrix[9][i] = (tmp[3][i] + 3) % multiplier;
-                        gridMatrix[10][i] = (tmp[3][i] + 2) % multiplier;
-                        gridMatrix[11][i] = (tmp[2][i] + 2) % multiplier;
-
-                        gridMatrix[12][i] = (tmp[0][i] + 3) % multiplier;
-                        gridMatrix[13][i] = (tmp[2][i] + 3) % multiplier;
-                        gridMatrix[14][i] = (tmp[1][i] + 2) % multiplier;
-                        gridMatrix[15][i] = (tmp[0][i] + 2) % multiplier;
+                        gridMatrix[j + (i * 4) + 8][0] = tmp[j + (i * 2)][0];
+                        gridMatrix[j + (i * 4) + 8][1] = (tmp[j + (i * 2)][1]+ 3)%numOfStates;
                     }
-                }
 
             } else {
                 int[][] tmp = new int[6][2];
@@ -139,77 +69,17 @@ public class PatternGenerator {
                     tmp[i][0] = png;
                     tmp[i][1] = state;
                 }
-                int patternRandom  = (int) ((Math.random() * 1 ) + 1);
-                int patternRandom2  = (int) ((Math.random() * 1 ) + 1);
-                if( patternRandom == 1 && patternRandom2 == 1)
-                    patternRandom = 0;
-                for(int i = 0 ; i< 2 ; i++) {
-                    int multiplier = 0;
-                    if (i == 0) {
-                        multiplier = numOfPng;
-                        gridMatrix[0][i]  = ((tmp[0][i] + i+patternRandom2 ) % multiplier)+1;
-                        gridMatrix[1][i]  = ((tmp[1][i] + i+patternRandom2)  % multiplier)+1;
-                        gridMatrix[2][i]  = ((tmp[4][i] + i+patternRandom)   % multiplier)+1;
-                        gridMatrix[3][i]  = ((tmp[2][i] + i+patternRandom)   % multiplier)+1;
-                        gridMatrix[4][i]  = ((tmp[0][i] + i+patternRandom)   % multiplier)+1;
-                        gridMatrix[5][i]  = ((tmp[2][i] + i+patternRandom2)  % multiplier)+1;
-                        gridMatrix[6][i]  = ((tmp[3][i] + i+patternRandom2)  % multiplier)+1;
-                        gridMatrix[7][i]  = ((tmp[5][i] + i+patternRandom)   % multiplier)+1;
-                        gridMatrix[8][i]  = ((tmp[3][i] + i+patternRandom)   % multiplier)+1;
-                        gridMatrix[9][i]  = ((tmp[1][i] + i+patternRandom)   % multiplier)+1;
-                        gridMatrix[10][i] = ((tmp[4][i] + i+patternRandom2)  % multiplier)+1;
-                        gridMatrix[11][i] = ((tmp[5][i] + i+patternRandom2)  % multiplier)+1;
-                        gridMatrix[13][i] = ((tmp[5][i] + i+patternRandom2)  % multiplier)+1;
-                        gridMatrix[14][i] = ((tmp[4][i] + i+patternRandom2)  % multiplier)+1;
-                        gridMatrix[15][i] = ((tmp[1][i] + +patternRandom)    % multiplier)+1;
-                        gridMatrix[16][i] = ((tmp[3][i] + i+patternRandom)   % multiplier)+1;
-
-                        gridMatrix[17][i] = ((tmp[5][i] + i+patternRandom)  % multiplier)+1;
-                        gridMatrix[18][i] = ((tmp[3][i] + i+patternRandom2) % multiplier)+1;
-                        gridMatrix[19][i] = ((tmp[2][i] + i+patternRandom2) % multiplier)+1;
-                        gridMatrix[20][i] = ((tmp[0][i] + i+patternRandom)  % multiplier)+1;
-                        gridMatrix[21][i] = ((tmp[2][i] + i+patternRandom)  % multiplier)+1;
-                        gridMatrix[22][i] = ((tmp[4][i] + i+patternRandom)  % multiplier)+1;
-                        gridMatrix[23][i] = ((tmp[1][i] + i+patternRandom2) % multiplier)+1;
-                        gridMatrix[24][i] = ((tmp[0][i] + i+patternRandom2) % multiplier)+1;
-
-
-
-                    } else {
-                        multiplier = numOfStates;
-                        gridMatrix[0][i] = (tmp[0][i] + 0) % multiplier;
-                        gridMatrix[1][i] = (tmp[1][i] + 0) % multiplier;
-                        gridMatrix[2][i] = (tmp[4][i] + 1) % multiplier;
-                        gridMatrix[3][i] = (tmp[2][i] + 1) % multiplier;
-
-                        gridMatrix[4][i] = (tmp[0][i] + 1) % multiplier;
-                        gridMatrix[5][i] = (tmp[2][i] + 0) % multiplier;
-                        gridMatrix[6][i] = (tmp[3][i] + 0) % multiplier;
-                        gridMatrix[7][i] = (tmp[5][i] + 1) % multiplier;
-
-                        gridMatrix[8][i] = (tmp[3][i] + 1) % multiplier;
-                        gridMatrix[9][i] = (tmp[1][i] + 1) % multiplier;
-                        gridMatrix[10][i] = (tmp[4][i] + 0) % multiplier;
-                        gridMatrix[11][i] = (tmp[5][i] + 0) % multiplier;
-
-                        gridMatrix[13][i] = (tmp[5][i] + 2) % multiplier;
-                        gridMatrix[14][i] = (tmp[4][i] + 2) % multiplier;
-                        gridMatrix[15][i] = (tmp[1][i] + 3) % multiplier;
-                        gridMatrix[16][i] = (tmp[3][i] + 3) % multiplier;
-
-                        gridMatrix[17][i] = (tmp[5][i] + 3) % multiplier;
-                        gridMatrix[18][i] = (tmp[3][i] + 2) % multiplier;
-                        gridMatrix[19][i] = (tmp[2][i] + 2) % multiplier;
-                        gridMatrix[20][i] = (tmp[0][i] + 3) % multiplier;
-
-                        gridMatrix[21][i] = (tmp[2][i] + 3) % multiplier;
-                        gridMatrix[22][i] = (tmp[4][i] + 3) % multiplier;
-                        gridMatrix[23][i] = (tmp[1][i] + 2) % multiplier;
-                        gridMatrix[24][i] = (tmp[0][i] + 2) % multiplier;
-
-
+                for (int i = 0; i < 2; i++)
+                    for (int j = 0; j < 3; j++) {
+                        gridMatrix[i + (j * 5)][0] = tmp[j + (i * 2)][0];
+                        gridMatrix[i + (j * 5)][1] = tmp[j + (i * 2)][1];
+                        gridMatrix[i + (j * 5) + 13][0] = tmp[j + (i * 2)][0];
+                        gridMatrix[i + (j * 5) + 13][1] = tmp[j + (i * 2)][1];
+                        gridMatrix[j + (i * 5) + 2][0] = tmp[j + (i * 2)][0];
+                        gridMatrix[j + (i * 5) + 2][1] = (tmp[j + (i * 2)][1] + 3)%numOfStates;
+                        gridMatrix[j + (i * 5) + 15][0] = tmp[j + (i * 2)][0];
+                        gridMatrix[j + (i * 5) + 15][1] = (tmp[j + (i * 2)][1] + 3)%numOfStates;
                     }
-                }
                 png = (int) ((Math.random() * numOfPng) + 1);
                 state = (int) ((Math.random() * numOfStates));
                 gridMatrix[12][0] = png;
