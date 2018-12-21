@@ -4,6 +4,7 @@ import client.Menus.MenuController;
 import client.QBitzApplication;
 import client.GameModels.Room;
 import javafx.application.Platform;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -49,7 +50,7 @@ public class RoomMenuController extends MenuController {
 
         TableColumn<Room, String>  playerNoColumn = new TableColumn<>("Players");
         //playerNoColumn.setMinWidth(200);
-        playerNoColumn.setCellValueFactory(new PropertyValueFactory<>("players"));
+        playerNoColumn.setCellValueFactory(c-> new SimpleStringProperty(c.getValue().getPlayers() + " / " + c.getValue().getMaxPlayers()));
 
         TableColumn<Room, String>  levelColumn = new TableColumn<>("Entrance Level");
         //levelColumn.setMinWidth(200);

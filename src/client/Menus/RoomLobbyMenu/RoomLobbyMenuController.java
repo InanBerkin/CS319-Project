@@ -39,7 +39,7 @@ public class RoomLobbyMenuController extends MenuController {
         }
         else if(responseJSON.getString("responseType").equals("startCounter")){
             Platform.runLater(() -> {
-                roomName.setText(Integer.toString(responseJSON.getInt("count")));
+                roomName.setText("Game Starts in" + Integer.toString(responseJSON.getInt("count")));
             });
         }
     }
