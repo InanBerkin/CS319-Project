@@ -16,12 +16,18 @@
         <Label GridPane.rowIndex="0" GridPane.columnIndex="0" text="Room Name"/>
         <Label GridPane.rowIndex="1" GridPane.columnIndex="0" text="Game Mode"/>
         <Label GridPane.rowIndex="2" GridPane.columnIndex="0" text="Number of players"/>
+        <Label GridPane.rowIndex="2" GridPane.columnIndex="0" text="Board Size"/>
         <Label GridPane.rowIndex="3" GridPane.columnIndex="0" text="Minimum Level"/>
         <Label GridPane.rowIndex="4" GridPane.columnIndex="0" text="Private room"/>
 
         <TextField GridPane.rowIndex="0" GridPane.columnIndex="1" fx:id="roomNameTextField"/>
         <ComboBox GridPane.rowIndex="1" GridPane.columnIndex="1" fx:id="gameModeComboBox"/>
         <TextField GridPane.rowIndex="2" GridPane.columnIndex="1" fx:id="maxPlayersTextField"/>
+        <HBox>
+            <RadioButton fx:id="boardSize3"/>
+            <RadioButton fx:id="boardSize4"/>
+            <RadioButton fx:id="boardSize5"/>
+        </HBox>
         <TextField GridPane.rowIndex="3" GridPane.columnIndex="1" fx:id="minEntranceLevelTextField"/>
         <CheckBox GridPane.rowIndex="4" GridPane.columnIndex="1" fx:id="roomTypeCheckbox"/>
         <columnConstraints>

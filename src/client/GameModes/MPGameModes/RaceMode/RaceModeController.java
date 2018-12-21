@@ -15,6 +15,5 @@ public class RaceModeController extends GameInstance {
         gameTimer.startTimer();
         board = new GameBoard(gridDimension, null);
         pattern = new Pattern(gridDimension,null);
-
     }
 }

@@ -29,6 +29,10 @@ public class RoomLobbyMenuController extends MenuController {
     @FXML
     private Label roomCodeText;
 
+    private boolean isOwner;
+
+    private boolean boardSize;
+
     @Override
     public void onMessageReceived(String message) {
         JSONObject responseJSON = new JSONObject(message);
@@ -45,9 +49,17 @@ public class RoomLobbyMenuController extends MenuController {
                 roomName.setText("Game Starts in " + Integer.toString(responseJSON.getInt("count")));
             });
         }
-        else if(responseJSON.getString("responseType").equals("ownerExit")){
+        else if(responseJSON.getString("responseType").equals("changeOwner")){
             Platform.runLater(() -> {
-                QBitzApplication.getSceneController().gotoMenu("RoomMenu");
+                isOwner = responseJSON.getBoolean("isOwner");
+                startButton.setVisible(isOwner);
+            });
+        }
+        else if(responseJSON.getString("responseType").equals("startGame")){
+            Platform.runLater(() -> {
+                JSONObject gamePayload = new JSONObject();
+                gamePayload.put("boardSize", 3);
+                QBitzApplication.getSceneController().gotoGameMode(false, "RaceMode", gamePayload);
             });
         }
     }
@@ -55,9 +67,10 @@ public class RoomLobbyMenuController extends MenuController {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         Platform.runLater(() ->{
+            isOwner = payload.getBoolean("isOwner");
             addPlayers(payload.getJSONArray("userList"));
             roomName.setText(payload.getString("name"));
-            startButton.setVisible(payload.getBoolean("isOwner") ? true : false);
+            startButton.setVisible(isOwner);
             roomCodeText.setText(payload.getString("roomCode"));
         });
     }
@@ -77,7 +90,12 @@ public class RoomLobbyMenuController extends MenuController {
             name = playerJSON.getString("name");
             player = new Player(id,level,name);
             hBox = new HBox();
-            hBox.setStyle("-fx-background-color: #ffffff;");
+            if(isOwner){
+                hBox.setStyle("-fx-background-color: #ffffff;");
+            }
+            else{
+                hBox.setStyle("-fx-background-color: #ffffff;");
+            }
             hBox.setAlignment(Pos.CENTER_LEFT);
             hBox.getChildren().add(new Label(player.getName()));
             playersGridPane.add(hBox,i/4 , i);

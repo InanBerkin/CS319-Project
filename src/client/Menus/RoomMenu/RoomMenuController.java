@@ -161,7 +161,7 @@ public class RoomMenuController extends MenuController {
             int resultCode = responseJSON.getInt("result");
             if (resultCode == 0){
                 Platform.runLater(() -> {
-                    System.out.println("Joined");
+                    responseJSON.put("roomCode", "");
                     QBitzApplication.getSceneController().gotoMenu("RoomLobbyMenu", responseJSON);
                 });
             }
