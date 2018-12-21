@@ -101,6 +101,8 @@ public abstract class GameInstance extends MenuController implements TimerSignab
             patternGroup.translateZProperty().set(0);
             boardGroup.translateZProperty().set(0);
 
+            setQuestMark();
+
             boardGroup.getChildren().add(new AmbientLight());
             patternGroup.getChildren().add(new AmbientLight());
 
@@ -125,6 +127,10 @@ public abstract class GameInstance extends MenuController implements TimerSignab
     }
 
     public abstract void initializeGameMode();
+
+    public void setQuestMark(){
+
+    }
 
     private void buildCamera() {
         camera.setNearClip(CAMERA_NEAR_CLIP);
@@ -160,48 +166,7 @@ public abstract class GameInstance extends MenuController implements TimerSignab
         // buildAxes();
     }
 
-    private void buildAxes() {
-        for (int i = -2000; i <= 2000; i += 10) {
-            PhongMaterial redMaterial = new PhongMaterial();
-            redMaterial.setDiffuseColor(Color.DARKRED);
-            redMaterial.setSpecularColor(Color.RED);
 
-            Sphere sphereX = new Sphere();
-            sphereX.setRadius(3);
-            sphereX.setTranslateX(i);
-            sphereX.setTranslateY(0);
-            sphereX.setTranslateZ(0);
-            sphereX.setMaterial(redMaterial);
-
-            root.getChildren().addAll(sphereX);
-
-            PhongMaterial greenMaterial = new PhongMaterial();
-            greenMaterial.setDiffuseColor(Color.DARKGREEN);
-            greenMaterial.setSpecularColor(Color.GREEN);
-
-            Sphere sphereY = new Sphere();
-            sphereY.setRadius(3);
-            sphereY.setTranslateX(0);
-            sphereY.setTranslateY(i);
-            sphereY.setTranslateZ(0);
-            sphereY.setMaterial(greenMaterial);
-
-            root.getChildren().addAll(sphereY);
-
-            PhongMaterial blueMaterial = new PhongMaterial();
-            blueMaterial.setDiffuseColor(Color.DARKBLUE);
-            blueMaterial.setSpecularColor(Color.BLUE);
-
-            Sphere sphereZ = new Sphere();
-            sphereZ.setRadius(3);
-            sphereZ.setTranslateX(0);
-            sphereZ.setTranslateY(0);
-            sphereZ.setTranslateZ(i);
-            sphereZ.setMaterial(blueMaterial);
-
-            root.getChildren().addAll(sphereZ);
-        }
-    }
 
     public void handleKeys(VBox vBox) {
         vBox.addEventFilter(KeyEvent.KEY_PRESSED, event-> {
@@ -216,11 +181,12 @@ public abstract class GameInstance extends MenuController implements TimerSignab
                 cube.rotate4();
             } else if (event.getCode() == KeyCode.Q) {
                 cube.highlight(Cube.BACKWARD);
+                board.setSelectedFaceMat(cube.selectFace());
             } else if (event.getCode() == KeyCode.E) {
                 cube.highlight(Cube.FORWARD);
-            } else if (event.getCode() == KeyCode.SPACE) {
                 board.setSelectedFaceMat(cube.selectFace());
             }
+
         });
     }
     @Override

@@ -2,7 +2,6 @@ package client.GameModels;
 
 import javafx.embed.swing.SwingFXUtils;
 import javafx.scene.Group;
-import javafx.scene.effect.GaussianBlur;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.paint.PhongMaterial;
@@ -14,6 +13,7 @@ import javafx.scene.transform.Transform;
 import java.awt.image.BufferedImage;
 import java.awt.image.Raster;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 
 public class Pattern {
@@ -30,13 +30,21 @@ public class Pattern {
     private static final Transform t = new Rotate();
     private ImageView[] patternImageViews;
     private Image[] imagesToCreatePattern = null;
-    private GaussianBlur gaussianBlur = new GaussianBlur();
+
+    private Image questionMark;
+
+    {
+        try {
+            questionMark = new Image(new FileInputStream("assets/questionMark.png"));
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
 
     public Pattern(int gridDimension)
     {
         this.gridDimension = gridDimension;
 
-        gaussianBlur.setRadius(2);
 
         gridMat = new PhongMaterial[gridDimension*gridDimension];
         patternImageViews =  new ImageView[gridDimension*gridDimension];
@@ -155,11 +163,11 @@ public class Pattern {
 
     }
 
-    public void setMatQuestMark() throws IOException
+    public void setMatQuestMark()
     {
         for(int i = 0; i < gridDimension*gridDimension; i++)
         {
-            gridMat[i].setDiffuseMap(new Image(new FileInputStream("assets/questionMark.png")));
+            gridMat[i].setDiffuseMap(questionMark);
             gridCell[i].setMaterial(gridMat[i]);
         }
     }
@@ -173,7 +181,6 @@ public class Pattern {
     }
     public void smoothImageView(ImageView imageView){
 
-        imageView.setEffect(gaussianBlur);
         imageView.setFitWidth(128);
     }
 
