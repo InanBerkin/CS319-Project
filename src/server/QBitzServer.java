@@ -11,11 +11,10 @@ import server.models.User;
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Base64;
-import java.util.HashMap;
+import java.util.Random;
 
 /**
  * This class is the main class which holds the QBitzServer properties of the game.
@@ -24,6 +23,8 @@ import java.util.HashMap;
  * @author Zafer Tan Çankırı
  */
 class QBitzServer {
+
+    private static final String ALPHANUMERIC = "abcdejghijklmnopqrstuxwyzABCDEFGHIJKLMNOPQRSTUXWYZ1234567890";
 
     private DatabaseConnector db;
     private String dbUsername;
@@ -90,7 +91,30 @@ class QBitzServer {
         socketServer.interrupt();
     }
 
-    void onMessageReceived(ServerSocketHandler handler, String message) {
+    public void onConnect(ServerSocketHandler handler) {
+        System.out.println("QBitzApplication connected: " + handler.getConnectionIP());
+    }
+
+    public void onExit(ServerSocketHandler handler) {
+        for (Room room : rooms) {
+            for (int i = 0; i < room.getUsers().size(); i++) {
+                if (room.getUsers().get(i) == handler) {
+                    room.getUsers().remove(i);
+                    room.setPlayers(room.getPlayers() - 1);
+
+                    if (handler.getUser().getId() == room.getOwnerid())
+                        removeRoom(room);
+                    else
+                        sendAnnouncementToOthers(room);
+                    break;
+                }
+            }
+        }
+
+        System.out.println("QBitzApplication exit!");
+    }
+
+    public void onMessageReceived(ServerSocketHandler handler, String message) {
         System.out.println("From " + handler.getConnectionIP() + ": " + message);
 
         if (isJSONValid(message)) {
@@ -223,6 +247,11 @@ class QBitzServer {
                     respObj.put("encodedImage", encodedImage);
                 }
 
+                if (roomType == Room.PRIVATE) {
+                    roomCode = generateCode(5);
+                    newRoom.setRoomcode(roomCode);
+                }
+
                 int id = db.addRoom(newRoom);
                 newRoom.setId(id);
 
@@ -230,6 +259,9 @@ class QBitzServer {
 
                 respObj.put("responseType", "createRoom");
                 respObj.put("roomID", id);
+
+                if (roomType == Room.PRIVATE)
+                    respObj.put("roomCode", roomCode);
 
                 handler.sendMessage(respObj.toString());
                 refreshRooms();
@@ -323,7 +355,11 @@ class QBitzServer {
                 room.getUsers().remove(handler);
                 room.setPlayers(room.getPlayers() - 1);
 
-                sendAnnouncementToOthers(room);
+                if (handler.getUser().getId() == room.getOwnerid())
+                    removeRoom(room);
+                else
+                    sendAnnouncementToOthers(room);
+
                 refreshRooms();
             }
             else if (msgObj.getString("requestType").equals("startCounter")) {
@@ -331,6 +367,63 @@ class QBitzServer {
                 Room room = findRoomFromID(roomID);
 
                 startRoomCounter(room);
+            }
+            else if(msgObj.getString("requestType").equals("joinPrivateRoom")) {
+                String code = msgObj.getString("roomCode");
+                Room room = findRoomFromCode(code);
+
+                JSONObject respObj = new JSONObject();
+                respObj.put("responseType", "joinRoom");
+
+                if (room != null) {
+                    if (room.getPlayers() != room.getMaxPlayers()) {
+                        if (room.getEntranceLevel() <= handler.getUser().getLevel()) {
+                            respObj.put("result", 0);
+
+                            respObj.put("roomID", room.getId());
+                            respObj.put("name", room.getName());
+                            respObj.put("gameMode", room.getGamemode());
+                            respObj.put("players", room.getPlayers());
+                            respObj.put("maxPlayers", room.getMaxPlayers());
+                            respObj.put("entranceLevel", room.getEntranceLevel());
+                            respObj.put("name", room.getName());
+                            respObj.put("isOwner", room.getOwnerid() == handler.getUser().getId());
+
+                            room.addUser(handler);
+                            room.setPlayers(room.getPlayers() + 1);
+
+                            JSONArray userList = new JSONArray();
+
+                            for (ServerSocketHandler userHandler : room.getUsers()) {
+                                User user = userHandler.getUser();
+
+                                JSONObject userObj = new JSONObject();
+                                userObj.put("name", user.getUsername());
+                                userObj.put("id", user.getId());
+                                userObj.put("level", user.getLevel());
+
+                                userList.put(userObj);
+                            }
+                            respObj.put("userList", userList);
+
+                            handler.sendMessage(respObj.toString());
+                            sendAnnouncementToOthers(room);
+                            refreshRooms();
+                        }
+                        else {
+                            respObj.put("result", 2);
+                            handler.sendMessage(respObj.toString());
+                        }
+                    }
+                    else {
+                        respObj.put("result", 1);
+                        handler.sendMessage(respObj.toString());
+                    }
+                }
+                else {
+                    respObj.put("result", 3);
+                    handler.sendMessage(respObj.toString());
+                }
             }
         }
     }
@@ -348,19 +441,18 @@ class QBitzServer {
         return true;
     }
 
-    public static void main(String[] args) {
-        QBitzServer QBitzServer = new QBitzServer();
-        QBitzServer.setDBCredentials("localhost", 3306, "root", "", "qbitz");
-        QBitzServer.setSocketPort(9999);
-        QBitzServer.start();
-        System.out.println("QBitzServer Started!");
-
-        QBitzServer.populateRoomsFromDB();
-    }
-
     private Room findRoomFromID(int id) {
         for (Room room : rooms) {
             if (room.getId() == id)
+                return room;
+        }
+
+        return null;
+    }
+
+    private Room findRoomFromCode(String roomCode) {
+        for (Room room : rooms) {
+            if (room.getRoomcode().equals(roomCode))
                 return room;
         }
 
@@ -416,25 +508,7 @@ class QBitzServer {
         return encodedImage;
     }
 
-    public void onExit(ServerSocketHandler handler) {
-        for (Room room : rooms) {
-            for (int i = 0; i < room.getUsers().size(); i++) {
-                if (room.getUsers().get(i) == handler) {
-                    room.getUsers().remove(i);
-                    room.setPlayers(room.getPlayers() - 1);
-                    break;
-                }
-            }
-        }
-
-        System.out.println("QBitzApplication exit!");
-    }
-
-    public void onConnect(ServerSocketHandler handler) {
-        System.out.println("QBitzApplication connected: " + handler.getConnectionIP());
-    }
-
-    public void startRoomCounter(Room room) {
+    private void startRoomCounter(Room room) {
         Counter counter = new Counter(Counter.BACKWARD, 5, 1, new CounterSignable() {
             @Override
             public void counterStopped() {
@@ -463,7 +537,7 @@ class QBitzServer {
         counter.start();
     }
 
-    public void refreshRooms() {
+    private void refreshRooms() {
         for (ServerSocketHandler socketHandler : socketServer.getClientList()) {
             if (socketHandler.getUser() != null) {
                 JSONArray roomList = new JSONArray();
@@ -491,5 +565,46 @@ class QBitzServer {
                 socketHandler.sendMessage(respObj.toString());
             }
         }
+    }
+
+    private void removeRoom(Room room) {
+        db.removeRoom(room.getId());
+
+        ArrayList<ServerSocketHandler> playersInRoom = room.getUsers();
+
+        for (int i = 0; i < rooms.size(); i++) {
+            if (rooms.get(i) == room) {
+                rooms.remove(i);
+                break;
+            }
+        }
+
+        for (ServerSocketHandler socketHandler : playersInRoom) {
+            JSONObject json = new JSONObject();
+            json.put("responseType", "ownerExit");
+            socketHandler.sendMessage(json.toString());
+        }
+    }
+
+    private String generateCode(int length) {
+        StringBuilder result = new StringBuilder();
+        Random generator = new Random();
+
+        for (int i = 0; i < length; i++) {
+            int randomIndex = generator.nextInt(ALPHANUMERIC.length());
+            result.append(ALPHANUMERIC.charAt(randomIndex));
+        }
+
+        return result.toString();
+    }
+
+    public static void main(String[] args) {
+        QBitzServer QBitzServer = new QBitzServer();
+        QBitzServer.setDBCredentials("localhost", 3306, "root", "", "qbitz");
+        QBitzServer.setSocketPort(9999);
+        QBitzServer.start();
+        System.out.println("QBitzServer Started!");
+
+        QBitzServer.populateRoomsFromDB();
     }
 }
