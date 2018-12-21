@@ -34,6 +34,9 @@ public class MemoryMode extends MenuController implements TimerSignable {
     private Group patternGroup = new Group();
 
     @FXML
+    private Button submitButtonMemory;
+
+    @FXML
     private Button startButton;
 
     @FXML
@@ -148,6 +151,15 @@ public class MemoryMode extends MenuController implements TimerSignable {
 
             handleKeys(vBoxMemory);
         });
+    }
+    @FXML
+    public void submit(){
+        if (pattern.checkPattern(board.getBoardImageViews())) {
+            this.pattern.showPattern();
+            System.out.println("memory true");
+        }
+
+
     }
 
     private void buildCamera() {
