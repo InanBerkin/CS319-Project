@@ -60,7 +60,7 @@ public class RoomLobbyMenuController extends MenuController {
         else if(responseJSON.getString("responseType").equals("startGame")){
             Platform.runLater(() -> {
                 JSONObject gamePayload = new JSONObject();
-                gamePayload.put("boardSize", 3);
+                gamePayload.put("boardSize", responseJSON.getInt("boardSize"));
                 QBitzApplication.getSceneController().gotoGameMode(false, "RaceMode", gamePayload);
             });
         }

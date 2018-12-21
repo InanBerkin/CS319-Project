@@ -79,7 +79,7 @@ public class RoomCreateMenuController extends MenuController {
         boardSize4.setToggleGroup(toggleGroupBoardSize);
         boardSize4.setUserData("4");
         boardSize5.setToggleGroup(toggleGroupBoardSize);
-        boardSize4.setUserData("5");
+        boardSize5.setUserData("5");
         boardSize3.setSelected(true);
     }
 
@@ -90,7 +90,7 @@ public class RoomCreateMenuController extends MenuController {
         int maxPlayers = Integer.parseInt(maxPlayersTextField.getText());
         int entranceLevel = Integer.parseInt(minEntranceLevelTextField.getText());
         int roomType = roomTypeCheckbox.isSelected() ? 1 : 0;
-        int boardSize = (int) toggleGroupBoardSize.getSelectedToggle().getUserData();
+        int boardSize = Integer.parseInt(toggleGroupBoardSize.getSelectedToggle().getUserData().toString());
         JSONObject roomJSON = new JSONObject();
         roomJSON.put("requestType", "createRoom");
         roomJSON.put("name", roomName);
