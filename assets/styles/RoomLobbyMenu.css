@@ -1,11 +1,22 @@
 @import "Main.css";
 
 HBox{
-    -fx-background-color: #4BB0E4;
+    -fx-background-color: #ffffff;
     -fx-font-size: 20;
     -fx-padding: 30;
+    -fx-background-radius: 10;
+    -fx-pref-height: 50;
 }
 
 GridPane#background{
     -fx-background-color: -backgroundDark;
+}
+
+GridPane#playersGridPane{
+    -fx-padding: 30 30;
+    -fx-background-color: -background;
+    -fx-border-width: 5;
+    -fx-border-color: #000000;
+    -fx-background-radius: 10;
+    -fx-border-radius: 10;
 }

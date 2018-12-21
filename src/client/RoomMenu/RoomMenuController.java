@@ -25,7 +25,6 @@ public class RoomMenuController extends MenuController {
     @FXML
     private TableView<Room> roomTable;
 
-    private ArrayList<Room> roomArrayList;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -67,6 +66,7 @@ public class RoomMenuController extends MenuController {
     }
 
     public ObservableList<Room> populateRoomList(JSONArray roomList){
+        roomTable.getItems().clear();
         ObservableList<Room> rooms = FXCollections.observableArrayList();
         for (Object roomObj : roomList) {
             JSONObject roomJSON = (JSONObject) roomObj;

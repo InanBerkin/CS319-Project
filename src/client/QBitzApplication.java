@@ -3,8 +3,11 @@ package client;
 import client.OptionsMenu.OptionsMenu;
 import client.SceneController.SceneController;
 import javafx.application.Application;
+import javafx.application.Platform;
+import javafx.event.EventHandler;
 import javafx.scene.input.KeyCombination;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 import org.json.JSONObject;
 
 import java.io.*;
@@ -61,7 +64,7 @@ public class QBitzApplication extends Application {
             NetworkAnalyzer networkAnalyzer = new NetworkAnalyzer("https://www.google.com.tr");
             if (networkAnalyzer.isOnline()) {
                 try {
-                    ClientSocketHandler clientSocketHandler = new ClientSocketHandler("139.179.206.36", 9999);
+                    ClientSocketHandler clientSocketHandler = new ClientSocketHandler("139.179.224.94", 9999);
                     clientSocketHandler.start();
                     sceneController.setSocketHandler(clientSocketHandler);
                     UserConfiguration.isOnline = true;
@@ -70,12 +73,17 @@ public class QBitzApplication extends Application {
                     System.out.println("» Server is unreachable.");
                 }
             }
-            sceneController.changeScene("SingleplayerMenu");
+            primaryStage.setOnCloseRequest( e -> {
+                Platform.exit();
+                System.exit(0);
+            });
+            sceneController.changeScene("MainMenu");
             primaryStage.show();
         } catch (Exception ex) {
             Logger.getLogger(QBitzApplication.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+
 
     public static SceneController getSceneController(){
         return sceneController;

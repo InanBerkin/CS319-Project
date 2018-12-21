@@ -10,6 +10,9 @@
             xmlns:fx="http://javafx.com/fxml"
             fx:controller="client.RoomLobbyMenu.RoomLobbyMenuController"
             stylesheets="@/styles/RoomLobbyMenu.css">
+    <HBox GridPane.rowIndex="0" GridPane.columnIndex="1" alignment="CENTER">
+        <Label id="title" fx:id="roomName"></Label>
+    </HBox>
     <GridPane fx:id="playersGridPane" GridPane.rowIndex="1" GridPane.columnIndex="1">
         <!--Users-->
         <columnConstraints>
@@ -27,10 +30,10 @@
     <Button GridPane.rowIndex="2" GridPane.columnIndex="0" styleClass="return-button" onAction="#goBack">Return</Button>
     <columnConstraints>
         <!-- Space -->
-        <ColumnConstraints percentWidth="20.0" />
-        <ColumnConstraints percentWidth="60.0" />
+        <ColumnConstraints percentWidth="15.0" />
+        <ColumnConstraints percentWidth="70.0" />
         <!-- Space -->
-        <ColumnConstraints percentWidth="20.0" />
+        <ColumnConstraints percentWidth="15.0" />
     </columnConstraints>
     <rowConstraints>
         <RowConstraints percentHeight="20.0"/>
