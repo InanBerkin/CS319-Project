@@ -2,6 +2,7 @@ package client.Menus.RoomLobbyMenu;
 
 import client.Menus.MenuController;
 import client.QBitzApplication;
+import client.UserConfiguration;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
@@ -29,7 +30,7 @@ public class RoomLobbyMenuController extends MenuController {
     @FXML
     private Label roomCodeText;
 
-    private boolean isOwner;
+    private int ownerID;
 
     private boolean boardSize;
 
@@ -51,8 +52,8 @@ public class RoomLobbyMenuController extends MenuController {
         }
         else if(responseJSON.getString("responseType").equals("changeOwner")){
             Platform.runLater(() -> {
-                isOwner = responseJSON.getBoolean("isOwner");
-                startButton.setVisible(isOwner);
+                ownerID = responseJSON.getInt("ownerID");
+                startButton.setVisible(ownerID == UserConfiguration.userID);
             });
         }
         else if(responseJSON.getString("responseType").equals("startGame")){
@@ -67,10 +68,10 @@ public class RoomLobbyMenuController extends MenuController {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         Platform.runLater(() ->{
-            isOwner = payload.getBoolean("isOwner");
+            ownerID = payload.getInt("ownerID");
             addPlayers(payload.getJSONArray("userList"));
             roomName.setText(payload.getString("name"));
-            startButton.setVisible(isOwner);
+            startButton.setVisible(ownerID == UserConfiguration.userID);
             roomCodeText.setText(payload.getString("roomCode"));
         });
     }
@@ -90,8 +91,8 @@ public class RoomLobbyMenuController extends MenuController {
             name = playerJSON.getString("name");
             player = new Player(id,level,name);
             hBox = new HBox();
-            if(isOwner){
-                hBox.setStyle("-fx-background-color: #ffffff;");
+            if(ownerID == UserConfiguration.userID){
+                hBox.setStyle("-fx-background-color: #eeff25;");
             }
             else{
                 hBox.setStyle("-fx-background-color: #ffffff;");
