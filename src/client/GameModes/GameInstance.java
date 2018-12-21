@@ -15,14 +15,12 @@ import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.input.MouseButton;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.PhongMaterial;
 import javafx.scene.shape.Sphere;
 import javafx.scene.transform.Rotate;
-import org.json.JSONArray;
 
 import java.io.FileNotFoundException;
 
@@ -34,7 +32,7 @@ public abstract class GameInstance extends MenuController implements TimerSignab
 
     private final Group root = new Group();
     private Group boardGroup = new Group();
-    public Group patternGroup = new Group();
+    private Group patternGroup = new Group();
 
     @FXML
     private VBox vBox;
@@ -46,7 +44,6 @@ public abstract class GameInstance extends MenuController implements TimerSignab
     private Label timerLabel;
 
     public GameBoard board;
-
     public Pattern pattern;
 
     private static final double CAMERA_INITIAL_DISTANCE = -1000;
@@ -56,9 +53,10 @@ public abstract class GameInstance extends MenuController implements TimerSignab
     private static final double CAMERA_FAR_CLIP = 10000.0;
     private static final double KEY_ROTATION_STEP = 9;
 
+
     public int gridDimension;
 
-    public Cube cube;
+    Cube cube;
     final XGroup cameraHolder = new XGroup();
     final PerspectiveCamera camera = new PerspectiveCamera(true);
 
@@ -73,14 +71,6 @@ public abstract class GameInstance extends MenuController implements TimerSignab
     @Override
     public void onMessageReceived(String message) {
 
-    }
-
-    public VBox getvBox() {
-        return vBox;
-    }
-
-    public void setvBox(VBox vBox) {
-        this.vBox = vBox;
     }
 
     @Override
@@ -107,9 +97,6 @@ public abstract class GameInstance extends MenuController implements TimerSignab
 
             boardGroup = board.createBoardGroup();
             patternGroup = pattern.createPatternGroup();
-
-            setQuestMark();
-
             patternGroup.translateZProperty().set(0);
             boardGroup.translateZProperty().set(0);
 
@@ -137,10 +124,6 @@ public abstract class GameInstance extends MenuController implements TimerSignab
     }
 
     public abstract void initializeGameMode();
-
-    public void setQuestMark(){
-
-    }
 
     private void buildCamera() {
         camera.setNearClip(CAMERA_NEAR_CLIP);
@@ -176,6 +159,48 @@ public abstract class GameInstance extends MenuController implements TimerSignab
         // buildAxes();
     }
 
+    private void buildAxes() {
+        for (int i = -2000; i <= 2000; i += 10) {
+            PhongMaterial redMaterial = new PhongMaterial();
+            redMaterial.setDiffuseColor(Color.DARKRED);
+            redMaterial.setSpecularColor(Color.RED);
+
+            Sphere sphereX = new Sphere();
+            sphereX.setRadius(3);
+            sphereX.setTranslateX(i);
+            sphereX.setTranslateY(0);
+            sphereX.setTranslateZ(0);
+            sphereX.setMaterial(redMaterial);
+
+            root.getChildren().addAll(sphereX);
+
+            PhongMaterial greenMaterial = new PhongMaterial();
+            greenMaterial.setDiffuseColor(Color.DARKGREEN);
+            greenMaterial.setSpecularColor(Color.GREEN);
+
+            Sphere sphereY = new Sphere();
+            sphereY.setRadius(3);
+            sphereY.setTranslateX(0);
+            sphereY.setTranslateY(i);
+            sphereY.setTranslateZ(0);
+            sphereY.setMaterial(greenMaterial);
+
+            root.getChildren().addAll(sphereY);
+
+            PhongMaterial blueMaterial = new PhongMaterial();
+            blueMaterial.setDiffuseColor(Color.DARKBLUE);
+            blueMaterial.setSpecularColor(Color.BLUE);
+
+            Sphere sphereZ = new Sphere();
+            sphereZ.setRadius(3);
+            sphereZ.setTranslateX(0);
+            sphereZ.setTranslateY(0);
+            sphereZ.setTranslateZ(i);
+            sphereZ.setMaterial(blueMaterial);
+
+            root.getChildren().addAll(sphereZ);
+        }
+    }
 
     public void handleKeys(VBox vBox) {
 
@@ -197,36 +222,17 @@ public abstract class GameInstance extends MenuController implements TimerSignab
                 board.setSelectedFaceMat(cube.selectFace());
             }
 
-
         });
-
     }
+
     @Override
     public void timerStopped() {
 
     }
 
-    public boolean submit() {
-
-        return pattern.checkPattern(board.getBoardImageViews());
+    public void foo() {
+        System.out.println("Is pattern correct? : " + pattern.checkPattern(board.getBoardImageViews()));
+        System.out.println("Submit Button!");
     }
-
-    public int[][] jsonArrayToMatrix(JSONArray array, int dimension) {
-        int size = dimension * dimension;
-        int[][] result = new int[size][2];
-
-        int cur1 = 0;
-        for (Object iterator1 : array) {
-            int cur2 = 0;
-            for (Object iterator2 : (JSONArray) iterator1) {
-                result[cur1][cur2] = (int) iterator2;
-                cur2++;
-            }
-            cur1++;
-        }
-
-        return result;
-    }
-
 
 }
