@@ -32,6 +32,9 @@ public class MemoryMode extends MenuController implements TimerSignable {
     private Button startButton;
 
     @FXML
+    private Button submitButtonMemory;
+
+    @FXML
     private VBox vBoxMemory;
 
     @FXML
