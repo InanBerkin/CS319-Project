@@ -166,7 +166,6 @@ public class GameBoard {
             }
             else if( event.getButton() == MouseButton.SECONDARY)
             {
-                System.out.println("right");
                 if (statusOfGridCells[cellId]) {
 
                     boardImageViews[cellId].setRotate((boardImageViews[cellId].getRotate() + 90)%360);

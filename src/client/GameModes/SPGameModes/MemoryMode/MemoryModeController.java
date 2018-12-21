@@ -1,5 +1,6 @@
 package client.GameModes.SPGameModes.MemoryMode;
 
+import client.GameModes.GameInstance;
 import client.Menus.MenuController;
 import client.GameModels.*;
 import javafx.application.Platform;
@@ -22,181 +23,48 @@ import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.scene.control.Button;
 
-public class MemoryModeController extends MenuController implements TimerSignable {
+public class MemoryModeController extends GameInstance {
 
     //**********************FOR_MEMORY************************************
     private int memoryTime;
+
     @FXML
     private Button startButton;
+
     @FXML
     private Label memoryLabel;
-
-    //**********************FOR_MEMORY************************************
-    private Group root = new Group();
-    private Group boardGroup = new Group();
-    private Group patternGroup = new Group();
-
-
-
-    @FXML
-    private Button submitButton;
 
     @FXML
     private VBox vBox;
 
-    @FXML
-    private HBox sceneHbox;
 
     @FXML
     private Label timerLabel;
 
-    private GameBoard board;
-    private Pattern pattern;
-
-    private static final double CAMERA_INITIAL_DISTANCE = -1000;
-    private static final double CAMERA_INITIAL_X_ANGLE = -30.0;
-    private static final double CAMERA_INITIAL_Y_ANGLE = 60.0;
-    private static final double CAMERA_NEAR_CLIP = 0.1;
-    private static final double CAMERA_FAR_CLIP = 10000.0;
-    private static final double KEY_ROTATION_STEP = 9;
-
-    private int gridDimension;
-
-    private Cube cube;
-    private XGroup cameraHolder = new XGroup();
-    private PerspectiveCamera camera = new PerspectiveCamera(true);
-
-    private XGroup cameraHolderBoard = new XGroup();
-    private PerspectiveCamera cameraBoard = new PerspectiveCamera(true);
-
-    private XGroup cameraHolderPattern = new XGroup();
-    private PerspectiveCamera cameraPattern = new PerspectiveCamera(true);
-
-    private GameTimer gameTimer;
 
     @Override
-    public void onMessageReceived(String message) {
-
+    public void initializeGameMode() {
+        //**********************FOR_MEMORY************************************
+        this.memoryTime = memoryTime(gridDimension);
+        board = new GameBoard(gridDimension, null);
+        pattern = new Pattern(gridDimension,null);
+        try {
+            pattern.setMatQuestMark();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
-    public void initialize(URL location, ResourceBundle resources) {
-        try {
-            cube = new Cube(200, KEY_ROTATION_STEP, 0, 0, 0);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-        gameTimer = new GameTimer(this, timerLabel);
+    public void handleKeys(VBox vBox) {
 
-        root.setDepthTest(DepthTest.ENABLE);
-        buildCamera();
-        try {
-            buildBody();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        Platform.runLater(() -> {
-            gridDimension = payload.getInt("boardSize");
-            //**********************FOR_MEMORY************************************
-
-            this.memoryTime = memoryTime(gridDimension);
-            board = new GameBoard(gridDimension, null);
-            pattern = new Pattern(gridDimension,null);
-
-            try {
-                pattern.setMatQuestMark();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-            //**********************FOR_MEMORY************************************
-            boardGroup = board.createBoardGroup();
-            patternGroup = pattern.createPatternGroup();
-
-            patternGroup.translateZProperty().set(0);
-
-            boardGroup.translateZProperty().set(0);
-
-            boardGroup.getChildren().add(new AmbientLight());
-            patternGroup.getChildren().add(new AmbientLight());
-
-            SubScene cubeScene = new SubScene(root, 400, 400, true, SceneAntialiasing.BALANCED);
-            cubeScene.setCamera(camera);
-            cubeScene.setFill(Color.SPRINGGREEN);
-
-            SubScene boardScene = new SubScene(boardGroup, 400, 400 , true, SceneAntialiasing.BALANCED);
-            boardScene.setCamera(cameraBoard);
-            boardScene.setFill(Color.WHITE);
-
-            SubScene patternScene = new SubScene(patternGroup, 400, 400 , true, SceneAntialiasing.BALANCED);
-            patternScene.setCamera(cameraPattern);
-            patternScene.setFill(Color.WHITE);
-
-            sceneHbox.setSpacing(40);
-            sceneHbox.setAlignment(Pos.CENTER);
-            sceneHbox.getChildren().addAll(cubeScene, boardScene, patternScene);
-        });
-    }
-
-    private void buildCamera() {
-        camera.setNearClip(CAMERA_NEAR_CLIP);
-        camera.setFarClip(CAMERA_FAR_CLIP);
-        camera.setTranslateZ(CAMERA_INITIAL_DISTANCE);
-
-        cameraHolder.getChildren().add(camera);
-        cameraHolder.rotate(CAMERA_INITIAL_X_ANGLE, Rotate.X_AXIS);
-        cameraHolder.rotate(CAMERA_INITIAL_Y_ANGLE, Rotate.Y_AXIS);
-
-        root.getChildren().add(cameraHolder);
-
-        cameraBoard.setNearClip(CAMERA_NEAR_CLIP);
-        cameraBoard.setFarClip(CAMERA_FAR_CLIP);
-        cameraBoard.setTranslateZ(CAMERA_INITIAL_DISTANCE);
-
-        cameraHolderBoard.getChildren().add(cameraBoard);
-
-        boardGroup.getChildren().add(cameraHolderBoard);
-
-        cameraPattern.setNearClip(CAMERA_NEAR_CLIP);
-        cameraPattern.setFarClip(CAMERA_FAR_CLIP);
-        cameraPattern.setTranslateZ(CAMERA_INITIAL_DISTANCE);
-
-        cameraHolderPattern.getChildren().add(cameraPattern);
-
-        patternGroup.getChildren().add(cameraHolderPattern);
-    }
-
-    private void buildBody()  {
-        root.getChildren().add(cube);
-        cube.updateFrontFaces();
-    }
-
-    private void handleKeys(VBox vBox) {
-        vBox.addEventFilter(KeyEvent.KEY_PRESSED, event-> {
-            event.consume();
-            if (event.getCode() == KeyCode.W) {
-                cube.rotate1();
-            } else if (event.getCode() == KeyCode.S) {
-                cube.rotate2();
-            } else if (event.getCode() == KeyCode.A) {
-                cube.rotate3();
-            } else if (event.getCode() == KeyCode.D) {
-                cube.rotate4();
-            } else if (event.getCode() == KeyCode.Q) {
-                cube.highlight(Cube.BACKWARD);
-            } else if (event.getCode() == KeyCode.E) {
-                cube.highlight(Cube.FORWARD);
-            } else if (event.getCode() == KeyCode.SPACE) {
-                board.setSelectedFaceMat(cube.selectFace());
-            }
-        });
     }
     //**********************FOR_MEMORY************************************
     @Override
     public void timerStopped() {
-        handleKeys(vBox);
+        super.handleKeys(vBox);
 
-            try {
+        try {
             pattern.setMatQuestMark();
         } catch (IOException e) {
             e.printStackTrace();
@@ -242,5 +110,4 @@ public class MemoryModeController extends MenuController implements TimerSignabl
 
         return isPatternTrue;
     }
-    //**********************FOR_MEMORY************************************
 }
