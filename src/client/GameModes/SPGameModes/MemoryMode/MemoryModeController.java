@@ -48,12 +48,11 @@ public class MemoryModeController extends GameInstance {
         this.memoryTime = memoryTime(gridDimension);
         board = new GameBoard(gridDimension, null);
         pattern = new Pattern(gridDimension);
-    }
-
-    @Override
-    public void setQuestMark() {
-        super.setQuestMark();
-        pattern.setMatQuestMark();
+        try {
+            pattern.setMatQuestMark();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -63,8 +62,12 @@ public class MemoryModeController extends GameInstance {
     @Override
     public void timerStopped() {
         super.handleKeys(vBox);
-        pattern.setMatQuestMark();
 
+        try {
+            pattern.setMatQuestMark();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         this.memoryLabel.setText("You could start to solve");
         gameTimer = new GameTimer(this, timerLabel);
         gameTimer.startTimer();

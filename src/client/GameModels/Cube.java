@@ -164,7 +164,6 @@ public class Cube extends XGroup {
         }
     }
 
-
     public void highlight(boolean direction) {
         if (direction) {
             highlighter.changeHLIndex(false);
