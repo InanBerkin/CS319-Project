@@ -44,12 +44,13 @@ public class Pattern {
         gridCell = new Box[(gridDimension) * (gridDimension)];
         gridMatrix = (new PatternGenerator(gridDimension)).generatePattern(false);
 
-
     }
+
 
     public void setImagesToCreatePattern(Image[] imagesToCreatePattern){
         this.imagesToCreatePattern = imagesToCreatePattern;
     }
+
     public void setGivenPattern(int[][] givenPattern){
         gridMatrix = givenPattern;
     }
@@ -73,7 +74,8 @@ public class Pattern {
                 gridCell[gridIndex] = new Box(BOARD_LENGTH / gridDimension, BOARD_LENGTH / gridDimension, 0);
                 gridMat[gridIndex] = new PhongMaterial();
                 gridCell[gridIndex].setId(Integer.toString(gridIndex));
-
+//                System.out.println(
+//                        gridMatrix[gridIndex][0] +" " +gridMatrix[gridIndex][1]);
 
                 if(imagesToCreatePattern == null){
                     String png = Integer.toString(gridMatrix[gridIndex][0]) + ".png";

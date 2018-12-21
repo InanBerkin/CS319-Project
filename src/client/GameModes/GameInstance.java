@@ -45,6 +45,7 @@ public abstract class GameInstance extends MenuController implements TimerSignab
     private Label timerLabel;
 
     public GameBoard board;
+
     public Pattern pattern;
 
     private static final double CAMERA_INITIAL_DISTANCE = -1000;
@@ -53,7 +54,6 @@ public abstract class GameInstance extends MenuController implements TimerSignab
     private static final double CAMERA_NEAR_CLIP = 0.1;
     private static final double CAMERA_FAR_CLIP = 10000.0;
     private static final double KEY_ROTATION_STEP = 9;
-
 
     public int gridDimension;
 
