@@ -103,7 +103,6 @@ public class MemoryModeController extends GameInstance {
         else {
             this.memoryLabel.setText("You cannot solve it. Think Again");
         }
-
         return isPatternTrue;
     }
 }
