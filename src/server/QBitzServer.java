@@ -3,10 +3,7 @@ package server;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import server.models.Counter;
-import server.models.CounterSignable;
-import server.models.Room;
-import server.models.User;
+import server.models.*;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
@@ -59,7 +56,7 @@ class QBitzServer {
      * @param dbname Database Name on the Database QBitzServer
      */
     private void setDBCredentials(String host, int port, String username, String password, String dbname) {
-        this.db = new DatabaseConnector("localhost", 3306);
+        this.db = new DatabaseConnector(host, port);
         this.dbUsername = username;
         this.dbPassword = password;
         this.dbName = dbname;
@@ -523,10 +520,14 @@ class QBitzServer {
         Counter counter = new Counter(Counter.BACKWARD, 5, 1, new CounterSignable() {
             @Override
             public void counterStopped() {
+                PatternGenerator patternGenerator = new PatternGenerator(room.getBoardSize());
+                JSONArray patternMatrix = new JSONArray(patternGenerator.generatePattern(false));
+
                 JSONObject json = new JSONObject();
 
                 json.put("responseType", "startGame");
                 json.put("boardSize", room.getBoardSize());
+                json.put("patternMatrix", patternMatrix);
 
                 for (ServerSocketHandler userHandler : room.getUsers()) {
                     userHandler.sendMessage(json.toString());
@@ -621,7 +622,7 @@ class QBitzServer {
 
     public static void main(String[] args) {
         QBitzServer QBitzServer = new QBitzServer();
-        QBitzServer.setDBCredentials("localhost", 3306, "root", "", "qbitz");
+        QBitzServer.setDBCredentials("138.197.189.245", 3306, "user", "qbitzpass", "qbitz");
         QBitzServer.setSocketPort(9999);
         QBitzServer.start();
         System.out.println("QBitzServer Started!");
