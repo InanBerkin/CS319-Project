@@ -28,5 +28,9 @@ GridPane#playersGridPane{
 }
 
 #Title{
+    -fx-text-fill: #ffffff;
+}
 
+.return-button{
+    -fx-background-color: #FF1654;
 }

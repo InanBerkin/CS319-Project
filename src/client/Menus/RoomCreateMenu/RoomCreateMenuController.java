@@ -24,7 +24,7 @@ public class RoomCreateMenuController extends MenuController {
     @FXML
     private CheckBox roomTypeCheckbox;
 
-    private String roomCode;
+    private String roomCode = "";
 
 
     @Override
@@ -41,7 +41,9 @@ public class RoomCreateMenuController extends MenuController {
         }
         else if(responseJSON.getString("responseType").equals("createRoom")){
             Platform.runLater(() -> {
-                roomCode = responseJSON.getString("roomCode");
+                if (responseJSON.has("roomCode")){
+                    roomCode = responseJSON.getString("roomCode");
+                }
                 joinRoom(responseJSON.getInt("roomID"));
             });
         }
