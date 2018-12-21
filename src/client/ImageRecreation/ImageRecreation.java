@@ -56,13 +56,6 @@ public class ImageRecreation
 
         this.imgParts = new ArrayList<>();
         this.imgParts = convertBuffToImage(buffImgParts, dimension);
-        //this.remainingList = removeSameParts(this.remainingList);
-       // System.out.println(this.remainingList.size());
-        //writing mini images into image files
-//        for (int i = 0; i < buffImgParts.length; i++) {
-//            ImageIO.write(buffImgParts[i], "jpg", new File("img" + i + ".jpg"));
-//        }
-//        ImageIO.write(buffImg, "jpg", new File("img" + ((dimension * dimension) +1) + ".jpg"));
 
     }
 
@@ -190,6 +183,17 @@ public class ImageRecreation
         this.remainingList = remainingList;
     }
 
+
+
+
+
+
+
+
+
+
+
+//*************************************************************FURTHER IMPLEMENTATION***********************************************************
 //    public List<Integer> removeSameParts(List<Integer> list) throws  IOException{
 //
 //        List<Integer> tempList = new ArrayList();
