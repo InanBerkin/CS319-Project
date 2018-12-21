@@ -67,10 +67,8 @@ public class RaceModeController extends GameInstance {
             vBox = new VBox(20);
             vBox.setAlignment(Pos.CENTER);
             vBox.getChildren().add(new Label(player.getName()));
-            if(!player.getFinishTime().isEmpty()){
-                vBox.getChildren().add(new Label(player.getFinishTime()));
-                vBox.getChildren().add(new Label(player.getRank() + ""));
-            }
+            vBox.getChildren().add(new Label(player.getFinishTime()));
+            vBox.getChildren().add(new Label(player.getRank() + ""));
             vBox.setStyle("-fx-background-color: #000");
             playersBar.getChildren().add(vBox);
         }

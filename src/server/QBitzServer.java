@@ -11,6 +11,7 @@ import java.io.ByteArrayOutputStream;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Base64;
+import java.util.Comparator;
 import java.util.Random;
 
 /**
@@ -444,21 +445,36 @@ class QBitzServer {
 
                 JSONArray userList = new JSONArray();
 
+                ArrayList<JSONObject> tempForSort = new ArrayList<>();
+
                 for (ServerSocketHandler userHandler : room.getUsers()) {
                     User user = userHandler.getUser();
 
                     FinishTime finish = room.getFromUser(user);
+                    JSONObject userObj = new JSONObject();
+                    userObj.put("name", user.getUsername());
+                    userObj.put("id", user.getId());
 
                     if (finish != null) {
-                        JSONObject userObj = new JSONObject();
-                        userObj.put("name", user.getUsername());
-                        userObj.put("id", user.getId());
                         userObj.put("finishTime", finish.time);
                         userObj.put("rank", room.getFinishTimes().indexOf(finish) + 1);
-
-                        userList.put(userObj);
                     }
+                    else {
+                        userObj.put("finishTime", "Solving...");
+                        userObj.put("rank", 0);
+                    }
+                    tempForSort.add(userObj);
                 }
+
+                tempForSort.sort(new Comparator<JSONObject>() {
+                    @Override
+                    public int compare(JSONObject o1, JSONObject o2) {
+                        return o1.getInt("rank") - o2.getInt("rank");
+                    }
+                });
+
+                for (JSONObject obj : tempForSort)
+                    userList.put(obj);
 
                 respObj.put("finishList", userList);
                 respObj.put("responseType", "submit");
