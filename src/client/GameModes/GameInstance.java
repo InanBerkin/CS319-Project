@@ -203,6 +203,7 @@ public abstract class GameInstance extends MenuController implements TimerSignab
     }
 
     public void handleKeys(VBox vBox) {
+
         vBox.addEventFilter(KeyEvent.KEY_PRESSED, event-> {
             event.consume();
             if (event.getCode() == KeyCode.W) {
@@ -215,11 +216,12 @@ public abstract class GameInstance extends MenuController implements TimerSignab
                 cube.rotate4();
             } else if (event.getCode() == KeyCode.Q) {
                 cube.highlight(Cube.BACKWARD);
+                board.setSelectedFaceMat(cube.selectFace());
             } else if (event.getCode() == KeyCode.E) {
                 cube.highlight(Cube.FORWARD);
-            } else if (event.getCode() == KeyCode.SPACE) {
                 board.setSelectedFaceMat(cube.selectFace());
             }
+
         });
     }
 

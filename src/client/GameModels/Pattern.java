@@ -2,7 +2,7 @@ package client.GameModels;
 
 import javafx.embed.swing.SwingFXUtils;
 import javafx.scene.Group;
-import javafx.scene.effect.GaussianBlur;
+
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.paint.PhongMaterial;
@@ -31,14 +31,14 @@ public class Pattern {
     private static final Transform t = new Rotate();
     private ImageView[] patternImageViews;
     private Image[] imagesToCreatePattern;
-    private GaussianBlur gaussianBlur = new GaussianBlur();
+
 
     public Pattern(int gridDimension, Image[] imagesToCreatePattern)
     {
         this.gridDimension = gridDimension;
         this.imagesToCreatePattern = imagesToCreatePattern;
 
-        gaussianBlur.setRadius(2);
+
 
         gridMat = new PhongMaterial[gridDimension*gridDimension];
         patternImageViews =  new ImageView[gridDimension*gridDimension];
@@ -71,7 +71,6 @@ public class Pattern {
 
                 if(imagesToCreatePattern == null){
                     String png = Integer.toString(gridMatrix[gridIndex][0]) + ".png";
-
                     try {
                         //gridMat[gridIndex].setDiffuseMap(new Image(new FileInputStream("assets/CubeFaces/" + png), SIZE, SIZE, true, false));
                         //gridCell[gridIndex].getTransforms().add(new Rotate(90*gridMatrix[gridIndex][1], Rotate.Z_AXIS));
@@ -142,6 +141,7 @@ public class Pattern {
                 }
             }
 
+
         }
                 return true;
 
@@ -157,6 +157,7 @@ public class Pattern {
     }
 
     public void showPattern(){
+
         for(int i = 0; i < gridDimension*gridDimension; i++)
         {
             gridMat[i].setDiffuseMap(patternImageViews[i].snapshot(null, null));
@@ -165,7 +166,7 @@ public class Pattern {
     }
     public void smoothImageView(ImageView imageView){
 
-        imageView.setEffect(gaussianBlur);
+
         imageView.setFitWidth(128);
     }
 

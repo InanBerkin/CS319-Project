@@ -150,9 +150,9 @@ public class GameBoard {
 
 
                     gridCell.setMaterial(tmp);
-                    selectedFaceMat.setDiffuseMap(mainMat.getDiffuseMap());
+                    //selectedFaceMat.setDiffuseMap(mainMat.getDiffuseMap());
 
-                    previewMat.setDiffuseMap(mainMat.getDiffuseMap());
+                    //previewMat.setDiffuseMap(mainMat.getDiffuseMap());
                     statusOfGridCells[cellId] = Boolean.TRUE;
                 } else {
                     statusOfGridCells[cellId] = Boolean.FALSE;
