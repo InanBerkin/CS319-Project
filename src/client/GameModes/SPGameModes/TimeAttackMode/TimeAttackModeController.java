@@ -1,29 +1,24 @@
 package client.GameModes.SPGameModes.TimeAttackMode;
 
-import client.GameModes.SPGameModes.ImageRecreation.ImageRecreationMode;
-import client.GameModes.SPGameModes.MemoryMode.MemoryModeController;
+
 import client.Menus.MenuController;
 import client.GameModels.*;
 import javafx.application.Platform;
-import javafx.beans.property.BooleanProperty;
-import javafx.beans.property.SimpleBooleanProperty;
+
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.*;
 import javafx.scene.control.Label;
-import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-import javafx.scene.paint.PhongMaterial;
-import javafx.scene.shape.Sphere;
+
 import javafx.scene.transform.Rotate;
 
 import java.io.FileNotFoundException;
 
-import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -51,13 +46,11 @@ public class TimeAttackModeController extends MenuController implements TimerSig
     private static final double CAMERA_NEAR_CLIP = 0.1;
     private static final double CAMERA_FAR_CLIP = 10000.0;
     private static final double KEY_ROTATION_STEP = 9;
-    private static ImageRecreationMode imageRecreationMode = null;
-    private static MemoryModeController memoryModeController = null ;
 
-    private static final int WIDTH = 1200;
-    private static final int HEIGHT = 800;
+
+
     private int gridDimension;
-    private int gameMode;
+
 
     Cube cube;
     final XGroup cameraHolder = new XGroup();
@@ -68,12 +61,6 @@ public class TimeAttackModeController extends MenuController implements TimerSig
 
     final XGroup cameraHolderPattern = new XGroup();
     final PerspectiveCamera cameraPattern = new PerspectiveCamera(true);
-
-    final BooleanProperty isRotating = new SimpleBooleanProperty(false);
-
-    private XRectangle[] rect;
-
-    private Highlighter highlighter;
 
     private GameTimer gameTimer;
 
@@ -103,29 +90,14 @@ public class TimeAttackModeController extends MenuController implements TimerSig
         }
         Platform.runLater(() -> {
             gridDimension = payload.getInt("boardSize");
-            gameMode = payload.getInt("gameMode");
 
-//            if (gameMode == 2 ) {
-//                board = new GameBoard(gridDimension, null);
-//                pattern = new Pattern(gridDimension,null);
-//                memoryModeController = new MemoryModeController(gridDimension, gameTimer, pattern);
-//
-//            }
 
-            if (gameMode == 1) {
-                try {
-                    imageRecreationMode = new ImageRecreationMode("assets/recImage.jpg", gridDimension, cube.getFaces());
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                board = new GameBoard(gridDimension, imageRecreationMode);
-                pattern = new Pattern(gridDimension, imageRecreationMode.getImgParts().toArray(new Image[imageRecreationMode.getImgParts().size()]));
-                imageRecreationMode.imageRec();
-            }
-            else if (gameMode == 0) {
-                board = new GameBoard(gridDimension, null);
-                pattern = new Pattern(gridDimension,null);
-            }
+
+
+
+
+            board = new GameBoard(gridDimension, null);
+            pattern = new Pattern(gridDimension,null);
 
 
             boardGroup = board.createBoardGroup();
@@ -193,54 +165,13 @@ public class TimeAttackModeController extends MenuController implements TimerSig
 
     }
 
-    private void buildBody() throws Exception {
+    private void buildBody()  {
         root.getChildren().add(cube);
         cube.updateFrontFaces();
-        // buildAxes();
+
     }
 
-    private void buildAxes() {
-        for (int i = -2000; i <= 2000; i += 10) {
-            PhongMaterial redMaterial = new PhongMaterial();
-            redMaterial.setDiffuseColor(Color.DARKRED);
-            redMaterial.setSpecularColor(Color.RED);
 
-            Sphere sphereX = new Sphere();
-            sphereX.setRadius(3);
-            sphereX.setTranslateX(i);
-            sphereX.setTranslateY(0);
-            sphereX.setTranslateZ(0);
-            sphereX.setMaterial(redMaterial);
-
-            root.getChildren().addAll(sphereX);
-
-            PhongMaterial greenMaterial = new PhongMaterial();
-            greenMaterial.setDiffuseColor(Color.DARKGREEN);
-            greenMaterial.setSpecularColor(Color.GREEN);
-
-            Sphere sphereY = new Sphere();
-            sphereY.setRadius(3);
-            sphereY.setTranslateX(0);
-            sphereY.setTranslateY(i);
-            sphereY.setTranslateZ(0);
-            sphereY.setMaterial(greenMaterial);
-
-            root.getChildren().addAll(sphereY);
-
-            PhongMaterial blueMaterial = new PhongMaterial();
-            blueMaterial.setDiffuseColor(Color.DARKBLUE);
-            blueMaterial.setSpecularColor(Color.BLUE);
-
-            Sphere sphereZ = new Sphere();
-            sphereZ.setRadius(3);
-            sphereZ.setTranslateX(0);
-            sphereZ.setTranslateY(0);
-            sphereZ.setTranslateZ(i);
-            sphereZ.setMaterial(blueMaterial);
-
-            root.getChildren().addAll(sphereZ);
-        }
-    }
 
     private void handleKeys(VBox vBox) {
         vBox.addEventFilter(KeyEvent.KEY_PRESSED, event-> {

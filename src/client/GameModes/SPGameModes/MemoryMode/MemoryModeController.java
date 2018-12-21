@@ -23,26 +23,32 @@ import java.util.ResourceBundle;
 import javafx.scene.control.Button;
 
 public class MemoryModeController extends MenuController implements TimerSignable {
-    private int memoryTime;
 
+    //**********************FOR_MEMORY************************************
+    private int memoryTime;
+    @FXML
+    private Button startButton;
+    @FXML
+    private Label memoryLabel;
+
+    //**********************FOR_MEMORY************************************
     private Group root = new Group();
     private Group boardGroup = new Group();
     private Group patternGroup = new Group();
 
-    @FXML
-    private Button startButton;
+
 
     @FXML
-    private Button submitButtonMemory;
+    private Button submitButton;
 
     @FXML
-    private VBox vBoxMemory;
+    private VBox vBox;
 
     @FXML
-    private HBox sceneHboxMemory;
+    private HBox sceneHbox;
 
     @FXML
-    private Label timerLabelMemory;
+    private Label timerLabel;
 
     private GameBoard board;
     private Pattern pattern;
@@ -80,7 +86,7 @@ public class MemoryModeController extends MenuController implements TimerSignabl
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
-        gameTimer = new GameTimer(this, timerLabelMemory);
+        gameTimer = new GameTimer(this, timerLabel);
 
         root.setDepthTest(DepthTest.ENABLE);
         buildCamera();
@@ -91,6 +97,7 @@ public class MemoryModeController extends MenuController implements TimerSignabl
         }
         Platform.runLater(() -> {
             gridDimension = payload.getInt("boardSize");
+            //**********************FOR_MEMORY************************************
 
             this.memoryTime = memoryTime(gridDimension);
             board = new GameBoard(gridDimension, null);
@@ -101,6 +108,8 @@ public class MemoryModeController extends MenuController implements TimerSignabl
             } catch (IOException e) {
                 e.printStackTrace();
             }
+
+            //**********************FOR_MEMORY************************************
             boardGroup = board.createBoardGroup();
             patternGroup = pattern.createPatternGroup();
 
@@ -123,9 +132,9 @@ public class MemoryModeController extends MenuController implements TimerSignabl
             patternScene.setCamera(cameraPattern);
             patternScene.setFill(Color.WHITE);
 
-            sceneHboxMemory.setSpacing(40);
-            sceneHboxMemory.setAlignment(Pos.CENTER);
-            sceneHboxMemory.getChildren().addAll(cubeScene, boardScene, patternScene);
+            sceneHbox.setSpacing(40);
+            sceneHbox.setAlignment(Pos.CENTER);
+            sceneHbox.getChildren().addAll(cubeScene, boardScene, patternScene);
         });
     }
 
@@ -182,18 +191,18 @@ public class MemoryModeController extends MenuController implements TimerSignabl
             }
         });
     }
-
+    //**********************FOR_MEMORY************************************
     @Override
     public void timerStopped() {
-        handleKeys(vBoxMemory);
+        handleKeys(vBox);
 
             try {
             pattern.setMatQuestMark();
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-        gameTimer = new GameTimer(this, timerLabelMemory);
+        this.memoryLabel.setText("You could start to solve");
+        gameTimer = new GameTimer(this, timerLabel);
         gameTimer.startTimer();
     }
 
@@ -207,6 +216,8 @@ public class MemoryModeController extends MenuController implements TimerSignabl
     }
     @FXML
     public boolean startShowPattern(){
+        this.memoryLabel.setText("Memorize in "+this.memoryTime+ " seconds");
+        this.memoryLabel.setVisible(true);
         this.gameTimer.startTimer(this.memoryTime);
         this.pattern.showPattern();
         this.startButton.setVisible(false);
@@ -215,13 +226,21 @@ public class MemoryModeController extends MenuController implements TimerSignabl
     }
     @FXML
     public boolean submitCreatedPattern(){
-        this.gameTimer.stopTimer();
-        this.pattern.showPattern();
         boolean isPatternTrue = pattern.checkPattern(board.getBoardImageViews());
-        if( isPatternTrue)
-            this.submitButtonMemory.setVisible(false);
-        System.out.println("Is pattern true: " + isPatternTrue);
+
+        if( isPatternTrue) {
+            this.memoryLabel.setText("You solved goddammit!!!");
+            this.gameTimer.stopTimer();
+            this.pattern.showPattern();
+            System.out.println("Is pattern true: " + isPatternTrue);
+        }
+        else {
+            this.memoryLabel.setText("You cannot solve it. Think Again");
+        }
+
+
 
         return isPatternTrue;
     }
+    //**********************FOR_MEMORY************************************
 }

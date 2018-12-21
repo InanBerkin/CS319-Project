@@ -1,7 +1,7 @@
 package client.GameModels;
 
 
-import client.GameModes.SPGameModes.ImageRecreation.ImageRecreationMode;
+import client.GameModes.SPGameModes.ImageRecreationMode.ImageRecreationModeController;
 import javafx.scene.Group;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -27,13 +27,13 @@ public class GameBoard {
     private static Group boardGroup;
     private static Boolean[] statusOfGridCells;
     private static ImageView[] boardImageViews;
-    private static ImageRecreationMode imageRecreationMode;
+    private static ImageRecreationModeController imageRecreationModeController;
 
-    public GameBoard(int gridDimension, ImageRecreationMode imageRecreationMode)
+    public GameBoard(int gridDimension, ImageRecreationModeController imageRecreationModeController)
     {
         this.gridDimension = gridDimension;
 
-        this.imageRecreationMode = imageRecreationMode;
+        this.imageRecreationModeController = imageRecreationModeController;
 
         statusOfGridCells = new Boolean[gridDimension*gridDimension];
 
@@ -138,15 +138,15 @@ public class GameBoard {
             int cellId = Integer.parseInt(event.getPickResult().getIntersectedNode().getId());
 
             if(event.getButton() == MouseButton.PRIMARY) {
-                if( imageRecreationMode != null)
-                    imageRecreationMode.imageRec();
+                if( imageRecreationModeController != null)
+                    imageRecreationModeController.imageRec();
                 if (!statusOfGridCells[cellId]&& selectedFaceMat.getDiffuseMap() != mainMat.getDiffuseMap()) {
                     PhongMaterial tmp = new PhongMaterial();
                     tmp.setDiffuseMap(selectedFaceMat.getDiffuseMap());
 
                     boardImageViews[cellId].setImage(selectedFaceMat.getDiffuseMap());
-                    if( imageRecreationMode != null)
-                        imageRecreationMode.removeFace(selectedFaceMat.getDiffuseMap());
+                    if( imageRecreationModeController != null)
+                        imageRecreationModeController.removeFace(selectedFaceMat.getDiffuseMap());
 
 
                     gridCell.setMaterial(tmp);
@@ -157,8 +157,8 @@ public class GameBoard {
                 } else {
                     statusOfGridCells[cellId] = Boolean.FALSE;
 
-                    if( imageRecreationMode != null)
-                        imageRecreationMode.addFace(boardImageViews[cellId].getImage());
+                    if( imageRecreationModeController != null)
+                        imageRecreationModeController.addFace(boardImageViews[cellId].getImage());
 
                     gridCell.setMaterial(mainMat);
 
