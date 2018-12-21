@@ -3,6 +3,8 @@ package server;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import server.models.Counter;
+import server.models.CounterSignable;
 import server.models.Room;
 import server.models.User;
 
@@ -242,6 +244,7 @@ class QBitzServer {
                         room.put("players", iterator.getPlayers());
                         room.put("maxPlayers", iterator.getMaxPlayers());
                         room.put("entranceLevel", iterator.getEntranceLevel());
+                        room.put("ownerName", iterator.getOwnername());
 
                         roomList.put(room);
                     }
@@ -273,6 +276,8 @@ class QBitzServer {
                             respObj.put("maxPlayers", room.getMaxPlayers());
                             respObj.put("entranceLevel", room.getEntranceLevel());
                             respObj.put("name", room.getName());
+                            respObj.put("isOwner", room.getOwnerid() == handler.getUser().getId());
+                            respObj.put("isStartable", room.getPlayers() + 1 == room.getMaxPlayers());
 
                             room.addUser(handler);
                             room.setPlayers(room.getPlayers() + 1);
@@ -406,6 +411,7 @@ class QBitzServer {
             for (int i = 0; i < room.getUsers().size(); i++) {
                 if (room.getUsers().get(i) == handler) {
                     room.getUsers().remove(i);
+                    room.setPlayers(room.getPlayers() - 1);
                     break;
                 }
             }
@@ -416,5 +422,21 @@ class QBitzServer {
 
     public void onConnect(ServerSocketHandler handler) {
         System.out.println("QBitzApplication connected: " + handler.getConnectionIP());
+    }
+
+    public void startRoomCounter(Room room) {
+        Counter counter = new Counter(Counter.BACKWARD, 5, 1, new CounterSignable() {
+            @Override
+            public void counterStopped() {
+
+            }
+
+            @Override
+            public void counterSignal(int count) {
+
+            }
+        });
+
+        counter.start();
     }
 }

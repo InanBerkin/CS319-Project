@@ -247,7 +247,7 @@ class DatabaseConnector {
     ArrayList<Room> getRoomList() {
         ArrayList<Room> result = new ArrayList<>();
 
-        ResultSet resultSet = executeQuery("rooms", "SELECT * FROM ###");
+        ResultSet resultSet = executeQuery("rooms", "SELECT * FROM `rooms`, `users` WHERE users.id = rooms.ownerid");
 
         try {
             while (resultSet.next()) {
@@ -261,6 +261,7 @@ class DatabaseConnector {
                 room.setEntranceLevel(resultSet.getInt("entrance_level"));
                 room.setRoomtype(resultSet.getInt("roomtype"));
                 room.setRoomcode(resultSet.getString("roomcode"));
+                room.setOwnername(resultSet.getString("username"));
 
                 result.add(room);
             }

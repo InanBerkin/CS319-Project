@@ -14,6 +14,7 @@ public class Room {
     private String name;
     private int gamemode;
     private int ownerid;
+    private String ownername;
     private int players;
     private int maxPlayers;
     private int entranceLevel;
@@ -147,5 +148,11 @@ public class Room {
         users.add(userHandler);
     }
 
+    public String getOwnername() {
+        return ownername;
+    }
 
+    public void setOwnername(String ownername) {
+        this.ownername = ownername;
+    }
 }
