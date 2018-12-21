@@ -48,7 +48,9 @@ public class PostGameMenuController extends MenuController {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        updatePlayers(payload.getJSONArray("finishList"));
+       Platform.runLater(() -> {
+           updatePlayers(payload.getJSONArray("finishList"));
+       });
     }
 
     @FXML
