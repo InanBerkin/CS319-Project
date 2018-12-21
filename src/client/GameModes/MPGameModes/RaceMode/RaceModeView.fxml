@@ -5,7 +5,7 @@
 <?import javafx.geometry.Insets?>
 <VBox id="main" fx:id="vBox" xmlns="http://javafx.com/javafx"
       xmlns:fx="http://javafx.com/fxml"
-      fx:controller="client.GameModes.MPGameModes.RaceMode.ImageRecreationModeController"
+      fx:controller="client.GameModes.MPGameModes.RaceMode.RaceModeController"
       stylesheets="@/styles/GameInstance.css"
         spacing="40">
         <HBox alignment="CENTER" spacing="100">
