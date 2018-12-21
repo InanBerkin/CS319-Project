@@ -34,6 +34,7 @@ public class RoomLobbyMenuController extends MenuController {
 
     private boolean boardSize;
 
+
     @Override
     public void onMessageReceived(String message) {
         JSONObject responseJSON = new JSONObject(message);
@@ -59,7 +60,7 @@ public class RoomLobbyMenuController extends MenuController {
         else if(responseJSON.getString("responseType").equals("startGame")){
             Platform.runLater(() -> {
                 JSONObject gamePayload = new JSONObject();
-                gamePayload.put("boardSize", 3);
+                gamePayload.put("boardSize", responseJSON.getInt("boardSize"));
                 QBitzApplication.getSceneController().gotoGameMode(false, "RaceMode", gamePayload);
             });
         }
@@ -77,8 +78,8 @@ public class RoomLobbyMenuController extends MenuController {
     }
 
     private void addPlayers(JSONArray playersList){
-        int players = playersList.length();
         playersGridPane.getChildren().clear();
+        int players = playersList.length();
         Player player;
         HBox hBox;
         int id;
@@ -91,14 +92,15 @@ public class RoomLobbyMenuController extends MenuController {
             name = playerJSON.getString("name");
             player = new Player(id,level,name);
             hBox = new HBox();
-            if(ownerID == UserConfiguration.userID){
-                hBox.setStyle("-fx-background-color: #eeff25;");
-            }
-            else{
-                hBox.setStyle("-fx-background-color: #ffffff;");
-            }
             hBox.setAlignment(Pos.CENTER_LEFT);
             hBox.getChildren().add(new Label(player.getName()));
+            if(ownerID == player.getId()){
+                hBox.setStyle("-fx-background-color: #eeff25;");
+            }
+            else {
+                hBox.setStyle("-fx-background-color: #fff;");
+            }
+
             playersGridPane.add(hBox,i/4 , i);
         }
     }
