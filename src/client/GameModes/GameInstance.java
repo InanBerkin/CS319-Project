@@ -32,7 +32,7 @@ public abstract class GameInstance extends MenuController implements TimerSignab
 
     private final Group root = new Group();
     private Group boardGroup = new Group();
-    private Group patternGroup = new Group();
+    public Group patternGroup = new Group();
 
     @FXML
     private VBox vBox;
@@ -96,7 +96,7 @@ public abstract class GameInstance extends MenuController implements TimerSignab
             initializeGameMode();
 
             boardGroup = board.createBoardGroup();
-            patternGroup = pattern.createPatternGroup();
+            //patternGroup = pattern.createPatternGroup();
             patternGroup.translateZProperty().set(0);
             boardGroup.translateZProperty().set(0);
 
