@@ -31,7 +31,8 @@
         </padding>
     </GridPane>
 
-    <HBox alignment="CENTER">
+    <HBox alignment="CENTER_LEFT">
+        <Label fx:id="roomCodeText" HBox.hgrow="ALWAYS"/>
         <Button fx:id="startButton" onAction="#sendStartRequest" visible="false" disable="true" styleClass="start-button" HBox.hgrow="ALWAYS">Start Game!</Button>
     </HBox>
 

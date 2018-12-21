@@ -24,6 +24,8 @@ public class RoomCreateMenuController extends MenuController {
     @FXML
     private CheckBox roomTypeCheckbox;
 
+    private String roomCode;
+
 
     @Override
     public void onMessageReceived(String message) {
@@ -32,13 +34,14 @@ public class RoomCreateMenuController extends MenuController {
             int resultCode = responseJSON.getInt("result");
             if (resultCode == 0){
                 Platform.runLater(() -> {
-                    System.out.println("Joined");
+                    responseJSON.put("roomCode", roomCode);
                     QBitzApplication.getSceneController().gotoMenu("RoomLobbyMenu", responseJSON);
                 });
             }
         }
         else if(responseJSON.getString("responseType").equals("createRoom")){
             Platform.runLater(() -> {
+                roomCode = responseJSON.getString("roomCode");
                 joinRoom(responseJSON.getInt("roomID"));
             });
         }

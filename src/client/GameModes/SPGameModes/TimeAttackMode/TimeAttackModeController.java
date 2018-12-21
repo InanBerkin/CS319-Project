@@ -105,7 +105,7 @@ public class TimeAttackModeController extends MenuController implements TimerSig
             gridDimension = payload.getInt("boardSize");
             gameMode = payload.getInt("gameMode");
 
-//            if (gameMode == 2 ) {
+//            if (gameMode == 2) {
 //                board = new GameBoard(gridDimension, null);
 //                pattern = new Pattern(gridDimension,null);
 //                memoryModeController = new MemoryModeController(gridDimension, gameTimer, pattern);
@@ -155,7 +155,6 @@ public class TimeAttackModeController extends MenuController implements TimerSig
             sceneHbox.setSpacing(40);
             sceneHbox.setAlignment(Pos.CENTER);
             sceneHbox.getChildren().addAll(cubeScene, boardScene, patternScene);
-
 
 
             handleKeys(vBox);

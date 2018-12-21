@@ -26,6 +26,9 @@ public class RoomLobbyMenuController extends MenuController {
     @FXML
     private Button startButton;
 
+    @FXML
+    private Label roomCodeText;
+
     @Override
     public void onMessageReceived(String message) {
         JSONObject responseJSON = new JSONObject(message);
@@ -39,7 +42,12 @@ public class RoomLobbyMenuController extends MenuController {
         }
         else if(responseJSON.getString("responseType").equals("startCounter")){
             Platform.runLater(() -> {
-                roomName.setText("Game Starts in" + Integer.toString(responseJSON.getInt("count")));
+                roomName.setText("Game Starts in " + Integer.toString(responseJSON.getInt("count")));
+            });
+        }
+        else if(responseJSON.getString("responseType").equals("ownerExit")){
+            Platform.runLater(() -> {
+                QBitzApplication.getSceneController().gotoMenu("RoomMenu");
             });
         }
     }
@@ -50,6 +58,7 @@ public class RoomLobbyMenuController extends MenuController {
             addPlayers(payload.getJSONArray("userList"));
             roomName.setText(payload.getString("name"));
             startButton.setVisible(payload.getBoolean("isOwner") ? true : false);
+            roomCodeText.setText(payload.getString("roomCode"));
         });
     }
 
