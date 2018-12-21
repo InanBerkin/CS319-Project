@@ -14,8 +14,33 @@ import java.io.FileInputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import client.GameModes.SPGameModes.ImageRecreation.ImageRecreationMode;
+import client.GameModes.SPGameModes.MemoryMode.MemoryModeController;
+import client.Menus.MenuController;
+import client.GameModels.*;
+import javafx.application.Platform;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
+import javafx.fxml.FXML;
+import javafx.geometry.Pos;
+import javafx.scene.*;
+import javafx.scene.control.Label;
+import javafx.scene.image.Image;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import javafx.scene.paint.PhongMaterial;
+import javafx.scene.shape.Sphere;
+import javafx.scene.transform.Rotate;
 
-public class ImageRecreation
+import java.io.FileNotFoundException;
+
+import java.io.IOException;
+import java.net.URL;
+import java.util.ResourceBundle;
+public class ImageRecreationMode
 {
 
     private final int SIZE = 640;
@@ -33,7 +58,7 @@ public class ImageRecreation
     private List<Integer> remainingList;
 
 
-    public ImageRecreation(String img_path, int dimension, XRectangle[] rect) throws java.io.IOException {
+    public ImageRecreationMode(String img_path, int dimension, XRectangle[] rect) throws java.io.IOException {
 
         //initialize values
         this.img = new Image(new FileInputStream(img_path), SIZE, SIZE, false, false);
@@ -534,7 +559,7 @@ public class ImageRecreation
 //
 //    public static void main( String [] args){
 //        try {
-//            ImageRecreation img = new ImageRecreation("yildiz.jpg", 4);
+//            ImageRecreationMode img = new ImageRecreationMode("yildiz.jpg", 4);
 //
 //
 //            //double a = img.compareHist(hist1, hist2);

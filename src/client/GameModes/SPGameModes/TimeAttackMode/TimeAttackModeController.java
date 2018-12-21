@@ -1,6 +1,6 @@
 package client.GameModes.SPGameModes.TimeAttackMode;
 
-import client.GameModes.SPGameModes.ImageRecreation.ImageRecreation;
+import client.GameModes.SPGameModes.ImageRecreation.ImageRecreationMode;
 import client.GameModes.SPGameModes.MemoryMode.MemoryModeController;
 import client.Menus.MenuController;
 import client.GameModels.*;
@@ -51,7 +51,7 @@ public class TimeAttackModeController extends MenuController implements TimerSig
     private static final double CAMERA_NEAR_CLIP = 0.1;
     private static final double CAMERA_FAR_CLIP = 10000.0;
     private static final double KEY_ROTATION_STEP = 9;
-    private static ImageRecreation imageRecreation = null;
+    private static ImageRecreationMode imageRecreationMode = null;
     private static MemoryModeController memoryModeController = null ;
 
     private static final int WIDTH = 1200;
@@ -114,13 +114,13 @@ public class TimeAttackModeController extends MenuController implements TimerSig
 
             if (gameMode == 1) {
                 try {
-                    imageRecreation = new ImageRecreation("assets/recImage.jpg", gridDimension, cube.getFaces());
+                    imageRecreationMode = new ImageRecreationMode("assets/recImage.jpg", gridDimension, cube.getFaces());
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-                board = new GameBoard(gridDimension, imageRecreation);
-                pattern = new Pattern(gridDimension, imageRecreation.getImgParts().toArray(new Image[imageRecreation.getImgParts().size()]));
-                imageRecreation.imageRec();
+                board = new GameBoard(gridDimension, imageRecreationMode);
+                pattern = new Pattern(gridDimension, imageRecreationMode.getImgParts().toArray(new Image[imageRecreationMode.getImgParts().size()]));
+                imageRecreationMode.imageRec();
             }
             else if (gameMode == 0) {
                 board = new GameBoard(gridDimension, null);
