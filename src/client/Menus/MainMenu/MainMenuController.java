@@ -3,6 +3,7 @@ package client.Menus.MainMenu;
 import client.Menus.MenuController;
 import client.QBitzApplication;
 import client.UserConfiguration;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.layout.GridPane;
 
@@ -26,6 +27,12 @@ public class MainMenuController extends MenuController {
     @FXML
     public void gotoSingleplayerMenu(){
         QBitzApplication.getSceneController().gotoMenu("SingleplayerMenu");
+    }
+
+    @FXML
+    public void exitGame(){
+        Platform.exit();
+        System.exit(0);
     }
 
     public void gotoOptionsMenu(){

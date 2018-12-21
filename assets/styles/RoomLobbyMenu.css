@@ -1,14 +1,13 @@
 @import "Main.css";
 
 HBox{
-    -fx-background-color: #ffffff;
     -fx-font-size: 20;
-    -fx-padding: 30;
+    -fx-padding: 20;
     -fx-background-radius: 10;
     -fx-pref-height: 50;
 }
 
-GridPane#background{
+VBox#background{
     -fx-background-color: -backgroundDark;
 }
 
@@ -19,4 +18,15 @@ GridPane#playersGridPane{
     -fx-border-color: #000000;
     -fx-background-radius: 10;
     -fx-border-radius: 10;
+    -fx-border-insets: 80px;
+    -fx-background-insets: 80px;
+}
+
+.start-button{
+    -fx-background-color: #A4D05F;
+    -fx-font-size: 20;
+}
+
+#Title{
+
 }

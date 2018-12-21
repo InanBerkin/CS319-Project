@@ -4,6 +4,7 @@ import client.Menus.MenuController;
 import client.QBitzApplication;
 import client.GameModels.Room;
 import javafx.application.Platform;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -45,11 +46,11 @@ public class RoomMenuController extends MenuController {
 
         TableColumn<Room, String>  ownerColumn = new TableColumn<>("Owner");
         //ownerColumn.setMinWidth(200);
-        ownerColumn.setCellValueFactory(new PropertyValueFactory<>("ownerid"));
+        ownerColumn.setCellValueFactory(new PropertyValueFactory<>("ownerName"));
 
         TableColumn<Room, String>  playerNoColumn = new TableColumn<>("Players");
         //playerNoColumn.setMinWidth(200);
-        playerNoColumn.setCellValueFactory(new PropertyValueFactory<>("players"));
+        playerNoColumn.setCellValueFactory(c-> new SimpleStringProperty(c.getValue().getPlayers() + " / " + c.getValue().getMaxPlayers()));
 
         TableColumn<Room, String>  levelColumn = new TableColumn<>("Entrance Level");
         //levelColumn.setMinWidth(200);
@@ -71,6 +72,7 @@ public class RoomMenuController extends MenuController {
             rooms.add(new Room(
                     roomJSON.getString("name"),
                     roomJSON.getInt("roomID"),
+                    roomJSON.getString("ownerName"),
                     roomJSON.getInt("gameMode"),
                     roomJSON.getInt("players"),
                     roomJSON.getInt("maxPlayers"),
@@ -97,14 +99,12 @@ public class RoomMenuController extends MenuController {
 
     private void addButtonToTable() {
         TableColumn<Room, Void> colBtn = new TableColumn("Button Column");
-
         Callback<TableColumn<Room, Void>, TableCell<Room, Void>> cellFactory = new Callback<TableColumn<Room, Void>, TableCell<Room, Void>>() {
             @Override
             public TableCell<Room, Void> call(final TableColumn<Room, Void> param) {
                 final TableCell<Room, Void> cell = new TableCell<Room, Void>() {
 
-                    private final Button btn = new Button("Join");
-
+                    private Button btn = new Button("Join");
                     {
                         btn.setOnAction((ActionEvent event) -> {
                             Room room = getTableView().getItems().get(getIndex());

@@ -2,6 +2,7 @@ package client.Menus.RoomCreateMenu;
 
 import client.Menus.MenuController;
 import client.QBitzApplication;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
@@ -26,7 +27,21 @@ public class RoomCreateMenuController extends MenuController {
 
     @Override
     public void onMessageReceived(String message) {
-
+        JSONObject responseJSON = new JSONObject(message);
+        if(responseJSON.getString("responseType").equals("joinRoom")){
+            int resultCode = responseJSON.getInt("result");
+            if (resultCode == 0){
+                Platform.runLater(() -> {
+                    System.out.println("Joined");
+                    QBitzApplication.getSceneController().gotoMenu("RoomLobbyMenu", responseJSON);
+                });
+            }
+        }
+        else if(responseJSON.getString("responseType").equals("createRoom")){
+            Platform.runLater(() -> {
+                joinRoom(responseJSON.getInt("roomID"));
+            });
+        }
     }
 
     @Override
@@ -58,12 +73,19 @@ public class RoomCreateMenuController extends MenuController {
         roomJSON.put("entranceLevel", entranceLevel);
         roomJSON.put("roomType", roomType);
         QBitzApplication.getSceneController().sendMessageToServer(roomJSON);
-        QBitzApplication.getSceneController().gotoMenu("RoomMenu");
     }
 
     @FXML
     private void goBack(){
         QBitzApplication.getSceneController().gotoMenu("RoomMenu");
     }
+
+    private void joinRoom(int id){
+        JSONObject roomJSON = new JSONObject();
+        roomJSON.put("requestType", "joinRoom");
+        roomJSON.put("roomID", id);
+        QBitzApplication.getSceneController().sendMessageToServer(roomJSON);
+    }
+
 
 }

@@ -11,7 +11,7 @@ public class Room {
     private boolean isPublic;
     private String name;
     private int gamemode;
-    private int ownerid;
+    private String ownerName;
     private int players;
     private int maxPlayers;
     private int entranceLevel;
@@ -19,7 +19,7 @@ public class Room {
     private String roomcode;
     private ArrayList<ServerSocketHandler> users;
 
-    public Room(String name, int id, int gamemode, int players, int maxPlayers, int entranceLevel) {
+    public Room(String name, int id, String ownerName,int gamemode, int players, int maxPlayers, int entranceLevel) {
         this.id = id;
         this.name = name;
         this.gamemode = gamemode;
@@ -28,14 +28,14 @@ public class Room {
         this.entranceLevel = entranceLevel;
         this.roomtype = 0;
         this.roomcode = "";
-        this.ownerid = -1;
+        this.ownerName = ownerName;
     }
 
     public Room(int id, String name, int gamemode, int players, int maxPlayers, int entranceLevel, int roomtype) {
         this.id = id;
         this.name = name;
         this.gamemode = gamemode;
-        this.ownerid = -1;
+        this.ownerName = "";
         this.players = players;
         this.maxPlayers = maxPlayers;
         this.entranceLevel = entranceLevel;
@@ -72,12 +72,12 @@ public class Room {
         this.gamemode = gamemode;
     }
 
-    public int getOwnerid() {
-        return ownerid;
+    public String getOwnerName() {
+        return ownerName;
     }
 
-    public void setOwnerid(int ownerid) {
-        this.ownerid = ownerid;
+    public void setOwnerName(String ownerName) {
+        this.ownerName = ownerName;
     }
 
     public int getPlayers() {

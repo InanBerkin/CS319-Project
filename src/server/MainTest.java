@@ -1,26 +1,26 @@
 package server;
 
+import server.models.Counter;
+import server.models.CounterSignable;
 
-import com.sun.org.apache.bcel.internal.classfile.Code;
+public class MainTest implements CounterSignable {
 
-import java.util.HashMap;
+    public MainTest() {
+        Counter counter = new Counter(Counter.BACKWARD, 10, 1, this);
+        counter.start();
+    }
 
-public class MainTest {
+    @Override
+    public void counterStopped() {
+        System.out.println("» Counter is stopped!");
+    }
+
+    @Override
+    public void counterSignal(int count) {
+        System.out.println("Count: " + count);
+    }
 
     public static void main(String[] args) {
- //       MailSender sender = new MailSender("smtp.gmail.com", "info.qbitz@gmail.com", "qbitzteam");
- //       sender.setMailServerProperties(587, true,true);
- //       sender.createEmailMessage("ztan.cankiri@gmail.com", "Q-Bitz Test Mail", "This is an example for auth message.");
- //       sender.sendEmail();
-
-        HashMap<String, String> map = new HashMap<>();
-
-        map.put("abcde", "12345");
-
-        System.out.println(map.get("abcde"));
-
-        map.remove("abcde", "12345");
-
-        System.out.println(map.get("abcde"));
+        new MainTest();
     }
 }
