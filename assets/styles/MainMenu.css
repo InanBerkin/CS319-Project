@@ -31,6 +31,11 @@ Button:hover{
     -fx-background-color: #FBC625;
 }
 
+
+#exitButton{
+    -fx-background-color: -danger;
+}
+
 .title{
     -fx-text-fill: white;
     -fx-font-size: 100;

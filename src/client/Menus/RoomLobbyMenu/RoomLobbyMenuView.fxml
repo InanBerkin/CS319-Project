@@ -32,7 +32,7 @@
     </GridPane>
 
     <HBox alignment="CENTER">
-        <Button fx:id="startButton" visible="false" disable="true" styleClass="start-button" HBox.hgrow="ALWAYS">Start Game!</Button>
+        <Button fx:id="startButton" onAction="#sendStartRequest" visible="false" disable="true" styleClass="start-button" HBox.hgrow="ALWAYS">Start Game!</Button>
     </HBox>
 
     <HBox VBox.vgrow="ALWAYS" alignment="CENTER_LEFT">

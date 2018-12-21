@@ -37,9 +37,9 @@ public class RoomLobbyMenuController extends MenuController {
                 }
             });
         }
-        else if(responseJSON.getString("responseType").equals("startGame")){
+        else if(responseJSON.getString("responseType").equals("startCounter")){
             Platform.runLater(() -> {
-                roomName.setText(responseJSON.getString("timer"));
+                roomName.setText(responseJSON.getString("count"));
             });
         }
     }
@@ -78,7 +78,7 @@ public class RoomLobbyMenuController extends MenuController {
     @FXML
     private void sendStartRequest(){
         JSONObject startJSON = new JSONObject();
-        startJSON.put("requestType", "startGame");
+        startJSON.put("requestType", "startCounter");
         startJSON.put("roomID", payload.getInt("roomID"));
         QBitzApplication.getSceneController().sendMessageToServer(startJSON);
     }
