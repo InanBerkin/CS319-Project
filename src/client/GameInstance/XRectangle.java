@@ -95,7 +95,7 @@ public class XRectangle extends Rectangle {
         BufferedImage base  =  SwingFXUtils.fromFXImage(this.faceImage, null);
             try {
 
-            BufferedImage overlay = SwingFXUtils.fromFXImage(new Image(new FileInputStream("img/selected.png")),null);
+            BufferedImage overlay = SwingFXUtils.fromFXImage(new Image(new FileInputStream("assets/CubeFaces/selected.png")),null);
 
             Graphics2D g2d = base.createGraphics();
             g2d.setComposite(AlphaComposite.SrcOver.derive(0.3f));
