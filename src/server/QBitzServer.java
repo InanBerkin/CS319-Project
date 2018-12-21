@@ -453,15 +453,19 @@ class QBitzServer {
                         JSONObject userObj = new JSONObject();
                         userObj.put("name", user.getUsername());
                         userObj.put("id", user.getId());
-                        userObj.put("level", user.getLevel());
                         userObj.put("finishTime", finish.time);
                         userObj.put("rank", room.getFinishTimes().indexOf(finish) + 1);
 
                         userList.put(userObj);
                     }
                 }
+
                 respObj.put("finishList", userList);
-                handler.sendMessage(respObj.toString());
+                respObj.put("responseType", "submit");
+
+                for (ServerSocketHandler userHandler : room.getUsers()) {
+                    userHandler.sendMessage(respObj.toString());
+                }
             }
         }
     }

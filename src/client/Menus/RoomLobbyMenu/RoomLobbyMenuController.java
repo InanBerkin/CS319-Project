@@ -40,7 +40,7 @@ public class RoomLobbyMenuController extends MenuController {
         JSONObject responseJSON = new JSONObject(message);
         if(responseJSON.getString("responseType").equals("userAnnouncement")){
             Platform.runLater(() -> {
-                addPlayers(userList);
+                addPlayers(responseJSON.getJSONArray("userList"));
                 if (responseJSON.getBoolean("isStartable")){
                     startButton.setDisable(false);
                 }
