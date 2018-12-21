@@ -192,9 +192,7 @@ class DatabaseConnector {
                         result.getString("email"),
                         result.getInt("id"),
                         result.getInt("exp"),
-                        result.getInt("level"),
-                        result.getInt("wins"),
-                        result.getInt("loses")
+                        result.getInt("level")
                 );
             }
         } catch (SQLException e) {
@@ -217,9 +215,7 @@ class DatabaseConnector {
                         result.getString("email"),
                         result.getInt("id"),
                         result.getInt("exp"),
-                        result.getInt("level"),
-                        result.getInt("wins"),
-                        result.getInt("loses")
+                        result.getInt("level")
                 );
             }
         } catch (SQLException e) {

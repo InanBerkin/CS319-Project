@@ -9,20 +9,18 @@ public class User {
     private int id;
     private int level;
     private int exp;
-    private int wins;
-    private int loses;
+    private boolean inLobby;
 
     public User() {}
 
-    public User(String username, String email, String password, int id, int exp, int level, int wins, int loses) {
+    public User(String username, String email, String password, int id, int exp, int level) {
         this.username = username;
         this.email = email;
         this.password = password;
         this.id = id;
         this.exp = exp;
         this.level = level;
-        this.wins = wins;
-        this.loses = loses;
+        this.inLobby = false;
     }
 
     public String getUsername() {
@@ -81,19 +79,11 @@ public class User {
         this.exp = exp;
     }
 
-    public int getWins() {
-        return wins;
+    public boolean isInLobby() {
+        return inLobby;
     }
 
-    public void setWins(int wins) {
-        this.wins = wins;
-    }
-
-    public int getLoses() {
-        return loses;
-    }
-
-    public void setLoses(int loses) {
-        this.loses = loses;
+    public void setInLobby(boolean inLobby) {
+        this.inLobby = inLobby;
     }
 }

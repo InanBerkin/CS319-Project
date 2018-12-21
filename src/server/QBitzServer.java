@@ -321,6 +321,8 @@ class QBitzServer {
                             room.addUser(handler);
                             room.setPlayers(room.getPlayers() + 1);
 
+                            handler.getUser().setInLobby(true);
+
                             JSONArray userList = new JSONArray();
 
                             for (ServerSocketHandler userHandler : room.getUsers()) {
@@ -361,6 +363,8 @@ class QBitzServer {
                 room.getUsers().remove(handler);
                 room.setPlayers(room.getPlayers() - 1);
 
+                handler.getUser().setInLobby(false);
+
                 if (room.getPlayers() == 0)
                     removeRoom(room);
                 else {
@@ -400,6 +404,8 @@ class QBitzServer {
 
                             room.addUser(handler);
                             room.setPlayers(room.getPlayers() + 1);
+
+                            handler.getUser().setInLobby(true);
 
                             JSONArray userList = new JSONArray();
 
@@ -482,6 +488,9 @@ class QBitzServer {
                 for (ServerSocketHandler userHandler : room.getUsers()) {
                     userHandler.sendMessage(respObj.toString());
                 }
+            }
+            else if(msgObj.getString("requestType").equals("backToLobby")) {
+                handler.getUser().setInLobby(true);
             }
         }
     }
@@ -596,6 +605,7 @@ class QBitzServer {
 
                 for (ServerSocketHandler userHandler : room.getUsers()) {
                     userHandler.sendMessage(json.toString());
+                    userHandler.getUser().setInLobby(false);
                 }
             }
 
