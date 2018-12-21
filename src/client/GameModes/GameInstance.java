@@ -21,7 +21,6 @@ import javafx.scene.paint.Color;
 import javafx.scene.paint.PhongMaterial;
 import javafx.scene.shape.Sphere;
 import javafx.scene.transform.Rotate;
-import org.json.JSONArray;
 
 import java.io.FileNotFoundException;
 
@@ -33,7 +32,7 @@ public abstract class GameInstance extends MenuController implements TimerSignab
 
     private final Group root = new Group();
     private Group boardGroup = new Group();
-    public Group patternGroup = new Group();
+    private Group patternGroup = new Group();
 
     @FXML
     private VBox vBox;
@@ -45,7 +44,6 @@ public abstract class GameInstance extends MenuController implements TimerSignab
     private Label timerLabel;
 
     public GameBoard board;
-
     public Pattern pattern;
 
     private static final double CAMERA_INITIAL_DISTANCE = -1000;
@@ -55,9 +53,10 @@ public abstract class GameInstance extends MenuController implements TimerSignab
     private static final double CAMERA_FAR_CLIP = 10000.0;
     private static final double KEY_ROTATION_STEP = 9;
 
+
     public int gridDimension;
 
-    public Cube cube;
+    Cube cube;
     final XGroup cameraHolder = new XGroup();
     final PerspectiveCamera camera = new PerspectiveCamera(true);
 
@@ -204,6 +203,7 @@ public abstract class GameInstance extends MenuController implements TimerSignab
     }
 
     public void handleKeys(VBox vBox) {
+
         vBox.addEventFilter(KeyEvent.KEY_PRESSED, event-> {
             event.consume();
             if (event.getCode() == KeyCode.W) {
@@ -216,39 +216,23 @@ public abstract class GameInstance extends MenuController implements TimerSignab
                 cube.rotate4();
             } else if (event.getCode() == KeyCode.Q) {
                 cube.highlight(Cube.BACKWARD);
+                board.setSelectedFaceMat(cube.selectFace());
             } else if (event.getCode() == KeyCode.E) {
                 cube.highlight(Cube.FORWARD);
-            } else if (event.getCode() == KeyCode.SPACE) {
                 board.setSelectedFaceMat(cube.selectFace());
             }
+
         });
     }
+
     @Override
     public void timerStopped() {
 
     }
 
-    public boolean submit() {
-
-        return pattern.checkPattern(board.getBoardImageViews());
+    public void foo() {
+        System.out.println("Is pattern correct? : " + pattern.checkPattern(board.getBoardImageViews()));
+        System.out.println("Submit Button!");
     }
-
-    public int[][] jsonArrayToMatrix(JSONArray array, int dimension) {
-        int size = dimension * dimension;
-        int[][] result = new int[size][2];
-
-        int cur1 = 0;
-        for (Object iterator1 : array) {
-            int cur2 = 0;
-            for (Object iterator2 : (JSONArray) iterator1) {
-                result[cur1][cur2] = (int) iterator2;
-                cur2++;
-            }
-            cur1++;
-        }
-
-        return result;
-    }
-
 
 }

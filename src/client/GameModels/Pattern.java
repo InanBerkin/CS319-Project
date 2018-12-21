@@ -2,7 +2,7 @@ package client.GameModels;
 
 import javafx.embed.swing.SwingFXUtils;
 import javafx.scene.Group;
-import javafx.scene.effect.GaussianBlur;
+
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.paint.PhongMaterial;
@@ -14,6 +14,7 @@ import javafx.scene.transform.Transform;
 import java.awt.image.BufferedImage;
 import java.awt.image.Raster;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 
 public class Pattern {
@@ -29,23 +30,31 @@ public class Pattern {
     private static int[][] gridMatrix;
     private static final Transform t = new Rotate();
     private ImageView[] patternImageViews;
-    private Image[] imagesToCreatePattern = null;
-    private GaussianBlur gaussianBlur = new GaussianBlur();
+    private Image[] imagesToCreatePattern;
+    private Image questionMark;
 
-    public Pattern(int gridDimension)
     {
-        this.gridDimension = gridDimension;
-
-        gaussianBlur.setRadius(2);
-
-        gridMat = new PhongMaterial[gridDimension*gridDimension];
-        patternImageViews =  new ImageView[gridDimension*gridDimension];
-
-        gridCell = new Box[(gridDimension) * (gridDimension)];
-        gridMatrix = (new PatternGenerator(gridDimension)).generatePattern(false);
-
+        try {
+            questionMark = new Image(new FileInputStream( "assets/questionMark.png") , SIZE, SIZE, true, false);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
     }
 
+
+    public Pattern(int gridDimension) {
+        this.gridDimension = gridDimension;
+        System.out.println("hey");
+        gridMat = new PhongMaterial[gridDimension*gridDimension];
+        patternImageViews =  new ImageView[gridDimension*gridDimension];
+        gridCell = new Box[(gridDimension) * (gridDimension)];
+//        for (int i = 0; i < gridDimension*gridDimension; i++) {
+//            patternImageViews[i] = new ImageView(questionMark);
+//
+//        }
+
+        gridMatrix = (new PatternGenerator(gridDimension)).generatePattern(false);
+    }
 
     public void setImagesToCreatePattern(Image[] imagesToCreatePattern){
         this.imagesToCreatePattern = imagesToCreatePattern;
@@ -64,8 +73,6 @@ public class Pattern {
         Group boardGroupInst = new Group();
         int gridIndex;
 
-
-
         for (int i = 0; i < gridDimension; i++) {
             for (int j = 0; j < gridDimension; j++) {
 
@@ -74,15 +81,11 @@ public class Pattern {
                 gridCell[gridIndex] = new Box(BOARD_LENGTH / gridDimension, BOARD_LENGTH / gridDimension, 0);
                 gridMat[gridIndex] = new PhongMaterial();
                 gridCell[gridIndex].setId(Integer.toString(gridIndex));
-//                System.out.println(
-//                        gridMatrix[gridIndex][0] +" " +gridMatrix[gridIndex][1]);
+
 
                 if(imagesToCreatePattern == null){
                     String png = Integer.toString(gridMatrix[gridIndex][0]) + ".png";
-
                     try {
-                        //gridMat[gridIndex].setDiffuseMap(new Image(new FileInputStream("assets/CubeFaces/" + png), SIZE, SIZE, true, false));
-                        //gridCell[gridIndex].getTransforms().add(new Rotate(90*gridMatrix[gridIndex][1], Rotate.Z_AXIS));
                         patternImageViews[gridIndex] = new ImageView(new Image(new FileInputStream("assets/CubeFaces/" + png), SIZE, SIZE, true, false));
                         patternImageViews[gridIndex].setRotate( 90*gridMatrix[gridIndex][1]);
                         this.smoothImageView(patternImageViews[gridIndex]);
@@ -150,21 +153,23 @@ public class Pattern {
                 }
             }
 
+
         }
                 return true;
 
     }
 
-    public void setMatQuestMark() throws IOException
+    public void setMatQuestMark()
     {
         for(int i = 0; i < gridDimension*gridDimension; i++)
         {
-            gridMat[i].setDiffuseMap(new Image(new FileInputStream("assets/questionMark.png")));
+            gridMat[i].setDiffuseMap(questionMark);
             gridCell[i].setMaterial(gridMat[i]);
         }
     }
 
     public void showPattern(){
+
         for(int i = 0; i < gridDimension*gridDimension; i++)
         {
             gridMat[i].setDiffuseMap(patternImageViews[i].snapshot(null, null));
@@ -173,7 +178,7 @@ public class Pattern {
     }
     public void smoothImageView(ImageView imageView){
 
-        imageView.setEffect(gaussianBlur);
+
         imageView.setFitWidth(128);
     }
 

@@ -28,6 +28,7 @@ public class GameBoard {
     private static Boolean[] statusOfGridCells;
     private static ImageView[] boardImageViews;
     private static ImageRecreationModeController imageRecreationModeController;
+    private boolean isBoardChanged = false;
 
     public GameBoard(int gridDimension, ImageRecreationModeController imageRecreationModeController)
     {
@@ -138,6 +139,9 @@ public class GameBoard {
             int cellId = Integer.parseInt(event.getPickResult().getIntersectedNode().getId());
 
             if(event.getButton() == MouseButton.PRIMARY) {
+
+                isBoardChanged = true;
+
                 if( imageRecreationModeController != null)
                     imageRecreationModeController.imageRec();
                 if (!statusOfGridCells[cellId]&& selectedFaceMat.getDiffuseMap() != mainMat.getDiffuseMap()) {
@@ -150,9 +154,9 @@ public class GameBoard {
 
 
                     gridCell.setMaterial(tmp);
-                    selectedFaceMat.setDiffuseMap(mainMat.getDiffuseMap());
+                    //selectedFaceMat.setDiffuseMap(mainMat.getDiffuseMap());
 
-                    previewMat.setDiffuseMap(mainMat.getDiffuseMap());
+                    //previewMat.setDiffuseMap(mainMat.getDiffuseMap());
                     statusOfGridCells[cellId] = Boolean.TRUE;
                 } else {
                     statusOfGridCells[cellId] = Boolean.FALSE;
@@ -199,6 +203,15 @@ public class GameBoard {
             }
         });
     }
+
+    public boolean isBoardChanged() {
+        return isBoardChanged;
+    }
+
+    public void setBoardChanged(boolean boardChanged) {
+        isBoardChanged = boardChanged;
+    }
+
     public void setSelectedFaceMat(Image selectedFace)
     {
         selectedFaceMat.setDiffuseMap(selectedFace);

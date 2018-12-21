@@ -6,6 +6,7 @@ import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 
 import java.io.Serializable;
+import java.nio.file.Paths;
 
 public class OptionsMenu implements Serializable {
 
@@ -38,8 +39,8 @@ public class OptionsMenu implements Serializable {
         musicLevel = 0;
         musicUrl = "TODO";
 
-        //music = new Media(Paths.get(musicUrl).toUri().toString());
-        //musicPlayer = new MediaPlayer(music);
+//        music = new Media(Paths.get(musicUrl).toUri().toString());
+//        musicPlayer = new MediaPlayer(music);
 
     }
 
