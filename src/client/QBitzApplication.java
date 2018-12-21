@@ -9,6 +9,8 @@ import javafx.scene.input.KeyCombination;
 import javafx.stage.Stage;
 
 import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -27,10 +29,14 @@ public class QBitzApplication extends Application {
     public void start(Stage primaryStage) {
         try {
 
+            CubeFaces.initPaths();
+            CubeFaces.initImages();
+
+
             String homeDir = System.getProperty("user.home");
             folderPath = homeDir + File.separator + "qbitz_configs";
 
-            /*
+
             if(Files.notExists(Paths.get(folderPath))) {
                 // create folder and write default options
                 System.out.println("DEBUG: Options does not exist.");
@@ -48,7 +54,14 @@ public class QBitzApplication extends Application {
                 // init existing options
                 opts = loadOptions();
                 opts.updateSettings();
-            }*/
+            }
+
+            if(Files.notExists(Paths.get(folderPath + File.separator + "faces.qbitz"))) {
+                CubeFaces.saveFaces();
+            }
+            else {
+                CubeFaces.loadFaces();
+            }
 
             primaryStage.setMinWidth(800);
             primaryStage.setMinHeight(600);

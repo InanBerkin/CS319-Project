@@ -10,62 +10,89 @@ public class CubeFaces {
 
     public static Image[] faces;
     public static String[] paths;
-    public static String[] newPaths;
+    public static Image[] defaultFaces;
     public static int colorOffset = 0;
-    String homeDir = System.getProperty("user.home");
-    String folderPath = homeDir + File.separator + "qbitz_configs";
+    static String homeDir = System.getProperty("user.home");
+    static String folderPath = homeDir + File.separator + "qbitz_configs";
 
-    public void initPaths() {
+    static double realOffset = 0;
+
+    public static void initPaths() {
         paths = new String[6];
-        String base = "assets/";
+        String base = "assets/CubeFaces/";
         for(int i = 1; i <=6; i++) {
-            paths[i-1] = base + i + ".jpg";
+            System.out.println(base + i + ".png");
+            paths[i-1] = base + i + ".png";
         }
     }
 
-    public void initImages() {
+    public static void initImages() {
         faces = new Image[6];
+        defaultFaces = new Image[6];
         for(int i = 0; i<6; i++) {
-            faces[i] = new Image(paths[i]);
+            try {
+                faces[i] = new Image(new FileInputStream(paths[i]));
+                defaultFaces[i] = new Image(new FileInputStream(paths[i]));
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
+
         }
     }
 
-    public Image getImageAt(int index) {
+    public static Image[] getAllFaces() {
+        return faces;
+    }
+
+    public static void setAllFaces() {
+        ColorAdjust colorAdjust = new ColorAdjust();
+
+        colorAdjust.setHue(realOffset);
+        for(int i = 0; i < 6; i++) {
+            ImageView tempView = new ImageView(defaultFaces[i]);
+            tempView.setEffect(colorAdjust);
+            faces[i] = tempView.snapshot(null,null);
+        }
+    }
+    public static Image getImageAt(int index) {
         if(index >= 0 && index < 6 ) {
             return faces[index];
         }
         return null;
     }
 
-    public void setImageAt(int index, Image imageToSet) {
+    public static void setImageAt(int index, Image imageToSet) {
         if(index >= 0 && index < 6 ) {
             faces[index] = imageToSet;
         }
     }
 
-    public void changeColor(int offset) {
-        int realOffset = colorOffset - offset;
+    public static void changeColor(double offset) {
+        realOffset = ((offset - 50)*2.0/100);
+
+        //System.out.println("Hue: "  + realOffset);
 
         ColorAdjust colorAdjust = new ColorAdjust();
 
-        colorAdjust.setHue(colorAdjust.getHue() + realOffset);
+        colorAdjust.setHue(realOffset);
         for(int i = 0; i < 6; i++) {
-            ImageView tempView = new ImageView(faces[i]);
+            ImageView tempView = new ImageView(defaultFaces[i]);
             tempView.setEffect(colorAdjust);
             faces[i] = tempView.snapshot(null,null);
         }
     }
 
-    public void saveFaces() {
+
+    public static void saveFaces() {
 
         try {
 
+            double writeableOffset = realOffset;
             // write object to file
             FileOutputStream fos = new FileOutputStream(folderPath + File.separator + "faces.qbitz");
             ObjectOutputStream oos = new ObjectOutputStream(fos);
-            oos.writeObject(faces);
+            oos.writeObject(writeableOffset);
             oos.close();
-
 
             //System.out.println("One:" + result.getOne() + ", Two:" + result.getTwo());
 
@@ -77,14 +104,15 @@ public class CubeFaces {
 
     }
 
-    public void loadFaces() {
+    public static void loadFaces() {
         FileInputStream fis = null;
         try {
             // read object from file
             fis = new FileInputStream(folderPath + File.separator + "faces.qbitz");
             ObjectInputStream ois = new ObjectInputStream(fis);
-            faces = (Image[]) ois.readObject();
+            realOffset = (double) ois.readObject();
             ois.close();
+            CubeFaces.setAllFaces();
         } catch (FileNotFoundException ex) {
             //Logger.getLogger(OptionsController.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
@@ -99,8 +127,6 @@ public class CubeFaces {
             }
         }
     }
-
-
 
 
 }
