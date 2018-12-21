@@ -87,6 +87,9 @@ public class GameInstanceController extends MenuController implements TimerSigna
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
+        gameTimer = new GameTimer(this,timerLabel);
+
+        gameTimer.startTimer();
         gameTimer = new GameTimer(this, timerLabel);
         gameTimer.startTimer();
         root.setDepthTest(DepthTest.ENABLE);
@@ -106,6 +109,7 @@ public class GameInstanceController extends MenuController implements TimerSigna
 //                memoryMode = new MemoryMode(gridDimension, gameTimer, pattern);
 //
 //            }
+
             if (gameMode == 1) {
                 try {
                     imageRecreation = new ImageRecreation("assets/recImage.jpg", gridDimension, cube.getFaces());

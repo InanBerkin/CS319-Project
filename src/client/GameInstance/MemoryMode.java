@@ -32,6 +32,9 @@ public class MemoryMode extends MenuController implements TimerSignable {
     private Button startButton;
 
     @FXML
+    private Button submitButtonMemory;
+
+    @FXML
     private VBox vBoxMemory;
 
     @FXML
@@ -208,5 +211,16 @@ public class MemoryMode extends MenuController implements TimerSignable {
         this.startButton.setVisible(false);
 
         return true;
+    }
+    @FXML
+    public boolean submitCreatedPattern(){
+        this.gameTimer.stopTimer();
+        this.pattern.showPattern();
+        boolean isPatternTrue = pattern.checkPattern(board.getBoardImageViews());
+        if( isPatternTrue)
+            this.submitButtonMemory.setVisible(false);
+        System.out.println("Is pattern true: " + isPatternTrue);
+
+        return isPatternTrue;
     }
 }
