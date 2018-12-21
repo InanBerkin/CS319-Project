@@ -66,8 +66,6 @@ public abstract class GameInstance extends MenuController implements TimerSignab
     final XGroup cameraHolderPattern = new XGroup();
     final PerspectiveCamera cameraPattern = new PerspectiveCamera(true);
 
-    private Highlighter highlighter;
-
     public GameTimer gameTimer;
 
     @Override
@@ -96,21 +94,6 @@ public abstract class GameInstance extends MenuController implements TimerSignab
             gridDimension = payload.getInt("boardSize");
 
             initializeGameMode();
-            /*if (gameMode == 1) {
-                try {
-                    imageRecreation = new ImageRecreation("assets/recImage.jpg", gridDimension, cube.getFaces());
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                board = new GameBoard(gridDimension, imageRecreation);
-                pattern = new Pattern(gridDimension, imageRecreation.getImgParts().toArray(new Image[imageRecreation.getImgParts().size()]));
-                imageRecreation.imageRec();
-            }
-            else if (gameMode == 0) {
-                board = new GameBoard(gridDimension, null);
-                pattern = new Pattern(gridDimension,null);
-            }*/
-
 
             boardGroup = board.createBoardGroup();
             patternGroup = pattern.createPatternGroup();
@@ -153,7 +136,6 @@ public abstract class GameInstance extends MenuController implements TimerSignab
 
         root.getChildren().add(cameraHolder);
 
-
         cameraBoard.setNearClip(CAMERA_NEAR_CLIP);
         cameraBoard.setFarClip(CAMERA_FAR_CLIP);
         cameraBoard.setTranslateZ(CAMERA_INITIAL_DISTANCE);
@@ -162,7 +144,6 @@ public abstract class GameInstance extends MenuController implements TimerSignab
 
         boardGroup.getChildren().add(cameraHolderBoard);
 
-
         cameraPattern.setNearClip(CAMERA_NEAR_CLIP);
         cameraPattern.setFarClip(CAMERA_FAR_CLIP);
         cameraPattern.setTranslateZ(CAMERA_INITIAL_DISTANCE);
@@ -170,7 +151,6 @@ public abstract class GameInstance extends MenuController implements TimerSignab
         cameraHolderPattern.getChildren().add(cameraPattern);
 
         patternGroup.getChildren().add(cameraHolderPattern);
-
     }
 
     private void buildBody() throws Exception {
