@@ -56,7 +56,7 @@ public abstract class GameInstance extends MenuController implements TimerSignab
 
     public int gridDimension;
 
-    Cube cube;
+    public Cube cube;
     final XGroup cameraHolder = new XGroup();
     final PerspectiveCamera camera = new PerspectiveCamera(true);
 
@@ -222,15 +222,14 @@ public abstract class GameInstance extends MenuController implements TimerSignab
             }
         });
     }
-
     @Override
     public void timerStopped() {
 
     }
 
-    public void foo() {
-        System.out.println("Is pattern correct? : " + pattern.checkPattern(board.getBoardImageViews()));
-        System.out.println("Submit Button!");
+    public boolean submit() {
+
+        return pattern.checkPattern(board.getBoardImageViews());
     }
 
 }

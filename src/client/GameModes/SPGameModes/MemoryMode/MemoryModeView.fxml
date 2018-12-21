@@ -27,7 +27,7 @@
         </padding>
     </HBox>
     <HBox alignment="CENTER">
-        <Button fx:id="submitButton" onAction="#submitCreatedPattern" text="Submit" HBox.hgrow="ALWAYS" />
+        <Button fx:id="submitButton" onAction="#submit" text="Submit" HBox.hgrow="ALWAYS" />
     </HBox>
 
 

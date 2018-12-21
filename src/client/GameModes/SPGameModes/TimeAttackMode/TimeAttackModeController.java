@@ -18,5 +18,11 @@ public class TimeAttackModeController extends GameInstance {
         pattern = new Pattern(gridDimension,null);
     }
 
+    @Override
+    public boolean submit(){
+        boolean isPatternTrue = super.submit();
+        System.out.println("Is pattern true: " + isPatternTrue);
 
+        return isPatternTrue;
+    }
 }
