@@ -14,6 +14,7 @@ import java.awt.image.BufferedImage;
 import java.awt.image.Raster;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 
 public class Pattern {
 
@@ -140,11 +141,19 @@ public class Pattern {
 
     }
 
-    public void setMatQuestMark()
+    public void setMatQuestMark() throws IOException
     {
         for(int i = 0; i < gridDimension*gridDimension; i++)
         {
-            gridMat[i].setDiffuseMap(new Image(getClass().getResourceAsStream("questionMark.png")));
+            gridMat[i].setDiffuseMap(new Image(new FileInputStream("assets/questionMark.png")));
+            gridCell[i].setMaterial(gridMat[i]);
+        }
+    }
+
+    public void showPattern(){
+        for(int i = 0; i < gridDimension*gridDimension; i++)
+        {
+            gridMat[i].setDiffuseMap(patternImageViews[i].snapshot(null, null));
             gridCell[i].setMaterial(gridMat[i]);
         }
     }

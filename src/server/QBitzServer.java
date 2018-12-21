@@ -403,9 +403,10 @@ class QBitzServer {
 
     public void onExit(ServerSocketHandler handler) {
         for (Room room : rooms) {
-            for (ServerSocketHandler userHandler : room.getUsers()) {
-                if (userHandler == handler) {
-                    room.getUsers().remove(handler);
+            for (int i = 0; i < room.getUsers().size(); i++) {
+                if (room.getUsers().get(i) == handler) {
+                    room.getUsers().remove(i);
+                    break;
                 }
             }
         }

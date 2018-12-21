@@ -1,22 +1,17 @@
 package client.GameInstance;
 
-import client.ImageRecreation.ImageRecreation;
 import client.MenuController;
 import javafx.application.Platform;
-import javafx.beans.property.BooleanProperty;
-import javafx.beans.property.SimpleBooleanProperty;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.*;
 import javafx.scene.control.Label;
-import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-import javafx.scene.paint.PhongMaterial;
-import javafx.scene.shape.Sphere;
+
 import javafx.scene.transform.Rotate;
 
 import java.io.FileNotFoundException;
@@ -24,21 +19,26 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+import javafx.scene.control.Button;
 
-public class GameInstanceController extends MenuController implements TimerSignable {
+public class MemoryMode extends MenuController implements TimerSignable {
+    private int memoryTime;
 
-    private final Group root = new Group();
+    private Group root = new Group();
     private Group boardGroup = new Group();
     private Group patternGroup = new Group();
 
     @FXML
-    private VBox vBox;
+    private Button startButton;
 
     @FXML
-    private HBox sceneHbox;
+    private VBox vBoxMemory;
 
     @FXML
-    private Label timerLabel;
+    private HBox sceneHboxMemory;
+
+    @FXML
+    private Label timerLabelMemory;
 
     private GameBoard board;
     private Pattern pattern;
@@ -49,29 +49,18 @@ public class GameInstanceController extends MenuController implements TimerSigna
     private static final double CAMERA_NEAR_CLIP = 0.1;
     private static final double CAMERA_FAR_CLIP = 10000.0;
     private static final double KEY_ROTATION_STEP = 9;
-    private static ImageRecreation imageRecreation = null;
-    private static MemoryMode memoryMode = null ;
 
-    private static final int WIDTH = 1200;
-    private static final int HEIGHT = 800;
     private int gridDimension;
-    private int gameMode;
 
-    Cube cube;
-    final XGroup cameraHolder = new XGroup();
-    final PerspectiveCamera camera = new PerspectiveCamera(true);
+    private Cube cube;
+    private XGroup cameraHolder = new XGroup();
+    private PerspectiveCamera camera = new PerspectiveCamera(true);
 
-    final XGroup cameraHolderBoard = new XGroup();
-    final PerspectiveCamera cameraBoard = new PerspectiveCamera(true);
+    private XGroup cameraHolderBoard = new XGroup();
+    private PerspectiveCamera cameraBoard = new PerspectiveCamera(true);
 
-    final XGroup cameraHolderPattern = new XGroup();
-    final PerspectiveCamera cameraPattern = new PerspectiveCamera(true);
-
-    final BooleanProperty isRotating = new SimpleBooleanProperty(false);
-
-    private XRectangle[] rect;
-
-    private Highlighter highlighter;
+    private XGroup cameraHolderPattern = new XGroup();
+    private PerspectiveCamera cameraPattern = new PerspectiveCamera(true);
 
     private GameTimer gameTimer;
 
@@ -87,8 +76,8 @@ public class GameInstanceController extends MenuController implements TimerSigna
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
-        gameTimer = new GameTimer(this, timerLabel);
-        gameTimer.startTimer();
+        gameTimer = new GameTimer(this, timerLabelMemory);
+
         root.setDepthTest(DepthTest.ENABLE);
         buildCamera();
         try {
@@ -98,37 +87,21 @@ public class GameInstanceController extends MenuController implements TimerSigna
         }
         Platform.runLater(() -> {
             gridDimension = payload.getInt("boardSize");
-            gameMode = payload.getInt("gameMode");
 
-//            if (gameMode == 2 ) {
-//                board = new GameBoard(gridDimension, null);
-//                pattern = new Pattern(gridDimension,null);
-//                memoryMode = new MemoryMode(gridDimension, gameTimer, pattern);
-//
-//            }
-            if (gameMode == 1) {
-                try {
-                    imageRecreation = new ImageRecreation("assets/recImage.jpg", gridDimension, cube.getFaces());
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                board = new GameBoard(gridDimension, imageRecreation);
-                pattern = new Pattern(gridDimension, imageRecreation.getImgParts().toArray(new Image[imageRecreation.getImgParts().size()]));
-                imageRecreation.imageRec();
+            this.memoryTime = memoryTime(gridDimension);
+            board = new GameBoard(gridDimension, null);
+            pattern = new Pattern(gridDimension,null);
+
+            try {
+                pattern.setMatQuestMark();
+            } catch (IOException e) {
+                e.printStackTrace();
             }
-            else if (gameMode == 0) {
-                board = new GameBoard(gridDimension, null);
-                pattern = new Pattern(gridDimension,null);
-            }
-
-
             boardGroup = board.createBoardGroup();
             patternGroup = pattern.createPatternGroup();
 
-//            patternGroup.setTranslateX(patternGroup.getTranslateX() + WIDTH/8);
             patternGroup.translateZProperty().set(0);
 
-//            patternGroup.setTranslateX(patternGroup.getTranslateX() - WIDTH/8);
             boardGroup.translateZProperty().set(0);
 
             boardGroup.getChildren().add(new AmbientLight());
@@ -146,13 +119,9 @@ public class GameInstanceController extends MenuController implements TimerSigna
             patternScene.setCamera(cameraPattern);
             patternScene.setFill(Color.WHITE);
 
-            sceneHbox.setSpacing(40);
-            sceneHbox.setAlignment(Pos.CENTER);
-            sceneHbox.getChildren().addAll(cubeScene, boardScene, patternScene);
-
-
-
-            handleKeys(vBox);
+            sceneHboxMemory.setSpacing(40);
+            sceneHboxMemory.setAlignment(Pos.CENTER);
+            sceneHboxMemory.getChildren().addAll(cubeScene, boardScene, patternScene);
         });
     }
 
@@ -167,7 +136,6 @@ public class GameInstanceController extends MenuController implements TimerSigna
 
         root.getChildren().add(cameraHolder);
 
-
         cameraBoard.setNearClip(CAMERA_NEAR_CLIP);
         cameraBoard.setFarClip(CAMERA_FAR_CLIP);
         cameraBoard.setTranslateZ(CAMERA_INITIAL_DISTANCE);
@@ -176,7 +144,6 @@ public class GameInstanceController extends MenuController implements TimerSigna
 
         boardGroup.getChildren().add(cameraHolderBoard);
 
-
         cameraPattern.setNearClip(CAMERA_NEAR_CLIP);
         cameraPattern.setFarClip(CAMERA_FAR_CLIP);
         cameraPattern.setTranslateZ(CAMERA_INITIAL_DISTANCE);
@@ -184,56 +151,11 @@ public class GameInstanceController extends MenuController implements TimerSigna
         cameraHolderPattern.getChildren().add(cameraPattern);
 
         patternGroup.getChildren().add(cameraHolderPattern);
-
     }
 
-    private void buildBody() throws Exception {
+    private void buildBody()  {
         root.getChildren().add(cube);
         cube.updateFrontFaces();
-        // buildAxes();
-    }
-
-    private void buildAxes() {
-        for (int i = -2000; i <= 2000; i += 10) {
-            PhongMaterial redMaterial = new PhongMaterial();
-            redMaterial.setDiffuseColor(Color.DARKRED);
-            redMaterial.setSpecularColor(Color.RED);
-
-            Sphere sphereX = new Sphere();
-            sphereX.setRadius(3);
-            sphereX.setTranslateX(i);
-            sphereX.setTranslateY(0);
-            sphereX.setTranslateZ(0);
-            sphereX.setMaterial(redMaterial);
-
-            root.getChildren().addAll(sphereX);
-
-            PhongMaterial greenMaterial = new PhongMaterial();
-            greenMaterial.setDiffuseColor(Color.DARKGREEN);
-            greenMaterial.setSpecularColor(Color.GREEN);
-
-            Sphere sphereY = new Sphere();
-            sphereY.setRadius(3);
-            sphereY.setTranslateX(0);
-            sphereY.setTranslateY(i);
-            sphereY.setTranslateZ(0);
-            sphereY.setMaterial(greenMaterial);
-
-            root.getChildren().addAll(sphereY);
-
-            PhongMaterial blueMaterial = new PhongMaterial();
-            blueMaterial.setDiffuseColor(Color.DARKBLUE);
-            blueMaterial.setSpecularColor(Color.BLUE);
-
-            Sphere sphereZ = new Sphere();
-            sphereZ.setRadius(3);
-            sphereZ.setTranslateX(0);
-            sphereZ.setTranslateY(0);
-            sphereZ.setTranslateZ(i);
-            sphereZ.setMaterial(blueMaterial);
-
-            root.getChildren().addAll(sphereZ);
-        }
     }
 
     private void handleKeys(VBox vBox) {
@@ -248,7 +170,7 @@ public class GameInstanceController extends MenuController implements TimerSigna
             } else if (event.getCode() == KeyCode.D) {
                 cube.rotate4();
             } else if (event.getCode() == KeyCode.Q) {
-               cube.highlight(Cube.BACKWARD);
+                cube.highlight(Cube.BACKWARD);
             } else if (event.getCode() == KeyCode.E) {
                 cube.highlight(Cube.FORWARD);
             } else if (event.getCode() == KeyCode.SPACE) {
@@ -259,12 +181,32 @@ public class GameInstanceController extends MenuController implements TimerSigna
 
     @Override
     public void timerStopped() {
+        handleKeys(vBoxMemory);
 
+            try {
+            pattern.setMatQuestMark();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        gameTimer = new GameTimer(this, timerLabelMemory);
+        gameTimer.startTimer();
     }
 
-    public void foo() {
-        System.out.println("Is pattern correct? : " + pattern.checkPattern(board.getBoardImageViews()));
-        System.out.println("Submit Button!");
+    public int memoryTime(int dimension) {
+        if (dimension == 3)
+            return 5;
+        else if (dimension == 4 )
+            return 15;
+        else
+            return 30;
     }
+    @FXML
+    public boolean startShowPattern(){
+        this.gameTimer.startTimer(this.memoryTime);
+        this.pattern.showPattern();
+        this.startButton.setVisible(false);
 
+        return true;
+    }
 }
