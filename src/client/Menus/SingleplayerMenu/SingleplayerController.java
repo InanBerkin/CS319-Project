@@ -68,7 +68,7 @@ public class SingleplayerController extends MenuController {
     public void startMemoryGame(int boardSize){
         JSONObject payload = new JSONObject();
         payload.put("boardSize", boardSize);
-        QBitzApplication.getSceneController().gotoGameMode(SceneController.SP, "MemoryModeController", payload);
+        QBitzApplication.getSceneController().gotoGameMode(SceneController.SP, "MemoryMode", payload);
     }
 
 
