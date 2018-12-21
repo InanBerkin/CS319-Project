@@ -84,6 +84,7 @@ public class LoginMenuController extends MenuController {
                 Platform.runLater(() -> {
                     progressIcon.setVisible(false);
                     UserConfiguration.isLoggedIn = true;
+                    UserConfiguration.userID = responseJSON.getInt("userID");
                     QBitzApplication.getSceneController().gotoMenu("RoomMenu");
                 });
             }

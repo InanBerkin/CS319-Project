@@ -47,7 +47,7 @@ public class MemoryModeController extends GameInstance {
         //**********************FOR_MEMORY************************************
         this.memoryTime = memoryTime(gridDimension);
         board = new GameBoard(gridDimension, null);
-        pattern = new Pattern(gridDimension,null);
+        pattern = new Pattern(gridDimension);
         try {
             pattern.setMatQuestMark();
         } catch (IOException e) {
@@ -59,7 +59,6 @@ public class MemoryModeController extends GameInstance {
     public void handleKeys(VBox vBox) {
 
     }
-    //**********************FOR_MEMORY************************************
     @Override
     public void timerStopped() {
         super.handleKeys(vBox);
@@ -92,22 +91,18 @@ public class MemoryModeController extends GameInstance {
 
         return true;
     }
-    @FXML
-    public boolean submitCreatedPattern(){
-        boolean isPatternTrue = pattern.checkPattern(board.getBoardImageViews());
+    @Override
+    public boolean submit(){
+        boolean isPatternTrue = super.submit();
 
         if( isPatternTrue) {
             this.memoryLabel.setText("You solved goddammit!!!");
             this.gameTimer.stopTimer();
             this.pattern.showPattern();
-            System.out.println("Is pattern true: " + isPatternTrue);
         }
         else {
             this.memoryLabel.setText("You cannot solve it. Think Again");
         }
-
-
-
         return isPatternTrue;
     }
 }

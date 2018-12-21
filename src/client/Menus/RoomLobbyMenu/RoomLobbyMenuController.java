@@ -2,6 +2,7 @@ package client.Menus.RoomLobbyMenu;
 
 import client.Menus.MenuController;
 import client.QBitzApplication;
+import client.UserConfiguration;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
@@ -29,6 +30,11 @@ public class RoomLobbyMenuController extends MenuController {
     @FXML
     private Label roomCodeText;
 
+    private int ownerID;
+
+    private JSONArray userList;
+
+
     @Override
     public void onMessageReceived(String message) {
         JSONObject responseJSON = new JSONObject(message);
@@ -45,9 +51,20 @@ public class RoomLobbyMenuController extends MenuController {
                 roomName.setText("Game Starts in " + Integer.toString(responseJSON.getInt("count")));
             });
         }
-        else if(responseJSON.getString("responseType").equals("ownerExit")){
+        else if(responseJSON.getString("responseType").equals("changeOwner")){
             Platform.runLater(() -> {
-                QBitzApplication.getSceneController().gotoMenu("RoomMenu");
+                ownerID = responseJSON.getInt("ownerID");
+                startButton.setVisible(ownerID == UserConfiguration.userID);
+            });
+        }
+        else if(responseJSON.getString("responseType").equals("startGame")){
+            Platform.runLater(() -> {
+                JSONObject gamePayload = new JSONObject();
+                gamePayload.put("boardSize", responseJSON.getInt("boardSize"));
+                gamePayload.put("patternMatrix", responseJSON.getJSONArray("patternMatrix"));
+                gamePayload.put("roomID", payload.getInt("roomID"));
+                gamePayload.put("userList", responseJSON.getJSONArray("userList"));
+                QBitzApplication.getSceneController().gotoGameMode(false, "RaceMode", gamePayload);
             });
         }
     }
@@ -55,16 +72,17 @@ public class RoomLobbyMenuController extends MenuController {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         Platform.runLater(() ->{
+            ownerID = payload.getInt("ownerID");
             addPlayers(payload.getJSONArray("userList"));
             roomName.setText(payload.getString("name"));
-            startButton.setVisible(payload.getBoolean("isOwner") ? true : false);
+            startButton.setVisible(ownerID == UserConfiguration.userID);
             roomCodeText.setText(payload.getString("roomCode"));
         });
     }
 
     private void addPlayers(JSONArray playersList){
-        int players = playersList.length();
         playersGridPane.getChildren().clear();
+        int players = playersList.length();
         Player player;
         HBox hBox;
         int id;
@@ -77,9 +95,15 @@ public class RoomLobbyMenuController extends MenuController {
             name = playerJSON.getString("name");
             player = new Player(id,level,name);
             hBox = new HBox();
-            hBox.setStyle("-fx-background-color: #ffffff;");
             hBox.setAlignment(Pos.CENTER_LEFT);
             hBox.getChildren().add(new Label(player.getName()));
+            if(ownerID == player.getId()){
+                hBox.setStyle("-fx-background-color: #eeff25;");
+            }
+            else {
+                hBox.setStyle("-fx-background-color: #fff;");
+            }
+
             playersGridPane.add(hBox,i/4 , i);
         }
     }

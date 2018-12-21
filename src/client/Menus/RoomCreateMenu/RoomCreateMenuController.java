@@ -4,9 +4,7 @@ import client.Menus.MenuController;
 import client.QBitzApplication;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import org.json.JSONObject;
 
 import java.net.URL;
@@ -24,7 +22,16 @@ public class RoomCreateMenuController extends MenuController {
     @FXML
     private CheckBox roomTypeCheckbox;
 
-    private String roomCode;
+    @FXML
+    private RadioButton boardSize3;
+    @FXML
+    private RadioButton boardSize4;
+    @FXML
+    private RadioButton boardSize5;
+
+    private ToggleGroup toggleGroupBoardSize;
+
+    private String roomCode = "";
 
 
     @Override
@@ -41,7 +48,9 @@ public class RoomCreateMenuController extends MenuController {
         }
         else if(responseJSON.getString("responseType").equals("createRoom")){
             Platform.runLater(() -> {
-                roomCode = responseJSON.getString("roomCode");
+                if (responseJSON.has("roomCode")){
+                    roomCode = responseJSON.getString("roomCode");
+                }
                 joinRoom(responseJSON.getInt("roomID"));
             });
         }
@@ -50,15 +59,28 @@ public class RoomCreateMenuController extends MenuController {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         initializeGameModeComboBox();
+        initializeBoardSizeRadioGroup();
     }
 
     private void initializeGameModeComboBox(){
         gameModeComboBox.getItems().addAll(
-                "RaceModeController",
+                "Race",
                 "Elimination",
                 "Image Rec"
         );
         gameModeComboBox.getSelectionModel().selectFirst();
+    }
+
+
+    private void initializeBoardSizeRadioGroup(){
+        toggleGroupBoardSize = new ToggleGroup();
+        boardSize3.setToggleGroup(toggleGroupBoardSize);
+        boardSize3.setUserData("3");
+        boardSize4.setToggleGroup(toggleGroupBoardSize);
+        boardSize4.setUserData("4");
+        boardSize5.setToggleGroup(toggleGroupBoardSize);
+        boardSize5.setUserData("5");
+        boardSize3.setSelected(true);
     }
 
     @FXML
@@ -68,6 +90,7 @@ public class RoomCreateMenuController extends MenuController {
         int maxPlayers = Integer.parseInt(maxPlayersTextField.getText());
         int entranceLevel = Integer.parseInt(minEntranceLevelTextField.getText());
         int roomType = roomTypeCheckbox.isSelected() ? 1 : 0;
+        int boardSize = Integer.parseInt(toggleGroupBoardSize.getSelectedToggle().getUserData().toString());
         JSONObject roomJSON = new JSONObject();
         roomJSON.put("requestType", "createRoom");
         roomJSON.put("name", roomName);
@@ -75,6 +98,7 @@ public class RoomCreateMenuController extends MenuController {
         roomJSON.put("maxPlayers", maxPlayers);
         roomJSON.put("entranceLevel", entranceLevel);
         roomJSON.put("roomType", roomType);
+        roomJSON.put("boardSize", boardSize);
         QBitzApplication.getSceneController().sendMessageToServer(roomJSON);
     }
 

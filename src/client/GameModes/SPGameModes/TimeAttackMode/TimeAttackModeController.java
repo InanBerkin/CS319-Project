@@ -15,8 +15,14 @@ public class TimeAttackModeController extends GameInstance {
     public void initializeGameMode() {
         gameTimer.startTimer();
         board = new GameBoard(gridDimension, null);
-        pattern = new Pattern(gridDimension,null);
+        pattern = new Pattern(gridDimension);
     }
 
+    @Override
+    public boolean submit(){
+        boolean isPatternTrue = super.submit();
+        System.out.println("Is pattern true: " + isPatternTrue);
 
+        return isPatternTrue;
+    }
 }

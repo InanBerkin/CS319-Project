@@ -10,7 +10,7 @@
 <VBox fx:id="background" xmlns="http://javafx.com/javafx"
       xmlns:fx="http://javafx.com/fxml"
       fx:controller="client.Menus.RoomLobbyMenu.RoomLobbyMenuController"
-      stylesheets="@/styles/RoomLobbyMenu.css" spacing="30">
+      stylesheets="@/styles/RoomLobbyMenu.css" spacing="10">
     <HBox alignment="CENTER">
         <Label id="Title" fx:id="roomName"></Label>
     </HBox>
@@ -31,12 +31,12 @@
         </padding>
     </GridPane>
 
-    <HBox alignment="CENTER_LEFT">
+    <HBox alignment="CENTER">
         <Label fx:id="roomCodeText" HBox.hgrow="ALWAYS"/>
         <Button fx:id="startButton" onAction="#sendStartRequest" visible="false" disable="true" styleClass="start-button" HBox.hgrow="ALWAYS">Start Game!</Button>
     </HBox>
 
-    <HBox VBox.vgrow="ALWAYS" alignment="CENTER_LEFT">
-        <Button styleClass="return-button" onAction="#goBack">Return</Button>
+    <HBox alignment="CENTER">
+        <Button styleClass="return-button" onAction="#goBack">Exit Room</Button>
     </HBox>
 </VBox>
