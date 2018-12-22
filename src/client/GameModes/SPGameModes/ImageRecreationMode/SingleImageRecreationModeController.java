@@ -29,7 +29,6 @@ public class SingleImageRecreationModeController extends GameInstance implements
     private String img_path = "assets/recImage.jpg";
 
 
-
     @Override
     public void initializeGameMode() {
         gameTimer.startTimer();
@@ -61,7 +60,6 @@ public class SingleImageRecreationModeController extends GameInstance implements
         pattern.setImagesToCreatePattern(this.imgParts.toArray(new Image[this.imgParts.size()]));
         this.imageRec();
     }
-
 
     ///**********************FOR_IMAGE_RECREATION************************************
     public Image[] getCubeFaces(){

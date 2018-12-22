@@ -21,7 +21,11 @@
         <Label GridPane.rowIndex="5" GridPane.columnIndex="0" text="Private room"/>
 
         <TextField GridPane.rowIndex="0" GridPane.columnIndex="1" fx:id="roomNameTextField"/>
-        <ComboBox GridPane.rowIndex="1" GridPane.columnIndex="1" fx:id="gameModeComboBox"/>
+        <HBox GridPane.rowIndex="1" GridPane.columnIndex="1">
+            <RadioButton fx:id="gameModeRace">Race</RadioButton>
+            <RadioButton fx:id="gameModeElim">Elimination</RadioButton>
+            <RadioButton fx:id="gameModeImageRec">Image Recreation</RadioButton>
+        </HBox>
         <TextField GridPane.rowIndex="2" GridPane.columnIndex="1" fx:id="maxPlayersTextField"/>
         <HBox GridPane.rowIndex="3" GridPane.columnIndex="1">
             <RadioButton fx:id="boardSize3">3x3</RadioButton>
