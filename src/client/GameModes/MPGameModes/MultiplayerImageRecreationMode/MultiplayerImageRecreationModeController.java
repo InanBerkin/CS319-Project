@@ -45,6 +45,9 @@ public class MultiplayerImageRecreationModeController extends GameInstance {
         if(responseJSON.getString("responseType").equals("submit")){
             Platform.runLater(() -> {
                 updatePlayers(responseJSON.getJSONArray("finishList"));
+                if(responseJSON.getBoolean("isGameFinished")){
+                    QBitzApplication.getSceneController().gotoMenu("PostGameMenu", responseJSON);
+                }
             });
         }
     }
