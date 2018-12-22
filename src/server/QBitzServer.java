@@ -626,6 +626,8 @@ class QBitzServer {
 
                 json.put("responseType", "startGame");
                 json.put("boardSize", room.getBoardSize());
+                json.put("gameMode", room.getGamemode());
+                json.put("encodedImage", room.getEncodedImage());
                 json.put("patternMatrix", patternMatrix);
 
                 JSONArray userList = new JSONArray();
