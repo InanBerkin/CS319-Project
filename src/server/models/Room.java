@@ -193,4 +193,14 @@ public class Room {
 
         return null;
     }
+
+    public boolean getLobbyStatus() {
+        boolean result = true;
+        for (ServerSocketHandler socketHandler : users) {
+            if (!socketHandler.getUser().isInLobby())
+                result = false;
+        }
+
+        return result;
+    }
 }
