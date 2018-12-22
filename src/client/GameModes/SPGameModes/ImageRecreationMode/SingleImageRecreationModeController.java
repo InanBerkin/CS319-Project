@@ -13,7 +13,7 @@ import java.util.List;
 import client.GameModels.*;
 import java.io.FileNotFoundException;
 
-public class ImageRecreationModeController extends GameInstance implements  TimerSignable
+public class SingleImageRecreationModeController extends GameInstance implements  TimerSignable
 {
     ///**********************FOR_IMAGE_RECREATION************************************
     private final int SIZE = 640;
@@ -546,7 +546,7 @@ public class ImageRecreationModeController extends GameInstance implements  Time
 //
 //    public static void main( String [] args){
 //        try {
-//            ImageRecreationModeController img = new ImageRecreationModeController("yildiz.jpg", 4);
+//            RaceModeController img = new RaceModeController("yildiz.jpg", 4);
 //
 //
 //            //double a = img.compareHist(hist1, hist2);
