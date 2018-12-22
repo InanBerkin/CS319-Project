@@ -486,7 +486,7 @@ class QBitzServer {
                 respObj.put("responseType", "submit");
                 respObj.put("roomID", roomID);
 
-                respObj.put("isGameFinished", tempForSort.size() == room.getPlayers());
+                respObj.put("isGameFinished", room.countFinished() == room.getPlayers());
 
                 for (ServerSocketHandler userHandler : room.getUsers()) {
                     userHandler.sendMessage(respObj.toString());

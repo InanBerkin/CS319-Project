@@ -203,4 +203,15 @@ public class Room {
 
         return result;
     }
+
+    public int countFinished() {
+        int result = 0;
+        for (FinishTime finishTime : finishTimes) {
+            if (!finishTime.time.contains("Solving")){
+                result++;
+            }
+        }
+
+        return result;
+    }
 }
