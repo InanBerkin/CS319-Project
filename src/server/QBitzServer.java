@@ -484,13 +484,49 @@ class QBitzServer {
 
                 respObj.put("finishList", userList);
                 respObj.put("responseType", "submit");
+                respObj.put("roomID", roomID);
+
+                respObj.put("isGameFinished", tempForSort.size() == room.getPlayers());
 
                 for (ServerSocketHandler userHandler : room.getUsers()) {
                     userHandler.sendMessage(respObj.toString());
                 }
             }
             else if(msgObj.getString("requestType").equals("backToLobby")) {
+                int roomID = msgObj.getInt("roomID");
+                Room room = findRoomFromID(roomID);
+
                 handler.getUser().setInLobby(true);
+
+                JSONObject respObj = new JSONObject();
+                respObj.put("responseType", "backToLobby");
+
+                respObj.put("roomID", room.getId());
+                respObj.put("name", room.getName());
+                respObj.put("gameMode", room.getGamemode());
+                respObj.put("players", room.getPlayers());
+                respObj.put("maxPlayers", room.getMaxPlayers());
+                respObj.put("entranceLevel", room.getEntranceLevel());
+                respObj.put("name", room.getName());
+                respObj.put("ownerID", room.getOwnerid());
+
+                JSONArray userList = new JSONArray();
+
+                for (ServerSocketHandler userHandler : room.getUsers()) {
+                    User user = userHandler.getUser();
+
+                    JSONObject userObj = new JSONObject();
+                    userObj.put("name", user.getUsername());
+                    userObj.put("id", user.getId());
+                    userObj.put("level", user.getLevel());
+
+                    userList.put(userObj);
+                }
+                respObj.put("userList", userList);
+
+                handler.sendMessage(respObj.toString());
+                sendAnnouncementToOthers(room);
+                refreshRooms();
             }
         }
     }
