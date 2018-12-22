@@ -3,7 +3,7 @@ package client.GameModels;
 
 import client.GameModes.SPGameModes.ImageRecreationMode.SingleImageRecreationModeController;
 
-import client.GameModes.MPGameModes.ImageRecreationMode.MultiplayerImageRecreationModeController;
+import client.GameModes.MPGameModes.MultiplayerImageRecreationMode.MultiplayerImageRecreationModeController;
 
 import javafx.scene.Group;
 import javafx.scene.image.Image;
