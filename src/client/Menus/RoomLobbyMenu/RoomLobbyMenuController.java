@@ -66,7 +66,7 @@ public class RoomLobbyMenuController extends MenuController {
                 gamePayload.put("userList", responseJSON.getJSONArray("userList"));
                 if(responseJSON.getInt("gameMode") == 0)
                     QBitzApplication.getSceneController().gotoGameMode(false, "RaceMode", gamePayload);
-                else if(responseJSON.getInt("gameMode") == 2) {
+                else if(responseJSON.getInt("gameMode") == 2){
                     gamePayload.put("encodedImage", responseJSON.getString("encodedImage"));
                     QBitzApplication.getSceneController().gotoGameMode(false, "MultiplayerImageRecreationMode", gamePayload);
                 }
