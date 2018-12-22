@@ -27,22 +27,10 @@ public class PostGameMenuController extends MenuController {
     public void onMessageReceived(String message) {
         JSONObject responseJSON = new JSONObject(message);
         if(responseJSON.getString("responseType").equals("backToLobby")){
-            int resultCode = responseJSON.getInt("result");
-            if (resultCode == 0){
-                Platform.runLater(() -> {
-                    responseJSON.put("roomCode", "");
-                    QBitzApplication.getSceneController().gotoMenu("RoomLobbyMenu", responseJSON);
-                });
-            }
-            else if(resultCode == 1){
-                System.out.println("Room is full");
-            }
-            else if(resultCode == 2){
-                System.out.println("Entrance level :(");
-            }
-            else if(resultCode == 3){
-                System.out.println("Room does not exist :(");
-            }
+            Platform.runLater(() -> {
+                responseJSON.put("roomCode", "");
+                QBitzApplication.getSceneController().gotoMenu("RoomLobbyMenu", responseJSON);
+            });
         }
     }
 
