@@ -488,6 +488,10 @@ class QBitzServer {
 
                 respObj.put("isGameFinished", room.countFinished() == room.getPlayers());
 
+                if (room.countFinished() == room.getPlayers()) {
+                    room.clearFinishTimes();
+                }
+
                 for (ServerSocketHandler userHandler : room.getUsers()) {
                     userHandler.sendMessage(respObj.toString());
                 }
@@ -580,7 +584,7 @@ class QBitzServer {
         }
 
         json.put("userList", userList);
-        json.put("isStartable", room.getPlayers() == room.getMaxPlayers());
+        json.put("isStartable", room.getPlayers() == room.getMaxPlayers() && room.getLobbyStatus());
 
         for (ServerSocketHandler userHandler : room.getUsers()) {
             userHandler.sendMessage(json.toString());
