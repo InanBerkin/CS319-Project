@@ -1,4 +1,4 @@
-package client.GameModes.MPGameModes.ImageRecreationMode;
+package client.GameModes.MPGameModes.MultiplayerImageRecreationMode;
 
 import client.GameModels.GameBoard;
 import client.GameModels.Pattern;
@@ -51,7 +51,7 @@ public class MultiplayerImageRecreationModeController extends GameInstance {
     @Override
     public void initializeGameMode() {
         gameTimer.startTimer();
-        String encoded = "";
+        String encoded = payload.getString("encodedImage");
         //initialize values
         byte[] outputArr = Base64.getDecoder().decode(encoded.getBytes());
 

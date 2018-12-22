@@ -64,7 +64,10 @@ public class RoomLobbyMenuController extends MenuController {
                 gamePayload.put("patternMatrix", responseJSON.getJSONArray("patternMatrix"));
                 gamePayload.put("roomID", payload.getInt("roomID"));
                 gamePayload.put("userList", responseJSON.getJSONArray("userList"));
-                QBitzApplication.getSceneController().gotoGameMode(false, "RaceMode", gamePayload);
+                if(responseJSON.getInt("gameMode") == 0)
+                    QBitzApplication.getSceneController().gotoGameMode(false, "RaceMode", gamePayload);
+                else if(responseJSON.getInt("gameMode") ==1)
+                    QBitzApplication.getSceneController().gotoGameMode(false, "MultiplayerImageRecreatonMode", gamePayload);
             });
         }
     }
