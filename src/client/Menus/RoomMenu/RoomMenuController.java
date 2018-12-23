@@ -45,7 +45,7 @@ public class RoomMenuController extends MenuController {
 
         TableColumn<Room, String>  modeColumn = new TableColumn<>("Game Mode");
         //modeColumn.setMinWidth(200);
-        modeColumn.setCellValueFactory(new PropertyValueFactory<>("gamemode"));
+        modeColumn.setCellValueFactory(c-> new SimpleStringProperty(c.getValue().getGameModeString()));
 
         TableColumn<Room, String>  ownerColumn = new TableColumn<>("Owner");
         //ownerColumn.setMinWidth(200);
