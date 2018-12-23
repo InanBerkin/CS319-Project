@@ -15,6 +15,8 @@ public class User {
     private int level;
     private int exp;
     private int status;
+    private boolean isEliminated;
+    private int gatheredPoints;
 
     public User() {}
 
@@ -26,6 +28,8 @@ public class User {
         this.exp = exp;
         this.level = level;
         this.status = OUT;
+        this.isEliminated = false;
+        this.gatheredPoints = 0;
     }
 
     public String getUsername() {
@@ -90,5 +94,21 @@ public class User {
 
     public void setStatus(int status) {
         this.status = status;
+    }
+
+    public boolean isEliminated() {
+        return isEliminated;
+    }
+
+    public void setEliminated(boolean eliminated) {
+        isEliminated = eliminated;
+    }
+
+    public int getGatheredPoints() {
+        return gatheredPoints;
+    }
+
+    public void setGatheredPoints(int gatheredPoints) {
+        this.gatheredPoints = gatheredPoints;
     }
 }

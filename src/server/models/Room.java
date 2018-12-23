@@ -212,4 +212,15 @@ public class Room {
     public void setCounter(Counter counter) {
         this.counter = counter;
     }
+
+    public int getCurrentPlayers() {
+        int result = getPlayers();
+
+        for (ServerSocketHandler socketHandler : users) {
+            if (socketHandler.getUser().isEliminated())
+                result--;
+        }
+
+        return result;
+    }
 }
