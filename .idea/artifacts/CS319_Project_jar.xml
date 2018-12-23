@@ -1,0 +1,11 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="CS319-Project:jar">
+    <output-path>$PROJECT_DIR$/src/out/artifacts/CS319_Project_jar</output-path>
+    <root id="archive" name="CS319-Project.jar">
+      <element id="module-output" name="CS319-Project" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/src/lib/mysql-connector-java-8.0.13.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/src/lib/javax.mail.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/src/lib/json-20180813/json-20180813.jar" path-in-jar="/" />
+    </root>
+  </artifact>
+</component>

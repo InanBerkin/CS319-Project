@@ -459,6 +459,7 @@ class QBitzServer {
                     room.addFinishTime(finishTime, handler.getUser());
 
                 JSONObject respObj = new JSONObject();
+                respObj.put("gameMode", room.getGameMode());
 
                 JSONArray userList = new JSONArray();
 

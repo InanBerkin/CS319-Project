@@ -44,7 +44,7 @@ public class PostGameMenuController extends MenuController {
 
                 };
                 gotolobby.setDisable(true);
-                timer.schedule(task, 5000l);
+                timer.schedule(task, 1000l);
             });
         }
     }
@@ -91,6 +91,9 @@ public class PostGameMenuController extends MenuController {
             hBox.getChildren().add(new Label(player.getName()));
             if (playerJSON.has("gatheredPoints")) {
                 hBox.getChildren().add(new Label(playerJSON.getInt("gatheredPoints") + ""));
+            }
+            if (playerJSON.has("finishTime")) {
+                hBox.getChildren().add(new Label(playerJSON.getString("finishTime")));
             }
             hBox.setStyle("-fx-background-color: #000");
             hBox.setStyle("-fx-background-radius: 5");

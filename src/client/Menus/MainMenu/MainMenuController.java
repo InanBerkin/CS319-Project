@@ -2,7 +2,6 @@ package client.Menus.MainMenu;
 
 import client.Menus.MenuController;
 import client.QBitzApplication;
-import client.QBitzPopup;
 import client.UserConfiguration;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
