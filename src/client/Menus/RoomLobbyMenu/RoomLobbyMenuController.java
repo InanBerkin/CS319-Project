@@ -63,6 +63,7 @@ public class RoomLobbyMenuController extends MenuController {
         else if(responseJSON.getString("responseType").equals("interruptCounter")){
             Platform.runLater(() -> {
                 roomName.setText((payload.getString("name")));
+                startButton.setDisable(true);
             });
         }
         else if(responseJSON.getString("responseType").equals("startGame")){
