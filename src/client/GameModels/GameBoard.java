@@ -1,7 +1,7 @@
 package client.GameModels;
 
 
-import client.GameModes.SPGameModes.ImageRecreationMode.SingleImageRecreationModeController;
+import client.GameModes.SPGameModes.SingleImageRecreationMode.SingleImageRecreationModeController;
 
 import client.GameModes.MPGameModes.MultiplayerImageRecreationMode.MultiplayerImageRecreationModeController;
 

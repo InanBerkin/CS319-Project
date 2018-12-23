@@ -1,4 +1,4 @@
-package client.GameModes.SPGameModes.ImageRecreationMode;
+package client.GameModes.SPGameModes.SingleImageRecreationMode;
 
 import client.GameModes.GameInstance;
 import javafx.embed.swing.SwingFXUtils;
