@@ -29,7 +29,16 @@ public class RoomCreateMenuController extends MenuController {
     @FXML
     private RadioButton boardSize5;
 
+
+    @FXML
+    private RadioButton gameModeRace;
+    @FXML
+    private RadioButton gameModeElim;
+    @FXML
+    private RadioButton gameModeImageRec;
+
     private ToggleGroup toggleGroupBoardSize;
+    private ToggleGroup toggleGroupGameMode;
 
     private String roomCode = "";
 
@@ -58,17 +67,20 @@ public class RoomCreateMenuController extends MenuController {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        initializeGameModeComboBox();
         initializeBoardSizeRadioGroup();
+        initializeGameModeRadioGroup();
     }
 
-    private void initializeGameModeComboBox(){
-        gameModeComboBox.getItems().addAll(
-                "Race",
-                "Elimination",
-                "Image Rec"
-        );
-        gameModeComboBox.getSelectionModel().selectFirst();
+
+    private void initializeGameModeRadioGroup(){
+        toggleGroupGameMode = new ToggleGroup();
+        gameModeRace.setToggleGroup(toggleGroupGameMode);
+        gameModeRace.setUserData("0");
+        gameModeElim.setToggleGroup(toggleGroupGameMode);
+        gameModeElim.setUserData("1");
+        gameModeImageRec.setToggleGroup(toggleGroupGameMode);
+        gameModeImageRec.setUserData("2");
+        boardSize3.setSelected(true);
     }
 
 
@@ -86,7 +98,7 @@ public class RoomCreateMenuController extends MenuController {
     @FXML
     private void sendRoomData(){
         String roomName = roomNameTextField.getText();
-        int gameMode = gameModeComboBox.getSelectionModel().getSelectedIndex();
+        int gameMode = Integer.parseInt(toggleGroupGameMode.getSelectedToggle().getUserData().toString());
         int maxPlayers = Integer.parseInt(maxPlayersTextField.getText());
         int entranceLevel = Integer.parseInt(minEntranceLevelTextField.getText());
         int roomType = roomTypeCheckbox.isSelected() ? 1 : 0;

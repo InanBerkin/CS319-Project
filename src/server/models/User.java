@@ -2,6 +2,11 @@ package server.models;
 
 public class User {
 
+    public static final int OUT = -1;
+    public static final int IN_LOBBY = 0;
+    public static final int IN_START_COUNT = 1;
+    public static final int IN_GAME = 2;
+
     private String username;
     private String email;
     private String password;
@@ -9,20 +14,18 @@ public class User {
     private int id;
     private int level;
     private int exp;
-    private int wins;
-    private int loses;
+    private int status;
 
     public User() {}
 
-    public User(String username, String email, String password, int id, int exp, int level, int wins, int loses) {
+    public User(String username, String email, String password, int id, int exp, int level) {
         this.username = username;
         this.email = email;
         this.password = password;
         this.id = id;
         this.exp = exp;
         this.level = level;
-        this.wins = wins;
-        this.loses = loses;
+        this.status = OUT;
     }
 
     public String getUsername() {
@@ -81,19 +84,11 @@ public class User {
         this.exp = exp;
     }
 
-    public int getWins() {
-        return wins;
+    public int getStatus() {
+        return status;
     }
 
-    public void setWins(int wins) {
-        this.wins = wins;
-    }
-
-    public int getLoses() {
-        return loses;
-    }
-
-    public void setLoses(int loses) {
-        this.loses = loses;
+    public void setStatus(int status) {
+        this.status = status;
     }
 }

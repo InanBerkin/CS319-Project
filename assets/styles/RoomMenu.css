@@ -19,6 +19,10 @@ Button{
     -fx-background-color: #E6372E;
 }
 
+#roomTable .table-column{
+    -fx-alignment: CENTER;
+}
+
 Button:hover{
     -fx-background-color: #E6372E;
 }

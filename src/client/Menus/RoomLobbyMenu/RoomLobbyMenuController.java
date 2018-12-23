@@ -41,8 +41,11 @@ public class RoomLobbyMenuController extends MenuController {
         if(responseJSON.getString("responseType").equals("userAnnouncement")){
             Platform.runLater(() -> {
                 addPlayers(responseJSON.getJSONArray("userList"));
-                if (responseJSON.getBoolean("isStartable")){
+                if (responseJSON.getBoolean("isStartable") || payload.getBoolean("isStartable")){
                     startButton.setDisable(false);
+                }
+                else if(responseJSON.getBoolean("isStartable")){
+                    startButton.setDisable(true);
                 }
             });
         }
@@ -57,6 +60,12 @@ public class RoomLobbyMenuController extends MenuController {
                 startButton.setVisible(ownerID == UserConfiguration.userID);
             });
         }
+        else if(responseJSON.getString("responseType").equals("interruptCounter")){
+            Platform.runLater(() -> {
+                roomName.setText((payload.getString("name")));
+                startButton.setDisable(true);
+            });
+        }
         else if(responseJSON.getString("responseType").equals("startGame")){
             Platform.runLater(() -> {
                 JSONObject gamePayload = new JSONObject();
@@ -64,7 +73,12 @@ public class RoomLobbyMenuController extends MenuController {
                 gamePayload.put("patternMatrix", responseJSON.getJSONArray("patternMatrix"));
                 gamePayload.put("roomID", payload.getInt("roomID"));
                 gamePayload.put("userList", responseJSON.getJSONArray("userList"));
-                QBitzApplication.getSceneController().gotoGameMode(false, "RaceMode", gamePayload);
+                if(responseJSON.getInt("gameMode") == 0)
+                    QBitzApplication.getSceneController().gotoGameMode(false, "RaceMode", gamePayload);
+                else if(responseJSON.getInt("gameMode") == 2) {
+                    gamePayload.put("encodedImage", responseJSON.getString("encodedImage"));
+                    QBitzApplication.getSceneController().gotoGameMode(false, "MultiplayerImageRecreationMode", gamePayload);
+                }
             });
         }
     }

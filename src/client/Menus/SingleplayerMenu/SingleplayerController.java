@@ -75,6 +75,6 @@ public class SingleplayerController extends MenuController {
     public void startImageGame(int boardSize){
         JSONObject payload = new JSONObject();
         payload.put("boardSize", boardSize);
-        QBitzApplication.getSceneController().gotoGameMode(SceneController.SP, "ImageRecreationMode", payload);
+        QBitzApplication.getSceneController().gotoGameMode(SceneController.SP, "SingleImageRecreationMode", payload);
     }
 }

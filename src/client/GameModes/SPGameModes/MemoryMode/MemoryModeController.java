@@ -46,7 +46,7 @@ public class MemoryModeController extends GameInstance {
     public void initializeGameMode() {
         //**********************FOR_MEMORY************************************
         this.memoryTime = memoryTime(gridDimension);
-        board = new GameBoard(gridDimension, null);
+        board = new GameBoard(gridDimension, null,null);
         pattern = new Pattern(gridDimension);
 
     }

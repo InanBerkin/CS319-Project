@@ -103,7 +103,10 @@ class QBitzServer {
                     if (room.getPlayers() == 0)
                         removeRoom(room);
                     else {
-                        if (handler.getUser().getId() == room.getOwnerid())
+                        if (handler.getUser().getStatus() == User.IN_START_COUNT)
+                            room.getCounter().stopCounter();
+
+                        if (handler.getUser().getId() == room.getOwnerID())
                             changeOwner(room);
 
                         sendAnnouncementToOthers(room);
@@ -241,13 +244,13 @@ class QBitzServer {
                 int ownerId = handler.getUser().getId();
 
                 Room newRoom = new Room(-1, name, gameMode, ownerId, players, maxPlayers, entranceLevel, roomType, roomCode);
-                newRoom.setOwnername(handler.getUser().getUsername());
+                newRoom.setOwnerName(handler.getUser().getUsername());
                 newRoom.setBoardSize(boardSize);
 
                 // send response to user.
                 JSONObject respObj = new JSONObject();
 
-                if (gameMode == 2) {
+                if (gameMode == Room.IMAGE_RECREATION) {
                     String encodedImage = getRandomImage(600);
                     newRoom.setEncodedImage(encodedImage);
                     respObj.put("encodedImage", encodedImage);
@@ -255,7 +258,7 @@ class QBitzServer {
 
                 if (roomType == Room.PRIVATE) {
                     roomCode = generateCode(5);
-                    newRoom.setRoomcode(roomCode);
+                    newRoom.setRoomCode(roomCode);
                 }
 
                 int id = db.addRoom(newRoom);
@@ -276,15 +279,15 @@ class QBitzServer {
                 JSONArray roomList = new JSONArray();
 
                 for (Room iterator : rooms) {
-                    if (iterator.getRoomtype() == Room.PUBLIC) {
+                    if (iterator.getRoomType() == Room.PUBLIC) {
                         JSONObject room = new JSONObject();
                         room.put("roomID", iterator.getId());
                         room.put("name", iterator.getName());
-                        room.put("gameMode", iterator.getGamemode());
+                        room.put("gameMode", iterator.getGameMode());
                         room.put("players", iterator.getPlayers());
                         room.put("maxPlayers", iterator.getMaxPlayers());
                         room.put("entranceLevel", iterator.getEntranceLevel());
-                        room.put("ownerName", iterator.getOwnername());
+                        room.put("ownerName", iterator.getOwnerName());
 
                         roomList.put(room);
                     }
@@ -311,15 +314,17 @@ class QBitzServer {
 
                             respObj.put("roomID", room.getId());
                             respObj.put("name", room.getName());
-                            respObj.put("gameMode", room.getGamemode());
+                            respObj.put("gameMode", room.getGameMode());
                             respObj.put("players", room.getPlayers());
                             respObj.put("maxPlayers", room.getMaxPlayers());
                             respObj.put("entranceLevel", room.getEntranceLevel());
                             respObj.put("name", room.getName());
-                            respObj.put("ownerID", room.getOwnerid());
+                            respObj.put("ownerID", room.getOwnerID());
 
                             room.addUser(handler);
                             room.setPlayers(room.getPlayers() + 1);
+
+                            handler.getUser().setStatus(User.IN_LOBBY);
 
                             JSONArray userList = new JSONArray();
 
@@ -361,10 +366,15 @@ class QBitzServer {
                 room.getUsers().remove(handler);
                 room.setPlayers(room.getPlayers() - 1);
 
+                handler.getUser().setStatus(User.OUT);
+
                 if (room.getPlayers() == 0)
                     removeRoom(room);
                 else {
-                    if (handler.getUser().getId() == room.getOwnerid())
+                    if (handler.getUser().getStatus() == User.IN_START_COUNT)
+                        room.getCounter().stopCounter();
+
+                    if (handler.getUser().getId() == room.getOwnerID())
                         changeOwner(room);
 
                     sendAnnouncementToOthers(room);
@@ -391,15 +401,17 @@ class QBitzServer {
 
                             respObj.put("roomID", room.getId());
                             respObj.put("name", room.getName());
-                            respObj.put("gameMode", room.getGamemode());
+                            respObj.put("gameMode", room.getGameMode());
                             respObj.put("players", room.getPlayers());
                             respObj.put("maxPlayers", room.getMaxPlayers());
                             respObj.put("entranceLevel", room.getEntranceLevel());
                             respObj.put("name", room.getName());
-                            respObj.put("ownerID", room.getOwnerid());
+                            respObj.put("ownerID", room.getOwnerID());
 
                             room.addUser(handler);
                             room.setPlayers(room.getPlayers() + 1);
+
+                            handler.getUser().setStatus(User.IN_LOBBY);
 
                             JSONArray userList = new JSONArray();
 
@@ -450,7 +462,7 @@ class QBitzServer {
                 for (ServerSocketHandler userHandler : room.getUsers()) {
                     User user = userHandler.getUser();
 
-                    FinishTime finish = room.getFromUser(user);
+                    FinishTime finish = room.getUserFinishTime(user);
                     JSONObject userObj = new JSONObject();
                     userObj.put("name", user.getUsername());
                     userObj.put("id", user.getId());
@@ -478,10 +490,53 @@ class QBitzServer {
 
                 respObj.put("finishList", userList);
                 respObj.put("responseType", "submit");
+                respObj.put("roomID", roomID);
+
+                respObj.put("isGameFinished", room.getFinishTimes().size() == room.getPlayers());
+
+                if (room.getFinishTimes().size() == room.getPlayers())
+                    room.getFinishTimes().clear();
 
                 for (ServerSocketHandler userHandler : room.getUsers()) {
                     userHandler.sendMessage(respObj.toString());
                 }
+            }
+            else if(msgObj.getString("requestType").equals("backToLobby")) {
+                int roomID = msgObj.getInt("roomID");
+                Room room = findRoomFromID(roomID);
+
+                handler.getUser().setStatus(User.IN_LOBBY);
+
+                JSONObject respObj = new JSONObject();
+                respObj.put("responseType", "backToLobby");
+
+                respObj.put("roomID", room.getId());
+                respObj.put("name", room.getName());
+                respObj.put("gameMode", room.getGameMode());
+                respObj.put("players", room.getPlayers());
+                respObj.put("maxPlayers", room.getMaxPlayers());
+                respObj.put("entranceLevel", room.getEntranceLevel());
+                respObj.put("name", room.getName());
+                respObj.put("ownerID", room.getOwnerID());
+                respObj.put("isStartable", room.isStartable());
+
+                JSONArray userList = new JSONArray();
+
+                for (ServerSocketHandler userHandler : room.getUsers()) {
+                    User user = userHandler.getUser();
+
+                    JSONObject userObj = new JSONObject();
+                    userObj.put("name", user.getUsername());
+                    userObj.put("id", user.getId());
+                    userObj.put("level", user.getLevel());
+
+                    userList.put(userObj);
+                }
+                respObj.put("userList", userList);
+
+                handler.sendMessage(respObj.toString());
+                sendAnnouncementToOthers(room);
+                refreshRooms();
             }
         }
     }
@@ -510,7 +565,7 @@ class QBitzServer {
 
     private Room findRoomFromCode(String roomCode) {
         for (Room room : rooms) {
-            if (room.getRoomcode().equals(roomCode))
+            if (room.getRoomCode().equals(roomCode))
                 return room;
         }
 
@@ -535,7 +590,7 @@ class QBitzServer {
         }
 
         json.put("userList", userList);
-        json.put("isStartable", room.getPlayers() == room.getMaxPlayers());
+        json.put("isStartable", room.isStartable());
 
         for (ServerSocketHandler userHandler : room.getUsers()) {
             userHandler.sendMessage(json.toString());
@@ -577,6 +632,8 @@ class QBitzServer {
 
                 json.put("responseType", "startGame");
                 json.put("boardSize", room.getBoardSize());
+                json.put("gameMode", room.getGameMode());
+                json.put("encodedImage", room.getEncodedImage());
                 json.put("patternMatrix", patternMatrix);
 
                 JSONArray userList = new JSONArray();
@@ -596,6 +653,7 @@ class QBitzServer {
 
                 for (ServerSocketHandler userHandler : room.getUsers()) {
                     userHandler.sendMessage(json.toString());
+                    userHandler.getUser().setStatus(User.IN_GAME);
                 }
             }
 
@@ -607,12 +665,25 @@ class QBitzServer {
                 json.put("count", count);
 
                 for (ServerSocketHandler userHandler : room.getUsers()) {
+                    userHandler.getUser().setStatus(User.IN_START_COUNT);
+                    userHandler.sendMessage(json.toString());
+                }
+            }
+
+            @Override
+            public void counterInterrupted() {
+                JSONObject json = new JSONObject();
+
+                json.put("responseType", "interruptCounter");
+
+                for (ServerSocketHandler userHandler : room.getUsers()) {
+                    userHandler.getUser().setStatus(User.IN_LOBBY);
                     userHandler.sendMessage(json.toString());
                 }
             }
         });
-
-        counter.start();
+        room.setCounter(counter);
+        counter.startCounter();
     }
 
     private void refreshRooms() {
@@ -621,15 +692,15 @@ class QBitzServer {
                 JSONArray roomList = new JSONArray();
 
                 for (Room iterator : rooms) {
-                    if (iterator.getRoomtype() == Room.PUBLIC) {
+                    if (iterator.getRoomType() == Room.PUBLIC) {
                         JSONObject room = new JSONObject();
                         room.put("roomID", iterator.getId());
                         room.put("name", iterator.getName());
-                        room.put("gameMode", iterator.getGamemode());
+                        room.put("gameMode", iterator.getGameMode());
                         room.put("players", iterator.getPlayers());
                         room.put("maxPlayers", iterator.getMaxPlayers());
                         room.put("entranceLevel", iterator.getEntranceLevel());
-                        room.put("ownerName", iterator.getOwnername());
+                        room.put("ownerName", iterator.getOwnerName());
 
                         roomList.put(room);
                     }
@@ -661,13 +732,13 @@ class QBitzServer {
         String newOwnerName = room.getUsers().get(0).getUser().getUsername();
         db.changeRoomOwner(room.getId(), newOwnerID);
 
-        room.setOwnerid(newOwnerID);
-        room.setOwnername(newOwnerName);
+        room.setOwnerID(newOwnerID);
+        room.setOwnerName(newOwnerName);
 
         for (ServerSocketHandler socketHandler : room.getUsers()) {
             JSONObject json = new JSONObject();
             json.put("responseType", "changeOwner");
-            json.put("ownerID", room.getOwnerid());
+            json.put("ownerID", room.getOwnerID());
 
             socketHandler.sendMessage(json.toString());
         }

@@ -6,6 +6,7 @@ import client.QBitzApplication;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -17,12 +18,19 @@ public class RaceModeController extends GameInstance {
     @FXML
     private HBox playersBar;
 
+    @FXML
+    private Button submitButton;
+
+
     @Override
     public void onMessageReceived(String message) {
         JSONObject responseJSON = new JSONObject(message);
         if(responseJSON.getString("responseType").equals("submit")){
             Platform.runLater(() -> {
                 updatePlayers(responseJSON.getJSONArray("finishList"));
+                if(responseJSON.getBoolean("isGameFinished")){
+                    QBitzApplication.getSceneController().gotoMenu("PostGameMenu", responseJSON);
+                }
             });
         }
     }
@@ -30,7 +38,7 @@ public class RaceModeController extends GameInstance {
     @Override
     public void initializeGameMode() {
         gameTimer.startTimer();
-        board = new GameBoard(gridDimension, null);
+        board = new GameBoard(gridDimension, null,null);
         pattern = new Pattern(gridDimension);
         pattern.setGivenPattern(jsonArrayToMatrix(payload.getJSONArray("patternMatrix"), gridDimension));
         updatePlayers(payload.getJSONArray("userList"));
@@ -45,6 +53,7 @@ public class RaceModeController extends GameInstance {
             submitJSON.put("roomID", payload.getInt("roomID"));
             submitJSON.put("finishTime", gameTimer.getGameTime().getValue());
             QBitzApplication.getSceneController().sendMessageToServer(submitJSON);
+            submitButton.setDisable(true);
             return true;
         }
         else{

@@ -43,7 +43,7 @@
             <Insets left="30.0" right="30.0" />
         </VBox.margin>
     </TableView>
-    <HBox GridPane.rowIndex="3" GridPane.columnIndex="1" alignment="CENTER_RIGHT">
+    <HBox GridPane.rowIndex="3" GridPane.columnIndex="1" alignment="CENTER">
         <Button HBox.hgrow="ALWAYS" id="create-button" onAction="#createRoom">Create Room</Button>
     </HBox>
     <Button GridPane.rowIndex="4" GridPane.columnIndex="0"  onAction="#gotoMainMenu">Return</Button>

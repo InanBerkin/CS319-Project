@@ -1,0 +1,26 @@
+@import "Main.css";
+
+VBox{
+    -fx-background-color: #ffa83b;
+    -fx-border-width:5;
+    -fx-border-color: #000;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.8), 12, 0, 0, 0);
+}
+
+Label{
+    -fx-text-fill: #fff;
+    -fx-font-size: 30;
+}
+
+Button{
+    -fx-pref-width: 300;
+    -fx-font-size: 20;
+}
+
+Button#yes{
+    -fx-background-color: #43d873;
+}
+
+Button#no{
+    -fx-background-color: -danger;
+}
