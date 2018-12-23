@@ -25,7 +25,7 @@ public class QBitzPopup extends Dialog {
         window.setMinWidth(500);
         // block event for other window
         window.initModality(Modality.APPLICATION_MODAL);
-
+        window.initOwner(primaryStage);
         window.setTitle(title);
         // window.setMinWidth(500);
 
