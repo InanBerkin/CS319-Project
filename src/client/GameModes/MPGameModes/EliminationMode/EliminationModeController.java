@@ -4,9 +4,11 @@ import client.GameModels.GameBoard;
 import client.GameModels.Pattern;
 import client.GameModes.GameInstance;
 import client.QBitzApplication;
+import client.UserConfiguration;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -21,12 +23,18 @@ public class EliminationModeController extends GameInstance {
     @FXML
     private Label gameStatusLabel;
 
+    @FXML
+    private Button submitButton;
+
     @Override
     public void onMessageReceived(String message) {
         JSONObject responseJSON = new JSONObject(message);
         if(responseJSON.getString("responseType").equals("submit")){
             Platform.runLater(() -> {
                 updatePlayers(responseJSON.getJSONArray("finishList"));
+                if(responseJSON.getBoolean("isRoundFinished")){
+                    QBitzApplication.getSceneController().gotoGameMode(false, "EliminationMode", responseJSON);
+                }
             });
         }
     }
@@ -37,7 +45,7 @@ public class EliminationModeController extends GameInstance {
         board = new GameBoard(gridDimension, null, null);
         pattern = new Pattern(gridDimension);
         pattern.setGivenPattern(jsonArrayToMatrix(payload.getJSONArray("patternMatrix"), gridDimension));
-        addPlayers(payload.getJSONArray("userList"));
+        updatePlayers(payload.getJSONArray("userList"));
     }
 
     @Override
@@ -60,25 +68,6 @@ public class EliminationModeController extends GameInstance {
         return isPatternTrue;
     }
 
-    private void addPlayers(JSONArray playersList){
-        playersBar.getChildren().clear();
-        int players = playersList.length();
-        EliminationModeController.Player player;
-        VBox vBox;
-        int id;
-        String name;
-        for (int i = 0; i < players; i++){
-            JSONObject playerJSON = (JSONObject) playersList.get(i);
-            id = playerJSON.getInt("id");
-            name = playerJSON.getString("name");
-            player = new EliminationModeController.Player(id,name);
-            vBox = new VBox(20);
-            vBox.setAlignment(Pos.CENTER);
-            vBox.getChildren().add(new Label(player.getName()));
-            vBox.setStyle("-fx-background-color: #000");
-            playersBar.getChildren().add(vBox);
-        }
-    }
 
     private void removePlayer(JSONObject playerToRemove){
 
@@ -87,25 +76,34 @@ public class EliminationModeController extends GameInstance {
     private void updatePlayers(JSONArray playersList){
         playersBar.getChildren().clear();
         int players = playersList.length();
-        client.GameModes.MPGameModes.EliminationMode.EliminationModeController.Player player;
+        Player player;
         VBox vBox;
         int id;
         String finishTime;
-        int rank;
+        int rank = 0;
         String name;
         for (int i = 0; i < players; i++){
             JSONObject playerJSON = (JSONObject) playersList.get(i);
             id = playerJSON.getInt("id");
             name = playerJSON.getString("name");
             finishTime = playerJSON.getString("finishTime");
-            rank = playerJSON.getInt("rank");
-            player = new client.GameModes.MPGameModes.EliminationMode.EliminationModeController.Player(id,name, finishTime, rank);
+            if(playerJSON.has("rank")){
+                rank = playerJSON.getInt("rank");
+            }
+            player = new Player(id,name, finishTime, rank);
+            if(player.getId() == UserConfiguration.userID && player.isEliminated()){
+                submitButton.setDisable(true);
+            }
             vBox = new VBox(20);
             vBox.setAlignment(Pos.CENTER);
             vBox.getChildren().add(new Label(player.getName()));
             vBox.getChildren().add(new Label(player.getFinishTime()));
-            vBox.getChildren().add(new Label(player.getRank() + ""));
+            if(player.getRank() != 0){
+                vBox.getChildren().add(new Label(player.getRank() + ""));
+            }
             vBox.setStyle("-fx-background-color: #000");
+            vBox.setStyle("-fx-background-radius: 5");
+            vBox.setStyle("-fx-padding: 20 20;");
             playersBar.getChildren().add(vBox);
         }
     }
@@ -115,6 +113,7 @@ public class EliminationModeController extends GameInstance {
         private String name;
         private String finishTime;
         private int rank;
+        private boolean isEliminated;
 
         public Player(int id, String name, String finishTime, int rank) {
             this.id = id;
@@ -150,6 +149,14 @@ public class EliminationModeController extends GameInstance {
 
         public void setRank(int rank) {
             this.rank = rank;
+        }
+
+        public boolean isEliminated() {
+            return isEliminated;
+        }
+
+        public void setEliminated(boolean eliminated) {
+            isEliminated = eliminated;
         }
     }
 }
