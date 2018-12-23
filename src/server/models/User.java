@@ -2,6 +2,11 @@ package server.models;
 
 public class User {
 
+    public static final int OUT = -1;
+    public static final int IN_LOBBY = 0;
+    public static final int IN_START_COUNT = 1;
+    public static final int IN_GAME = 2;
+
     private String username;
     private String email;
     private String password;
@@ -9,7 +14,7 @@ public class User {
     private int id;
     private int level;
     private int exp;
-    private boolean inLobby;
+    private int status;
 
     public User() {}
 
@@ -20,7 +25,7 @@ public class User {
         this.id = id;
         this.exp = exp;
         this.level = level;
-        this.inLobby = false;
+        this.status = OUT;
     }
 
     public String getUsername() {
@@ -79,11 +84,11 @@ public class User {
         this.exp = exp;
     }
 
-    public boolean isInLobby() {
-        return inLobby;
+    public int getStatus() {
+        return status;
     }
 
-    public void setInLobby(boolean inLobby) {
-        this.inLobby = inLobby;
+    public void setStatus(int status) {
+        this.status = status;
     }
 }

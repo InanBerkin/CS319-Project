@@ -29,10 +29,14 @@ public class Counter extends Thread {
         this.callback = callback;
     }
 
-    @Override
-    public synchronized void start() {
+    public void startCounter() {
         isActive.set(true);
-        super.start();
+        start();
+    }
+
+    public void stopCounter() {
+        callback.counterInterrupted();
+        isActive.set(false);
     }
 
     @Override

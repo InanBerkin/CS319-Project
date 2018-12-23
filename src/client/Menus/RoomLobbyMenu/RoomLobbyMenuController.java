@@ -41,8 +41,11 @@ public class RoomLobbyMenuController extends MenuController {
         if(responseJSON.getString("responseType").equals("userAnnouncement")){
             Platform.runLater(() -> {
                 addPlayers(responseJSON.getJSONArray("userList"));
-                if (responseJSON.getBoolean("isStartable")){
+                if (responseJSON.getBoolean("isStartable") || payload.getBoolean("isStartable")){
                     startButton.setDisable(false);
+                }
+                else if(responseJSON.getBoolean("isStartable")){
+                    startButton.setDisable(true);
                 }
             });
         }
@@ -55,6 +58,12 @@ public class RoomLobbyMenuController extends MenuController {
             Platform.runLater(() -> {
                 ownerID = responseJSON.getInt("ownerID");
                 startButton.setVisible(ownerID == UserConfiguration.userID);
+            });
+        }
+        else if(responseJSON.getString("responseType").equals("interruptCounter")){
+            Platform.runLater(() -> {
+                roomName.setText((payload.getString("name")));
+                startButton.setDisable(true);
             });
         }
         else if(responseJSON.getString("responseType").equals("startGame")){

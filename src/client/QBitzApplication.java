@@ -5,7 +5,16 @@ import client.Network.ClientSocketHandler;
 import client.Network.NetworkAnalyzer;
 import javafx.application.Application;
 import javafx.application.Platform;
+import javafx.event.EventHandler;
+import javafx.scene.input.KeyCode;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyCombination;
+import javafx.scene.input.KeyEvent;
+import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 import java.io.*;
@@ -88,6 +97,7 @@ public class QBitzApplication extends Application {
             });
             sceneController.gotoMenu("MainMenu");
             primaryStage.show();
+            addEscKeyListener(primaryStage);
         } catch (Exception ex) {
             Logger.getLogger(QBitzApplication.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -144,7 +154,19 @@ public class QBitzApplication extends Application {
         }
 
         return null;
+    }
 
+    public void addEscKeyListener(Stage stage){
+        stage.getScene().addEventFilter(KeyEvent.KEY_PRESSED,
+                new EventHandler<KeyEvent>() {
+                    public void handle(KeyEvent e) {
+                        if(e.getCode() == KeyCode.ESCAPE){
+                            if(QBitzPopup.display(stage ,"Exit", "Return to Main Menu?")){
+                                QBitzApplication.getSceneController().gotoMenu("MainMenu");
+                            }
+                        }
+                    };
+                });
     }
 
 }
