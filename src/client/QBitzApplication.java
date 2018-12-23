@@ -5,7 +5,13 @@ import client.Network.ClientSocketHandler;
 import client.Network.NetworkAnalyzer;
 import javafx.application.Application;
 import javafx.application.Platform;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyCombination;
+import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 import java.io.*;
@@ -69,25 +75,26 @@ public class QBitzApplication extends Application {
             primaryStage.setFullScreenExitKeyCombination(KeyCombination.NO_MATCH);
             sceneController = new SceneController(primaryStage);
 
-            NetworkAnalyzer networkAnalyzer = new NetworkAnalyzer("https://www.google.com.tr");
-            if (networkAnalyzer.isOnline()) {
-                try {
-                    ClientSocketHandler clientSocketHandler = new ClientSocketHandler("139.179.206.36", 9999);
-                  clientSocketHandler.start();
-                    sceneController.setSocketHandler(clientSocketHandler);
-                    UserConfiguration.isOnline = true;
-               }
-                catch (IOException e) {
-                    System.out.println("» Server is unreachable.");
-                    UserConfiguration.isOnline = false;
-                }
-            }
+//            NetworkAnalyzer networkAnalyzer = new NetworkAnalyzer("https://www.google.com.tr");
+//            if (networkAnalyzer.isOnline()) {
+//                try {
+//                    ClientSocketHandler clientSocketHandler = new ClientSocketHandler("139.179.206.36", 9999);
+//                  clientSocketHandler.start();
+//                    sceneController.setSocketHandler(clientSocketHandler);
+//                    UserConfiguration.isOnline = true;
+//               }
+//                catch (IOException e) {
+//                    System.out.println("» Server is unreachable.");
+//                    UserConfiguration.isOnline = false;
+//                }
+//            }
             primaryStage.setOnCloseRequest( e -> {
                 Platform.exit();
                 System.exit(0);
             });
             sceneController.gotoMenu("MainMenu");
             primaryStage.show();
+            addEscKeyListener(primaryStage);
         } catch (Exception ex) {
             Logger.getLogger(QBitzApplication.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -144,7 +151,19 @@ public class QBitzApplication extends Application {
         }
 
         return null;
+    }
 
+    public void addEscKeyListener(Stage stage){
+        stage.getScene().addEventFilter(KeyEvent.KEY_PRESSED,
+                new EventHandler<KeyEvent>() {
+                    public void handle(KeyEvent e) {
+                        if(e.getCode() == KeyCode.ESCAPE){
+                            if(QBitzPopup.display(stage ,"Exit", "Return to Main Menu?")){
+                                QBitzApplication.getSceneController().gotoMenu("MainMenu");
+                            }
+                        }
+                    };
+                });
     }
 
 }
