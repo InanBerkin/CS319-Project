@@ -514,8 +514,6 @@ class QBitzServer {
                         respObj.put("isGameFinished", false);
                         respObj.put("isRoundFinished", room.getFinishTimes().size() == room.getCurrentPlayers());
 
-                        System.out.println(room.getFinishTimes().size() + " - " + room.getCurrentPlayers());
-
                         if (room.getFinishTimes().size() == room.getCurrentPlayers()) {
                             room.getFinishTimes().get(room.getFinishTimes().size() - 1).user.setEliminated(true);
 
@@ -528,6 +526,8 @@ class QBitzServer {
                             respObj.put("gameMode", room.getGameMode());
                             respObj.put("encodedImage", room.getEncodedImage());
                             respObj.put("patternMatrix", patternMatrix);
+
+                            ArrayList<JSONObject> tempSort = new ArrayList<>();
 
                             JSONArray userList2 = new JSONArray();
 
@@ -544,7 +544,27 @@ class QBitzServer {
                                 userObj.put("isEliminated", user.isEliminated());
                                 userObj.put("gatheredPoints", user.getGatheredPoints());
 
-                                userList2.put(userObj);
+                                tempSort.add(userObj);
+                            }
+
+                            tempSort.sort(new Comparator<JSONObject>() {
+                                @Override
+                                public int compare(JSONObject o1, JSONObject o2) {
+                                    return o2.getInt("gatheredPoints") - o1.getInt("gatheredPoints");
+                                }
+                            });
+
+                            for (JSONObject obj : tempSort) {
+                                System.out.println();
+                                System.out.println(obj.toString());
+                                System.out.println();
+                            }
+
+                            int rank = 1;
+                            for (int i = 0; i < tempSort.size(); i++) {
+                                tempSort.get(i).put("rank", rank);
+                                userList2.put(tempSort.get(i));
+                                rank++;
                             }
 
                             respObj.put("userList", userList2);
@@ -552,11 +572,15 @@ class QBitzServer {
                     }
                     else {
                         room.getFinishTimes().get(0).user.setGatheredPoints(room.getFinishTimes().get(0).user.getGatheredPoints() + 20);
+                        room.getFinishTimes().get(room.getFinishTimes().size() - 1).user.setEliminated(true);
+
                         respObj.put("isGameFinished", true);
 
                         room.getFinishTimes().clear();
 
                         JSONArray userList2 = new JSONArray();
+
+                        ArrayList<JSONObject> tempSort = new ArrayList<>();
 
                         for (ServerSocketHandler userHandler : room.getUsers()) {
                             User user = userHandler.getUser();
@@ -568,7 +592,21 @@ class QBitzServer {
                             userObj.put("isEliminated", user.isEliminated());
                             userObj.put("gatheredPoints", user.getGatheredPoints());
 
-                            userList2.put(userObj);
+                            tempSort.add(userObj);
+                        }
+
+                        tempSort.sort(new Comparator<JSONObject>() {
+                            @Override
+                            public int compare(JSONObject o1, JSONObject o2) {
+                                return o2.getInt("gatheredPoints") - o1.getInt("gatheredPoints");
+                            }
+                        });
+
+                        int rank = 1;
+                        for (int i = 0; i < tempSort.size(); i++) {
+                            tempSort.get(i).put("rank", rank);
+                            userList2.put(tempSort.get(i));
+                            rank++;
                         }
 
                         respObj.put("userList", userList2);

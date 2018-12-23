@@ -53,8 +53,10 @@ public class PostGameMenuController extends MenuController {
     public void initialize(URL location, ResourceBundle resources) {
         try {
             Platform.runLater(() -> {
-                //TODO userlist finishlist for other modes
-                updatePlayers(payload.getJSONArray("userList"));
+                if (payload.getInt("gameMode") == 1)
+                    updatePlayers(payload.getJSONArray("userList"));
+                else
+                    updatePlayers(payload.getJSONArray("finishList"));
             });
         } catch (Exception e) {
             System.out.println("Null geldi  bence");
