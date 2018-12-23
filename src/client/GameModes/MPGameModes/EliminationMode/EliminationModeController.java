@@ -8,6 +8,7 @@ import client.UserConfiguration;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
@@ -33,7 +34,9 @@ public class EliminationModeController extends GameInstance {
             Platform.runLater(() -> {
                 updatePlayers(responseJSON.getJSONArray("finishList"));
                 if (responseJSON.getBoolean("isGameFinished")) {
+                    System.out.println("Game finished");
                     QBitzApplication.getSceneController().gotoMenu("PostGameMenu", responseJSON);
+                    return;
                 }
                 if(responseJSON.getBoolean("isRoundFinished")){
                     QBitzApplication.getSceneController().gotoGameMode(false, "EliminationMode", responseJSON);
@@ -62,6 +65,7 @@ public class EliminationModeController extends GameInstance {
             QBitzApplication.getSceneController().sendMessageToServer(submitJSON);
             gameStatusLabel.setStyle("-fx-text-fill: #43d873");
             gameStatusLabel.setText("You solved the pattern!");
+            submitButton.setDisable(true);
         }
         else{
             gameStatusLabel.setStyle("-fx-text-fill: #FF1654");
