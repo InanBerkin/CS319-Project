@@ -113,10 +113,10 @@ class DatabaseConnector {
 
     int addRoom(Room room) {
         executeUpdate(ROOM_TABLE,"INSERT INTO ### (`name`, `gamemode`, `ownerid`, `players`, `maxplayers`, `entrance_level`, `roomtype`, `roomcode`, `boardSize`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)",
-                room.getName(), room.getGamemode(), room.getOwnerid(), room.getPlayers(), room.getMaxPlayers(), room.getEntranceLevel(), room.getRoomtype(), room.getRoomcode(), room.getBoardSize());
+                room.getName(), room.getGameMode(), room.getOwnerID(), room.getPlayers(), room.getMaxPlayers(), room.getEntranceLevel(), room.getRoomType(), room.getRoomCode(), room.getBoardSize());
 
         ResultSet result = executeQuery(ROOM_TABLE,"SELECT `id` FROM ### WHERE `name` = ? AND `gamemode` = ? AND `ownerid` = ? AND `players` = ? AND `maxplayers` = ? AND `entrance_level` = ? AND `roomtype` = ? AND `roomcode` = ? AND `boardSize` = ?",
-                room.getName(), room.getGamemode(), room.getOwnerid(), room.getPlayers(), room.getMaxPlayers(), room.getEntranceLevel(), room.getRoomtype(), room.getRoomcode(), room.getBoardSize());
+                room.getName(), room.getGameMode(), room.getOwnerID(), room.getPlayers(), room.getMaxPlayers(), room.getEntranceLevel(), room.getRoomType(), room.getRoomCode(), room.getBoardSize());
 
         try {
             if (result.next())
@@ -258,14 +258,14 @@ class DatabaseConnector {
                 Room room = new Room();
                 room.setId(resultSet.getInt("id"));
                 room.setName(resultSet.getString("name"));
-                room.setGamemode(resultSet.getInt("gamemode"));
-                room.setOwnerid(resultSet.getInt("ownerid"));
+                room.setGameMode(resultSet.getInt("gamemode"));
+                room.setOwnerID(resultSet.getInt("ownerid"));
                 room.setPlayers(resultSet.getInt("players"));
                 room.setMaxPlayers(resultSet.getInt("maxplayers"));
                 room.setEntranceLevel(resultSet.getInt("entrance_level"));
-                room.setRoomtype(resultSet.getInt("roomtype"));
-                room.setRoomcode(resultSet.getString("roomcode"));
-                room.setOwnername(resultSet.getString("username"));
+                room.setRoomType(resultSet.getInt("roomtype"));
+                room.setRoomCode(resultSet.getString("roomcode"));
+                room.setOwnerName(resultSet.getString("username"));
 
                 result.add(room);
             }

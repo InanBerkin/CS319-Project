@@ -10,47 +10,52 @@ public class Room {
     public static int PUBLIC = 0;
     public static int PRIVATE = 1;
 
+    public static int RACE = 0;
+    public static int ELIMINATION = 1;
+    public static int IMAGE_RECREATION = 2;
+
     private int id;
     private String name;
-    private int gamemode;
-    private int ownerid;
-    private String ownername;
+    private int gameMode;
+    private int ownerID;
+    private String ownerName;
     private int players;
     private int maxPlayers;
     private int entranceLevel;
-    private int roomtype;
-    private String roomcode;
+    private int roomType;
+    private String roomCode;
     private ArrayList<ServerSocketHandler> users;
     private String encodedImage;
     private int boardSize;
     private ArrayList<FinishTime> finishTimes;
+    private Counter counter;
 
-    public Room(String name, int gamemode, int ownerid, int players, int entranceLevel) {
+    public Room(String name, int gameMode, int ownerID, int players, int entranceLevel) {
         this.id = 0;
         this.name = name;
-        this.gamemode = gamemode;
-        this.ownerid = ownerid;
+        this.gameMode = gameMode;
+        this.ownerID = ownerID;
         this.players = players;
         this.maxPlayers = 0;
         this.entranceLevel = entranceLevel;
-        this.roomtype = 0;
-        this.roomcode = "";
+        this.roomType = 0;
+        this.roomCode = "";
         this.users = new ArrayList<>();
         this.encodedImage = "";
         this.boardSize = -1;
         this.finishTimes = new ArrayList<>();
     }
 
-    public Room(int id, String name, int gamemode, int ownerid, int players, int maxPlayers, int entranceLevel, int roomtype, String roomcode) {
+    public Room(int id, String name, int gameMode, int ownerID, int players, int maxPlayers, int entranceLevel, int roomType, String roomCode) {
         this.id = id;
         this.name = name;
-        this.gamemode = gamemode;
-        this.ownerid = ownerid;
+        this.gameMode = gameMode;
+        this.ownerID = ownerID;
         this.players = players;
         this.maxPlayers = maxPlayers;
         this.entranceLevel = entranceLevel;
-        this.roomtype = roomtype;
-        this.roomcode = roomcode;
+        this.roomType = roomType;
+        this.roomCode = roomCode;
         this.users = new ArrayList<>();
         this.encodedImage = "";
         this.boardSize = -1;
@@ -88,20 +93,20 @@ public class Room {
         this.name = name;
     }
 
-    public int getGamemode() {
-        return gamemode;
+    public int getGameMode() {
+        return gameMode;
     }
 
-    public void setGamemode(int gamemode) {
-        this.gamemode = gamemode;
+    public void setGameMode(int gameMode) {
+        this.gameMode = gameMode;
     }
 
-    public int getOwnerid() {
-        return ownerid;
+    public int getOwnerID() {
+        return ownerID;
     }
 
-    public void setOwnerid(int ownerid) {
-        this.ownerid = ownerid;
+    public void setOwnerID(int ownerID) {
+        this.ownerID = ownerID;
     }
 
     public int getPlayers() {
@@ -128,40 +133,36 @@ public class Room {
         this.entranceLevel = entranceLevel;
     }
 
-    public int getRoomtype() {
-        return roomtype;
+    public int getRoomType() {
+        return roomType;
     }
 
-    public void setRoomtype(int roomtype) {
-        this.roomtype = roomtype;
+    public void setRoomType(int roomType) {
+        this.roomType = roomType;
     }
 
-    public String getRoomcode() {
-        return roomcode;
+    public String getRoomCode() {
+        return roomCode;
     }
 
-    public void setRoomcode(String roomcode) {
-        this.roomcode = roomcode;
+    public void setRoomCode(String roomCode) {
+        this.roomCode = roomCode;
     }
 
     public ArrayList<ServerSocketHandler> getUsers() {
         return users;
     }
 
-    public void setUsers(ArrayList<ServerSocketHandler> users) {
-        this.users = users;
-    }
-
     public void addUser(ServerSocketHandler userHandler) {
         users.add(userHandler);
     }
 
-    public String getOwnername() {
-        return ownername;
+    public String getOwnerName() {
+        return ownerName;
     }
 
-    public void setOwnername(String ownername) {
-        this.ownername = ownername;
+    public void setOwnerName(String ownerName) {
+        this.ownerName = ownerName;
     }
 
     public int getBoardSize() {
@@ -180,11 +181,7 @@ public class Room {
         return finishTimes;
     }
 
-    public void clearFinishTimes() {
-        finishTimes.clear();
-    }
-
-    public FinishTime getFromUser(User user) {
+    public FinishTime getUserFinishTime(User user) {
         for (FinishTime finishTime : finishTimes) {
             if (finishTime.user == user) {
                 return finishTime;
@@ -194,24 +191,25 @@ public class Room {
         return null;
     }
 
-    public boolean getLobbyStatus() {
-        boolean result = true;
+    public boolean isStartable() {
+        boolean allReady = true;
+
         for (ServerSocketHandler socketHandler : users) {
-            if (!socketHandler.getUser().isInLobby())
-                result = false;
+            if (socketHandler.getUser().getStatus() != User.IN_LOBBY) {
+                allReady = false;
+                break;
+            }
+
         }
 
-        return result;
+        return getPlayers() == getMaxPlayers() && allReady;
     }
 
-    public int countFinished() {
-        int result = 0;
-        for (FinishTime finishTime : finishTimes) {
-            if (!finishTime.time.contains("Solving")){
-                result++;
-            }
-        }
+    public Counter getCounter() {
+        return counter;
+    }
 
-        return result;
+    public void setCounter(Counter counter) {
+        this.counter = counter;
     }
 }
