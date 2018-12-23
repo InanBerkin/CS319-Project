@@ -31,12 +31,6 @@ public class Cube extends XGroup {
         this.faces[3] = new XRectangle(3, CubeFaces.getImageAt(4), size, posX + 0, posY + -0.5 * size, posZ + 0);
         this.faces[4] = new XRectangle(4, CubeFaces.getImageAt(5), size, posX + -0.5 * size, posY + -1 * size, posZ + 0);
         this.faces[5] = new XRectangle(5, CubeFaces.getImageAt(6), size, posX + -0.5 * size, posY + -0.5 * size, posZ + -0.5 * size);
-//        this.faces[0] = new XRectangle(0, XRectangle.IMG0_URL, size, posX + -0.5 * size, posY + -0.5 * size, posZ + 0.5 * size);
-//        this.faces[1] = new XRectangle(1, XRectangle.IMG1_URL, size, posX + -0.5 * size, posY + 0, posZ + 0);
-//        this.faces[2] = new XRectangle(2, XRectangle.IMG2_URL, size, posX + -1 * size, posY + -0.5 * size, posZ + 0);
-//        this.faces[3] = new XRectangle(3, XRectangle.IMG3_URL, size, posX + 0, posY + -0.5 * size, posZ + 0);
-//        this.faces[4] = new XRectangle(4, XRectangle.IMG4_URL, size, posX + -0.5 * size, posY + -1 * size, posZ + 0);
-//        this.faces[5] = new XRectangle(5, XRectangle.IMG5_URL, size, posX + -0.5 * size, posY + -0.5 * size, posZ + -0.5 * size);
 
         this.faces[1].setRotationAxis(Rotate.X_AXIS);
         this.faces[1].setRotate(90);

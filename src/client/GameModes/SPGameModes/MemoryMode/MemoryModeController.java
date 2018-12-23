@@ -23,6 +23,10 @@ import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.scene.control.Button;
 
+/**
+ * This class is created to simulate the memory mode of the Qbitz game in digital version for single player game
+ * author Sait Akturk
+ */
 public class MemoryModeController extends GameInstance {
 
     //**********************FOR_MEMORY************************************
@@ -40,6 +44,9 @@ public class MemoryModeController extends GameInstance {
 
     @FXML
     private Label timerLabel;
+
+    @FXML
+    public Button submitButton;
 
 
     @Override
@@ -72,6 +79,11 @@ public class MemoryModeController extends GameInstance {
         gameTimer.startTimer();
     }
 
+    /**
+     * Set the memorization time for the player according to board dimension
+     * @param dimension board dimension
+     * @return int the memorization time
+     */
     public int memoryTime(int dimension) {
         if (dimension == 3)
             return 5;
@@ -80,15 +92,17 @@ public class MemoryModeController extends GameInstance {
         else
             return 30;
     }
+
+    /**
+     * This method is start to show pattern to make the player memorize the pattern
+     */
     @FXML
-    public boolean startShowPattern(){
+    public void startShowPattern(){
         this.memoryLabel.setText("Memorize in "+this.memoryTime+ " seconds");
         this.memoryLabel.setVisible(true);
         this.gameTimer.startTimer(this.memoryTime);
         this.pattern.showPattern();
         this.startButton.setVisible(false);
-
-        return true;
     }
     @Override
     public boolean submit(){
@@ -100,7 +114,7 @@ public class MemoryModeController extends GameInstance {
             this.pattern.showPattern();
         }
         else {
-            this.memoryLabel.setText("The pattern on the board is incorrect. Think Again!");
+            this.memoryLabel.setText("Wrong Pattern. Think Again!");
         }
         return isPatternTrue;
     }

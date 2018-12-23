@@ -31,16 +31,22 @@ public class SceneController {
     }
 
     private Parent replaceSceneContent(String fxml) throws Exception {
-        loader = new FXMLLoader(getClass().getResource(fxml));
-        Parent page = (Parent) loader.load();
-        Scene scene = stage.getScene();
-        if (scene == null) {
-            scene = new Scene(page);
-            stage.setScene(scene);
-        } else {
-            stage.getScene().setRoot(page);
+        try {
+            loader = new FXMLLoader(getClass().getResource(fxml));
+            Parent page = (Parent) loader.load();
+            Scene scene = stage.getScene();
+            if (scene == null) {
+                scene = new Scene(page);
+                stage.setScene(scene);
+            } else {
+                stage.getScene().setRoot(page);
+            }
+            return page;
+        } catch (Exception e) {
+            System.out.println("Null geldi " + e.getMessage());
+            return null;
         }
-        return page;
+
     }
 
     public void gotoMenu(String menuName) {
@@ -91,7 +97,7 @@ public class SceneController {
         return loader.getController();
     }
 
-    public Window getWindow(){
+    public Stage getWindow() {
         return stage;
     }
 

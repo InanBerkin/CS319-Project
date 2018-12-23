@@ -310,6 +310,7 @@ class QBitzServer {
                 if (room != null) {
                     if (room.getPlayers() != room.getMaxPlayers()) {
                         if (room.getEntranceLevel() <= handler.getUser().getLevel()) {
+                            handler.getUser().setEliminated(false);
                             respObj.put("result", 0);
 
                             respObj.put("roomID", room.getId());
@@ -397,6 +398,8 @@ class QBitzServer {
                 if (room != null) {
                     if (room.getPlayers() != room.getMaxPlayers()) {
                         if (room.getEntranceLevel() <= handler.getUser().getLevel()) {
+                            handler.getUser().setEliminated(false);
+
                             respObj.put("result", 0);
 
                             respObj.put("roomID", room.getId());
@@ -451,7 +454,9 @@ class QBitzServer {
                 String finishTime = msgObj.getString("finishTime");
 
                 Room room = findRoomFromID(roomID);
-                room.addFinishTime(finishTime, handler.getUser());
+
+                if (!handler.getUser().isEliminated())
+                    room.addFinishTime(finishTime, handler.getUser());
 
                 JSONObject respObj = new JSONObject();
 
@@ -472,7 +477,11 @@ class QBitzServer {
                         userObj.put("rank", room.getFinishTimes().indexOf(finish) + 1);
                     }
                     else {
-                        userObj.put("finishTime", "Solving...");
+                        if (!user.isEliminated())
+                            userObj.put("finishTime", "Solving...");
+                        else
+                            userObj.put("finishTime", "Eliminated");
+
                         userObj.put("rank", 0);
                     }
                     tempForSort.add(userObj);
@@ -492,10 +501,117 @@ class QBitzServer {
                 respObj.put("responseType", "submit");
                 respObj.put("roomID", roomID);
 
-                respObj.put("isGameFinished", room.getFinishTimes().size() == room.getPlayers());
+                if (room.getGameMode() != Room.ELIMINATION) {
+                    respObj.put("isGameFinished", room.getFinishTimes().size() == room.getPlayers());
 
-                if (room.getFinishTimes().size() == room.getPlayers())
-                    room.getFinishTimes().clear();
+                    if (room.getFinishTimes().size() == room.getPlayers())
+                        room.getFinishTimes().clear();
+                }
+                else {
+                    boolean isGameFinished = room.getCurrentPlayers() == 2;
+
+                    if (!isGameFinished) {
+                        respObj.put("isGameFinished", false);
+                        respObj.put("isRoundFinished", room.getFinishTimes().size() == room.getCurrentPlayers());
+
+                        if (room.getFinishTimes().size() == room.getCurrentPlayers()) {
+                            room.getFinishTimes().get(room.getFinishTimes().size() - 1).user.setEliminated(true);
+
+                            room.getFinishTimes().clear();
+
+                            PatternGenerator patternGenerator = new PatternGenerator(room.getBoardSize());
+                            JSONArray patternMatrix = new JSONArray(patternGenerator.generatePattern(false));
+
+                            respObj.put("boardSize", room.getBoardSize());
+                            respObj.put("gameMode", room.getGameMode());
+                            respObj.put("encodedImage", room.getEncodedImage());
+                            respObj.put("patternMatrix", patternMatrix);
+
+                            ArrayList<JSONObject> tempSort = new ArrayList<>();
+
+                            JSONArray userList2 = new JSONArray();
+
+                            for (ServerSocketHandler userHandler : room.getUsers()) {
+                                User user = userHandler.getUser();
+
+                                if (!user.isEliminated())
+                                    user.setGatheredPoints(user.getGatheredPoints() + 10);
+
+                                JSONObject userObj = new JSONObject();
+                                userObj.put("name", user.getUsername());
+                                userObj.put("id", user.getId());
+                                userObj.put("level", user.getLevel());
+                                userObj.put("isEliminated", user.isEliminated());
+                                userObj.put("gatheredPoints", user.getGatheredPoints());
+
+                                tempSort.add(userObj);
+                            }
+
+                            tempSort.sort(new Comparator<JSONObject>() {
+                                @Override
+                                public int compare(JSONObject o1, JSONObject o2) {
+                                    return o2.getInt("gatheredPoints") - o1.getInt("gatheredPoints");
+                                }
+                            });
+
+                            for (JSONObject obj : tempSort) {
+                                System.out.println();
+                                System.out.println(obj.toString());
+                                System.out.println();
+                            }
+
+                            int rank = 1;
+                            for (int i = 0; i < tempSort.size(); i++) {
+                                tempSort.get(i).put("rank", rank);
+                                userList2.put(tempSort.get(i));
+                                rank++;
+                            }
+
+                            respObj.put("userList", userList2);
+                        }
+                    }
+                    else {
+                        room.getFinishTimes().get(0).user.setGatheredPoints(room.getFinishTimes().get(0).user.getGatheredPoints() + 20);
+                        room.getFinishTimes().get(room.getFinishTimes().size() - 1).user.setEliminated(true);
+
+                        respObj.put("isGameFinished", true);
+
+                        room.getFinishTimes().clear();
+
+                        JSONArray userList2 = new JSONArray();
+
+                        ArrayList<JSONObject> tempSort = new ArrayList<>();
+
+                        for (ServerSocketHandler userHandler : room.getUsers()) {
+                            User user = userHandler.getUser();
+
+                            JSONObject userObj = new JSONObject();
+                            userObj.put("name", user.getUsername());
+                            userObj.put("id", user.getId());
+                            userObj.put("level", user.getLevel());
+                            userObj.put("isEliminated", user.isEliminated());
+                            userObj.put("gatheredPoints", user.getGatheredPoints());
+
+                            tempSort.add(userObj);
+                        }
+
+                        tempSort.sort(new Comparator<JSONObject>() {
+                            @Override
+                            public int compare(JSONObject o1, JSONObject o2) {
+                                return o2.getInt("gatheredPoints") - o1.getInt("gatheredPoints");
+                            }
+                        });
+
+                        int rank = 1;
+                        for (int i = 0; i < tempSort.size(); i++) {
+                            tempSort.get(i).put("rank", rank);
+                            userList2.put(tempSort.get(i));
+                            rank++;
+                        }
+
+                        respObj.put("userList", userList2);
+                    }
+                }
 
                 for (ServerSocketHandler userHandler : room.getUsers()) {
                     userHandler.sendMessage(respObj.toString());
@@ -645,6 +761,7 @@ class QBitzServer {
                     userObj.put("name", user.getUsername());
                     userObj.put("id", user.getId());
                     userObj.put("level", user.getLevel());
+                    userObj.put("isEliminated", user.isEliminated());
 
                     userList.put(userObj);
                 }

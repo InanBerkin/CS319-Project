@@ -5,9 +5,9 @@
 <?import javafx.geometry.Insets?>
 <VBox fx:id="vBox" xmlns="http://javafx.com/javafx"
       xmlns:fx="http://javafx.com/fxml"
-      fx:controller="client.GameModes.SPGameModes.ImageRecreationMode.SingleImageRecreationModeController"
+      fx:controller="client.GameModes.SPGameModes.SingleImageRecreationMode.SingleImageRecreationModeController"
       stylesheets="@/styles/GameInstance.css"
-      spacing="40">
+      spacing="20">
     <HBox alignment="CENTER" spacing="100">
         <Label HBox.hgrow="ALWAYS" fx:id="timerLabel"  alignment="CENTER" text="Q-BITZ"/>
         <!--<Label HBox.hgrow="ALWAYS" fx:id="winText" alignment="CENTER" text=""/>-->
@@ -18,7 +18,10 @@
     <!--Space-->
     <Region prefHeight="10"/>
     <!--Space-->
-    <HBox fx:id="sceneHbox"/>
+    <VBox spacing="20">
+        <HBox fx:id="labelHbox"/>
+        <HBox fx:id="sceneHbox"/>
+    </VBox>
     <HBox alignment="CENTER">
         <Button HBox.hgrow="ALWAYS" fx:id="submitButton" text="Submit" onAction="#submit"/>
     </HBox>

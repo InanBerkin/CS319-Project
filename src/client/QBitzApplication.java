@@ -14,10 +14,14 @@ import javafx.scene.input.KeyCombination;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
 import java.io.*;
+import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.logging.Level;
@@ -81,7 +85,7 @@ public class QBitzApplication extends Application {
             NetworkAnalyzer networkAnalyzer = new NetworkAnalyzer("https://www.google.com.tr");
             if (networkAnalyzer.isOnline()) {
                 try {
-                    ClientSocketHandler clientSocketHandler = new ClientSocketHandler("139.179.211.32", 9999);
+                    ClientSocketHandler clientSocketHandler = new ClientSocketHandler("localhost", 9999);
                   clientSocketHandler.start();
                     sceneController.setSocketHandler(clientSocketHandler);
                     UserConfiguration.isOnline = true;
@@ -97,7 +101,7 @@ public class QBitzApplication extends Application {
             });
             sceneController.gotoMenu("MainMenu");
             primaryStage.show();
-            addEscKeyListener(primaryStage);
+//            addEscKeyListener(primaryStage);
         } catch (Exception ex) {
             Logger.getLogger(QBitzApplication.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -155,7 +159,7 @@ public class QBitzApplication extends Application {
 
         return null;
     }
-
+    
     public void addEscKeyListener(Stage stage){
         stage.getScene().addEventFilter(KeyEvent.KEY_PRESSED,
                 new EventHandler<KeyEvent>() {

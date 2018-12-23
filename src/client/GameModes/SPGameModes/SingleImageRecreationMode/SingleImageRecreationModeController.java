@@ -1,8 +1,9 @@
-package client.GameModes.SPGameModes.ImageRecreationMode;
+package client.GameModes.SPGameModes.SingleImageRecreationMode;
 
 import client.GameModes.GameInstance;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.paint.ImagePattern;
@@ -32,6 +33,9 @@ public class SingleImageRecreationModeController extends GameInstance implements
 
     @FXML
     private Label gameStatusLabel;
+
+    @FXML
+    public Button submitButton;
 
 
     @Override
@@ -138,7 +142,7 @@ public class SingleImageRecreationModeController extends GameInstance implements
             this.gameTimer.stopTimer();
         }
         else {
-            this.gameStatusLabel.setText("The pattern on the board is incorrect. Think Again!");
+            this.gameStatusLabel.setText("Wrong Pattern. Think Again!");
         }
 
         return isPatternTrue;

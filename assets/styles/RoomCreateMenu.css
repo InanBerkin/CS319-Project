@@ -4,6 +4,14 @@ Label{
     -fx-text-fill: #ffffff;
     -fx-font-size: 20px;
 }
+#raceMode{
+    -fx-text-fill: #ffffff;
+    -fx-font-size: 12px;
+}
+#elimMode{
+    -fx-text-fill: #ffffff;
+    -fx-font-size: 12px;
+}
 
 GridPane{
     -fx-background-color: -backgroundDark;

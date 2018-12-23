@@ -17,6 +17,9 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
+/**
+ *
+ */
 public class Pattern {
 
     private static final int BOARD_LENGTH = 500;

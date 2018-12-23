@@ -6,6 +6,7 @@ import client.QBitzApplication;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -23,22 +24,43 @@ public class PostGameMenuController extends MenuController {
     @FXML
     private VBox playerRankings;
 
+    @FXML
+    private Button gotolobby;
+
     @Override
     public void onMessageReceived(String message) {
         JSONObject responseJSON = new JSONObject(message);
         if(responseJSON.getString("responseType").equals("backToLobby")){
             Platform.runLater(() -> {
                 responseJSON.put("roomCode", "");
-                QBitzApplication.getSceneController().gotoMenu("RoomLobbyMenu", responseJSON);
+                Timer timer = new Timer();
+                TimerTask task = new TimerTask() {
+                    public void run() {
+                        Platform.runLater(() -> {
+                            QBitzApplication.getSceneController().gotoMenu("RoomLobbyMenu", responseJSON);
+                        });
+
+                    }
+
+                };
+                gotolobby.setDisable(true);
+                timer.schedule(task, 5000l);
             });
         }
     }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-       Platform.runLater(() -> {
-           updatePlayers(payload.getJSONArray("finishList"));
-       });
+        try {
+            Platform.runLater(() -> {
+                if (payload.getInt("gameMode") == 1)
+                    updatePlayers(payload.getJSONArray("userList"));
+                else
+                    updatePlayers(payload.getJSONArray("finishList"));
+            });
+        } catch (Exception e) {
+            System.out.println("Null geldi  bence");
+        }
     }
 
     @FXML
@@ -54,27 +76,28 @@ public class PostGameMenuController extends MenuController {
         int players = playersList.length();
         Player player;
         HBox hBox;
-        int id;
-        int rank;
-        String name;
-        String finishTime;
+        int id = -1;
+        int rank = 0;
+        String name = "";
         for (int i = 0; i < players; i++){
             JSONObject playerJSON = (JSONObject) playersList.get(i);
             id = playerJSON.getInt("id");
             name = playerJSON.getString("name");
-            finishTime = playerJSON.getString("finishTime");
             rank = playerJSON.getInt("rank");
-            player = new Player(id,name, finishTime, rank);
+            player = new Player(id, name, "", rank);
             hBox = new HBox(20);
             hBox.setAlignment(Pos.CENTER);
-            hBox.getChildren().add(new Label(player.getName()));
-            hBox.getChildren().add(new Label(player.getFinishTime()));
             hBox.getChildren().add(new Label(player.getRank() + ""));
+            hBox.getChildren().add(new Label(player.getName()));
+            if (playerJSON.has("gatheredPoints")) {
+                hBox.getChildren().add(new Label(playerJSON.getInt("gatheredPoints") + ""));
+            }
             hBox.setStyle("-fx-background-color: #000");
             hBox.setStyle("-fx-background-radius: 5");
             hBox.setStyle("-fx-padding: 20 20;");
             playerRankings.getChildren().add(hBox);
         }
+
     }
 
     private class Player{

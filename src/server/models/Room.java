@@ -28,6 +28,7 @@ public class Room {
     private String encodedImage;
     private int boardSize;
     private ArrayList<FinishTime> finishTimes;
+    private ArrayList<ServerSocketHandler> eliminationList;
     private Counter counter;
 
     public Room(String name, int gameMode, int ownerID, int players, int entranceLevel) {
@@ -44,6 +45,7 @@ public class Room {
         this.encodedImage = "";
         this.boardSize = -1;
         this.finishTimes = new ArrayList<>();
+        this.eliminationList = new ArrayList<>();
     }
 
     public Room(int id, String name, int gameMode, int ownerID, int players, int maxPlayers, int entranceLevel, int roomType, String roomCode) {
@@ -60,6 +62,7 @@ public class Room {
         this.encodedImage = "";
         this.boardSize = -1;
         this.finishTimes = new ArrayList<>();
+        this.eliminationList = new ArrayList<>();
     }
 
     public Room() {
@@ -67,6 +70,7 @@ public class Room {
         this.encodedImage = "";
         this.boardSize = -1;
         this.finishTimes = new ArrayList<>();
+        this.eliminationList = new ArrayList<>();
     }
 
     public String getEncodedImage() {
@@ -211,5 +215,20 @@ public class Room {
 
     public void setCounter(Counter counter) {
         this.counter = counter;
+    }
+
+    public int getCurrentPlayers() {
+        int result = getPlayers();
+
+        for (ServerSocketHandler socketHandler : users) {
+            if (socketHandler.getUser().isEliminated())
+                result--;
+        }
+
+        return result;
+    }
+
+    public ArrayList<ServerSocketHandler> getEliminationList() {
+        return eliminationList;
     }
 }

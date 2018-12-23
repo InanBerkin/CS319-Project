@@ -4,6 +4,7 @@ package client.GameModes.SPGameModes.TimeAttackMode;
 import client.GameModes.GameInstance;
 import client.GameModels.*;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 
@@ -26,12 +27,14 @@ public class TimeAttackModeController extends GameInstance {
     @Override
     public boolean submit(){
         boolean isPatternTrue = super.submit();
-        if( isPatternTrue) {
-            this.gameStatusLabel.setText("You solved the pattern!");
-            this.gameTimer.stopTimer();
+        if(isPatternTrue){
+            gameStatusLabel.setStyle("-fx-text-fill: #43d873");
+            gameStatusLabel.setText("You solved the pattern!");
+            gameTimer.stopTimer();
         }
-        else {
-            this.gameStatusLabel.setText("The pattern on the board is incorrect. Think Again!");
+        else{
+            gameStatusLabel.setStyle("-fx-text-fill: #FF1654");
+            gameStatusLabel.setText("Wrong Pattern");
         }
         return isPatternTrue;
     }
