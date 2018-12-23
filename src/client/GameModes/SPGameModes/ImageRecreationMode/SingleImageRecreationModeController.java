@@ -55,7 +55,7 @@ public class SingleImageRecreationModeController extends GameInstance implements
         this.imgParts = new ArrayList<>();
         this.imgParts = convertBuffToImage(buffImgParts, gridDimension);
 
-        board = new GameBoard(gridDimension, this);
+        board = new GameBoard(gridDimension, this, null);
         pattern = new Pattern(gridDimension);
         pattern.setImagesToCreatePattern(this.imgParts.toArray(new Image[this.imgParts.size()]));
         this.imageRec();

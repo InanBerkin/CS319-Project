@@ -14,7 +14,7 @@ public class TimeAttackModeController extends GameInstance {
     @Override
     public void initializeGameMode() {
         gameTimer.startTimer();
-        board = new GameBoard(gridDimension, null);
+        board = new GameBoard(gridDimension, null,null);
         pattern = new Pattern(gridDimension);
     }
 

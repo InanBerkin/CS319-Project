@@ -74,7 +74,7 @@ public class EliminationModeController extends GameInstance {
     }
 
     private void removePlayer(JSONObject playerToRemove){
-        
+
     }
 
     private void updatePlayers(JSONArray playersList){
