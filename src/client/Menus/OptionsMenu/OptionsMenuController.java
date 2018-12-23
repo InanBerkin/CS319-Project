@@ -74,7 +74,7 @@ public class OptionsMenuController extends MenuController {
             @Override
             public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
                 CubeFaces.changeColor(colorSlider.getValue());
-                faceView.setImage(CubeFaces.getImageAt(0));
+                faceView.setImage(CubeFaces.getImageAt(1));
 
             }
         }
