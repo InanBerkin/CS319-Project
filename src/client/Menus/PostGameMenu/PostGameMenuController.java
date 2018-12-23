@@ -33,7 +33,18 @@ public class PostGameMenuController extends MenuController {
         if(responseJSON.getString("responseType").equals("backToLobby")){
             Platform.runLater(() -> {
                 responseJSON.put("roomCode", "");
-                QBitzApplication.getSceneController().gotoMenu("RoomLobbyMenu", responseJSON);
+                Timer timer = new Timer();
+                TimerTask task = new TimerTask() {
+                    public void run() {
+                        Platform.runLater(() -> {
+                            QBitzApplication.getSceneController().gotoMenu("RoomLobbyMenu", responseJSON);
+                        });
+
+                    }
+
+                };
+                gotolobby.setDisable(true);
+                timer.schedule(task, 5000l);
             });
         }
     }
@@ -42,6 +53,7 @@ public class PostGameMenuController extends MenuController {
     public void initialize(URL location, ResourceBundle resources) {
         try {
             Platform.runLater(() -> {
+                //TODO userlist finishlist for other modes
                 updatePlayers(payload.getJSONArray("userList"));
             });
         } catch (Exception e) {
