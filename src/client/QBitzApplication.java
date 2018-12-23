@@ -89,10 +89,10 @@ public class QBitzApplication extends Application {
             if (networkAnalyzer.isOnline()) {
                 try {
                     ClientSocketHandler clientSocketHandler = new ClientSocketHandler("138.197.189.245", 9999);
-                  clientSocketHandler.start();
+                    clientSocketHandler.start();
                     sceneController.setSocketHandler(clientSocketHandler);
                     UserConfiguration.isOnline = true;
-               }
+                }
                 catch (IOException e) {
                     System.out.println("» Server is unreachable.");
                     UserConfiguration.isOnline = false;
@@ -104,6 +104,7 @@ public class QBitzApplication extends Application {
             });
             sceneController.gotoMenu("MainMenu");
             primaryStage.show();
+            addEscKeyListener(primaryStage);
         } catch (Exception ex) {
             Logger.getLogger(QBitzApplication.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -160,6 +161,19 @@ public class QBitzApplication extends Application {
         }
 
         return null;
+    }
+
+    public void addEscKeyListener(Stage stage){
+        stage.getScene().addEventFilter(KeyEvent.KEY_PRESSED,
+                new EventHandler<KeyEvent>() {
+                    public void handle(KeyEvent e) {
+                        if(e.getCode() == KeyCode.ESCAPE){
+                            if(QBitzPopup.display(stage ,"Exit", "Return to Main Menu?")){
+                                QBitzApplication.getSceneController().gotoMenu("MainMenu");
+                            }
+                        }
+                    };
+                });
     }
 
 }

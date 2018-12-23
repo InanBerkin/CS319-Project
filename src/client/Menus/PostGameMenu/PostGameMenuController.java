@@ -59,7 +59,7 @@ public class PostGameMenuController extends MenuController {
                     updatePlayers(payload.getJSONArray("finishList"));
             });
         } catch (Exception e) {
-            System.out.println("Null geldi  bence");
+            System.out.println("Null geldi bence");
         }
     }
 
