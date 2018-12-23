@@ -14,6 +14,7 @@ public class CubeFaces {
     public static int colorOffset = 0;
     static String homeDir = System.getProperty("user.home");
     static String folderPath = homeDir + File.separator + "qbitz_configs";
+    static final int SIZE = 128;
 
     static double realOffset = 0;
 
@@ -31,8 +32,8 @@ public class CubeFaces {
         defaultFaces = new Image[6];
         for(int i = 0; i<6; i++) {
             try {
-                faces[i] = new Image(new FileInputStream(paths[i]));
-                defaultFaces[i] = new Image(new FileInputStream(paths[i]));
+                faces[i] = new Image(new FileInputStream(paths[i]),SIZE,SIZE,true,false);
+                defaultFaces[i] = new Image(new FileInputStream(paths[i]),SIZE,SIZE,true,false);
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
             }
@@ -55,6 +56,7 @@ public class CubeFaces {
         }
     }
     public static Image getImageAt(int index) {
+        index--;
         if(index >= 0 && index < 6 ) {
             return faces[index];
         }
@@ -62,6 +64,7 @@ public class CubeFaces {
     }
 
     public static void setImageAt(int index, Image imageToSet) {
+        index--;
         if(index >= 0 && index < 6 ) {
             faces[index] = imageToSet;
         }

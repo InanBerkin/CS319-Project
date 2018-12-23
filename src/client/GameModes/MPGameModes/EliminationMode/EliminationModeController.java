@@ -31,7 +31,7 @@ public class EliminationModeController extends GameInstance {
     @Override
     public void initializeGameMode() {
         gameTimer.startTimer();
-        board = new GameBoard(gridDimension, null, null);
+        board = new GameBoard(gridDimension, null);
         pattern = new Pattern(gridDimension);
         pattern.setGivenPattern(jsonArrayToMatrix(payload.getJSONArray("patternMatrix"), gridDimension));
         addPlayers(payload.getJSONArray("userList"));
@@ -74,7 +74,7 @@ public class EliminationModeController extends GameInstance {
     }
 
     private void removePlayer(JSONObject playerToRemove){
-        
+
     }
 
     private void updatePlayers(JSONArray playersList){
