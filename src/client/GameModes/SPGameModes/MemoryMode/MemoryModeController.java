@@ -100,7 +100,7 @@ public class MemoryModeController extends GameInstance {
             this.pattern.showPattern();
         }
         else {
-            this.memoryLabel.setText("The pattern on the board is incorrect. Think Again!");
+            this.memoryLabel.setText("Wrong Pattern. Think Again!");
         }
         return isPatternTrue;
     }

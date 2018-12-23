@@ -4,6 +4,7 @@
     -danger: #ED553B;
     -light :#068587;
     -dark :#112F41;
+    -grey : #505054;
     -background: #2EC1E6;
     -backgroundDark: #249ab8;
     -fx-font-family: "Nexa Bold";
@@ -47,4 +48,8 @@ TextField, PasswordField{
 
 #Title{
     -fx-font-size: 80;
+}
+
+#subtitle{
+    -fx-font-size: 60;
 }

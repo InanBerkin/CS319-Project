@@ -42,7 +42,16 @@ public abstract class GameInstance extends MenuController implements TimerSignab
     private HBox sceneHbox;
 
     @FXML
+    private HBox labelHbox;
+
+    @FXML
+    private Label gameStatusLabel;
+
+    @FXML
     private Label timerLabel;
+
+    @FXML
+    private Label submitButton;
 
     public GameBoard board;
 
@@ -108,7 +117,8 @@ public abstract class GameInstance extends MenuController implements TimerSignab
 
             SubScene cubeScene = new SubScene(root, 400, 400, true, SceneAntialiasing.BALANCED);
             cubeScene.setCamera(camera);
-            cubeScene.setFill(Color.SPRINGGREEN);
+            cubeScene.setFill(Color.WHITE);
+
 
             SubScene boardScene = new SubScene(boardGroup, 400, 400 , true, SceneAntialiasing.BALANCED);
             boardScene.setCamera(cameraBoard);
@@ -118,9 +128,16 @@ public abstract class GameInstance extends MenuController implements TimerSignab
             patternScene.setCamera(cameraPattern);
             patternScene.setFill(Color.WHITE);
 
+            labelHbox.getChildren().addAll(new Label("Cube"), new Label("Board"), new Label("Pattern"));
+            labelHbox.setSpacing(350);
+            labelHbox.setAlignment(Pos.CENTER);
+
+            sceneHbox.setId("sceneBox");
             sceneHbox.setSpacing(40);
             sceneHbox.setAlignment(Pos.CENTER);
             sceneHbox.getChildren().addAll(cubeScene, boardScene, patternScene);
+
+            gameStatusLabel.setStyle("-fx-text-fill: #FEC601");
 
             handleKeys(vBox);
         });
@@ -195,8 +212,17 @@ public abstract class GameInstance extends MenuController implements TimerSignab
     }
 
     public boolean submit() {
-
-        return pattern.checkPattern(board.getBoardImageViews());
+        if(pattern.checkPattern(board.getBoardImageViews())){
+            gameStatusLabel.setStyle("-fx-text-fill: #43d873");
+            gameStatusLabel.setText("You solved the pattern!");
+            submitButton.setDisable(true);
+            return true;
+        }
+        else{
+            gameStatusLabel.setStyle("-fx-text-fill: #FF1654");
+            gameStatusLabel.setText("Wrong Pattern");
+            return false;
+        }
     }
 
     public int[][] jsonArrayToMatrix(JSONArray array, int dimension) {

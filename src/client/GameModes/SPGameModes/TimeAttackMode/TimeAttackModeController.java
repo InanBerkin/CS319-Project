@@ -31,7 +31,7 @@ public class TimeAttackModeController extends GameInstance {
             this.gameTimer.stopTimer();
         }
         else {
-            this.gameStatusLabel.setText("The pattern on the board is incorrect. Think Again!");
+            this.gameStatusLabel.setText("Wrong Pattern. Think Again!");
         }
         return isPatternTrue;
     }

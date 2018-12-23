@@ -6,6 +6,15 @@ Button{
     -fx-pref-width: 150;
 }
 
+HBox#sceneBox{
+    -fx-padding: 20 20;
+    -fx-background-color: #FEC601;
+    -fx-background-radius: 10;
+    -fx-border-radius: 10;
+    -fx-border-width: 5;
+    -fx-border-color: #000;
+}
+
 
 Button:hover{
     -fx-background-color: #ED553B;
