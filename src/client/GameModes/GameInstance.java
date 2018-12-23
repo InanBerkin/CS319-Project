@@ -5,6 +5,7 @@ package client.GameModes;
 import client.GameModes.SPGameModes.MemoryMode.MemoryModeController;
 import client.Menus.MenuController;
 import client.GameModels.*;
+import client.SoundController;
 import javafx.application.Platform;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -84,6 +85,7 @@ public abstract class GameInstance extends MenuController implements TimerSignab
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        SoundController.playGameSound();
         try {
             cube = new Cube(200, KEY_ROTATION_STEP, 0, 0, 0);
         } catch (FileNotFoundException e) {
