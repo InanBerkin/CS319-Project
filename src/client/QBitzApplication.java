@@ -14,10 +14,14 @@ import javafx.scene.input.KeyCombination;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
 import java.io.*;
+import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.logging.Level;
@@ -41,6 +45,11 @@ public class QBitzApplication extends Application {
             CubeFaces.initPaths();
             CubeFaces.initImages();
 
+            URL resource = QBitzApplication.class.getClassLoader().getResource("qbitz_music.mp3");
+
+            MediaPlayer player = new MediaPlayer(new Media(resource.toString()));
+            player.setStartTime(new Duration(0));
+            player.play();
 
             String homeDir = System.getProperty("user.home");
             folderPath = homeDir + File.separator + "qbitz_configs";
