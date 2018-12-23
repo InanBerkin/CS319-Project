@@ -44,6 +44,9 @@ public class RoomLobbyMenuController extends MenuController {
                 if (responseJSON.getBoolean("isStartable") || payload.getBoolean("isStartable")){
                     startButton.setDisable(false);
                 }
+                else if(responseJSON.getBoolean("isStartable")){
+                    startButton.setDisable(true);
+                }
             });
         }
         else if(responseJSON.getString("responseType").equals("startCounter")){
