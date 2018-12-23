@@ -20,6 +20,10 @@ import org.json.JSONObject;
 import java.util.Timer;
 import java.util.TimerTask;
 
+/**
+ * This class is the controller of the elimination mode of the game
+ * @author Halil Şahiner, Berkin İnan
+ */
 public class EliminationModeController extends GameInstance {
 
     @FXML
@@ -111,11 +115,12 @@ public class EliminationModeController extends GameInstance {
         return isPatternTrue;
     }
 
-
-    private void removePlayer(JSONObject playerToRemove){
-
-    }
-
+    /**
+     * This method is update player list of the elimination mode for
+     * the eliminating logic of the game.
+     * @param playersList this param is taken to iterate through the player list and change the necessary functionality
+     *                    for some users
+     */
     private void updatePlayers(JSONArray playersList){
         playersBar.getChildren().clear();
         int players = playersList.length();
@@ -164,6 +169,9 @@ public class EliminationModeController extends GameInstance {
         }
     }
 
+    /**
+     * This inner class is created to handle the player status for the elimination mode
+     */
     private class Player{
         private int id;
         private String name;
@@ -171,6 +179,15 @@ public class EliminationModeController extends GameInstance {
         private int rank;
         private boolean isEliminated;
 
+        /**
+         * This constructor creates the Player object to represent and store the information of the player for the users
+         * in the game
+         * @param id Player id
+         * @param name Player name
+         * @param finishTime Player finish time for the rounds
+         * @param rank Player rank for the round
+         * @param isEliminated Player status for the elimination
+         */
         public Player(int id, String name, String finishTime, int rank, boolean isEliminated) {
             this.id = id;
             this.name = name;

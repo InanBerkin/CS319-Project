@@ -43,6 +43,7 @@ public class MultiplayerImageRecreationModeController extends GameInstance {
 
     private List<Integer> remainingList;
 
+
     @Override
     public void onMessageReceived(String message) {
         JSONObject responseJSON = new JSONObject(message);

@@ -13,6 +13,10 @@ import javafx.scene.layout.VBox;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+/**
+ * This class is the controller of the race mode of the game
+ * @author Halil Şahiner, Berkin İnan
+ */
 public class RaceModeController extends GameInstance {
 
     @FXML
@@ -61,7 +65,11 @@ public class RaceModeController extends GameInstance {
         }
     }
 
-
+    /**
+     * This method is update player list of the race mode
+     * @param playersList this param is taken to iterate through the player list and change the necessary functionality
+     *                    for some users
+     */
     private void updatePlayers(JSONArray playersList){
         playersBar.getChildren().clear();
         int players = playersList.length();
@@ -96,12 +104,22 @@ public class RaceModeController extends GameInstance {
         }
     }
 
+    /**
+     * This inner class is created to handle the players status for the elimination mode
+     */
     private class Player{
         private int id;
         private String name;
         private String finishTime;
         private int rank;
-
+        /**
+         * This constructor creates the Player object to represent and store the information of the player for the users
+         * in the game
+         * @param id Player id
+         * @param name Player name
+         * @param finishTime Player finish time for the rounds
+         * @param rank Player rank for the round
+         */
         public Player(int id, String name, String finishTime, int rank) {
             this.id = id;
             this.name = name;

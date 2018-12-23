@@ -16,6 +16,9 @@ import javafx.scene.transform.Rotate;
 
 import java.io.FileInputStream;
 
+/**
+ * This class creates the game board object as a Group object for the modes of the game.
+ */
 public class GameBoard {
 
 
@@ -34,6 +37,12 @@ public class GameBoard {
     private static MultiplayerImageRecreationModeController multipleImageRecreationModeController;
     public Box[] gridCell;
 
+    /**
+     * Constructor of th GameBoard to create the GameBoard
+     * @param gridDimension board dimension
+     * @param singleImageRecreationModeController for the image recreation mode object of the single player to handle it
+     * @param multiplayerImageRecreationModeController for the image recreation mode object of the multi player to handle it
+     */
     public GameBoard(int gridDimension, SingleImageRecreationModeController singleImageRecreationModeController, MultiplayerImageRecreationModeController multiplayerImageRecreationModeController)
     {
         this.gridDimension = gridDimension;
@@ -74,11 +83,20 @@ public class GameBoard {
         boardGroup = createBoard();
 
     }
+
+    /**
+     * Creates the board Group
+     * @return Group object for the board
+     */
     public Group createBoardGroup()
     {
         return boardGroup;
     }
 
+    /**
+     * Creates the board with its functionalities
+     * @return
+     */
     private Group createBoard() {
         Group boardGroupInst = new Group();
 
@@ -138,6 +156,11 @@ public class GameBoard {
             }
         return boardGroupInst;
     }
+
+    /**
+     * Place and rotate functionality for all cells of the game board
+     * @param gridCell cell of a board
+     */
     private void placeAndRotate(Box gridCell)
     {
         gridCell.setOnMouseClicked(event -> {
@@ -186,6 +209,12 @@ public class GameBoard {
             }
         });
     }
+
+    /**
+     * Preview selected face functionality for the board
+     * @param gridCell all the cells of the board
+     * @param gridIndex the index of the cell to preview the selected face on it
+     */
     private void previewSelectedFace(Box[] gridCell, int gridIndex)
     {
         gridCell[gridIndex].setOnMouseEntered(event -> {
@@ -210,6 +239,11 @@ public class GameBoard {
             }
         });
     }
+
+    /**
+     * Set selected face for the game board
+     * @param selectedFace selected face Image to set.
+     */
     public void setSelectedFaceMat(Image selectedFace)
     {
         selectedFaceMat.setDiffuseMap(selectedFace);

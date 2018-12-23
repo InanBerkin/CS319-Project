@@ -30,6 +30,7 @@ public class TimeAttackModeController extends GameInstance {
         if(isPatternTrue){
             gameStatusLabel.setStyle("-fx-text-fill: #43d873");
             gameStatusLabel.setText("You solved the pattern!");
+            gameTimer.stopTimer();
         }
         else{
             gameStatusLabel.setStyle("-fx-text-fill: #FF1654");

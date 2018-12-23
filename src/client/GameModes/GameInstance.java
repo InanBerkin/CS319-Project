@@ -29,6 +29,11 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+/**
+ * This class initalize the all the game instance properties of the game for the modes
+ * author : Halil Şahiner
+ */
+
 public abstract class GameInstance extends MenuController implements TimerSignable {
 
     private final Group root = new Group();
@@ -135,12 +140,21 @@ public abstract class GameInstance extends MenuController implements TimerSignab
         });
     }
 
+    /**
+     * This method contains the game mode functionality for the modes
+     */
     public abstract void initializeGameMode();
 
+    /**
+     * this method will be filled to set question mark for memory mode of the multiplayer game
+     */
     public void setQuestMark(){
 
     }
 
+    /**
+     * Build the cameras for the game instance scenes.
+     */
     private void buildCamera() {
         camera.setNearClip(CAMERA_NEAR_CLIP);
         camera.setFarClip(CAMERA_FAR_CLIP);
@@ -169,14 +183,20 @@ public abstract class GameInstance extends MenuController implements TimerSignab
         patternGroup.getChildren().add(cameraHolderPattern);
     }
 
-    private void buildBody() throws Exception {
+    /**
+     * Build the body of the game instance
+     */
+    private void buildBody() {
         root.getChildren().add(cube);
         cube.updateFrontFaces();
         // buildAxes();
     }
 
 
-
+    /**
+     * Handle the keys for the cube and the board of the game instance to make it functional
+     * @param vBox is the fxml object to get the parts of the game instance to activate the keys.
+     */
     public void handleKeys(VBox vBox) {
         vBox.addEventFilter(KeyEvent.KEY_PRESSED, event-> {
             event.consume();
@@ -203,10 +223,20 @@ public abstract class GameInstance extends MenuController implements TimerSignab
 
     }
 
+    /**
+     * This method is submit the created pattern on the board to check and handle the functionality
+     * @return
+     */
     public boolean submit() {
         return pattern.checkPattern(board.getBoardImageViews());
     }
 
+    /**
+     * This method handles the json array which is given by the server to take the generated pattern
+     * @param array JSONArray to pass the generated pattern
+     * @param dimension board dimension
+     * @return
+     */
     public int[][] jsonArrayToMatrix(JSONArray array, int dimension) {
         int size = dimension * dimension;
         int[][] result = new int[size][2];
