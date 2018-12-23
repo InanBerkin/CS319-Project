@@ -59,11 +59,11 @@ public class RoomMenuController extends MenuController {
         //levelColumn.setMinWidth(200);
         levelColumn.setCellValueFactory(new PropertyValueFactory<>("entranceLevel"));
 
-        TableColumn joinColumn = new TableColumn("Join");
+        //TableColumn joinColumn = new TableColumn("Join");
         //levelColumn.setMinWidth(200);
 
         roomTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
-        roomTable.getColumns().addAll(nameColumn, modeColumn, ownerColumn,playerNoColumn,levelColumn, joinColumn);
+        roomTable.getColumns().addAll(nameColumn, modeColumn, ownerColumn,playerNoColumn,levelColumn);
         //roomTable.setPlaceholder(new Label("No room available"));
     }
 
@@ -106,7 +106,7 @@ public class RoomMenuController extends MenuController {
     }
 
     private void addButtonToTable() {
-        TableColumn<Room, Void> colBtn = new TableColumn("Button Column");
+        TableColumn<Room, Void> colBtn = new TableColumn("Join");
         Callback<TableColumn<Room, Void>, TableCell<Room, Void>> cellFactory = new Callback<TableColumn<Room, Void>, TableCell<Room, Void>>() {
             @Override
             public TableCell<Room, Void> call(final TableColumn<Room, Void> param) {

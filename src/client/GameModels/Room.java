@@ -136,6 +136,11 @@ public class Room {
         return isPublic;
     }
 
+    public String getGameModeString(int gameMode)
+    {
+        if(gameMode)
+    }
+
     public void setPublic(boolean aPublic) {
         isPublic = aPublic;
     }
