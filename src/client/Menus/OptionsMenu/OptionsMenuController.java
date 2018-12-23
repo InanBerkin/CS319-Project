@@ -62,7 +62,7 @@ public class OptionsMenuController extends MenuController {
         leftBtn = false;
         rightBtn = false;
 
-        colorSlider.setValue(50);
+        colorSlider.setValue(CubeFaces.colorOffset);
         faceView.setImage(CubeFaces.getImageAt(0));
 
         rotationComboBox.getItems().addAll(
