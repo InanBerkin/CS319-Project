@@ -85,7 +85,7 @@ public class QBitzApplication extends Application {
             NetworkAnalyzer networkAnalyzer = new NetworkAnalyzer("https://www.google.com.tr");
             if (networkAnalyzer.isOnline()) {
                 try {
-                    ClientSocketHandler clientSocketHandler = new ClientSocketHandler("139.179.211.32", 9999);
+                    ClientSocketHandler clientSocketHandler = new ClientSocketHandler("139.179.211.6", 9999);
                   clientSocketHandler.start();
                     sceneController.setSocketHandler(clientSocketHandler);
                     UserConfiguration.isOnline = true;
@@ -101,7 +101,7 @@ public class QBitzApplication extends Application {
             });
             sceneController.gotoMenu("MainMenu");
             primaryStage.show();
-            addEscKeyListener(primaryStage);
+//            addEscKeyListener(primaryStage);
         } catch (Exception ex) {
             Logger.getLogger(QBitzApplication.class.getName()).log(Level.SEVERE, null, ex);
         }

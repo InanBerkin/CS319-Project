@@ -2,6 +2,7 @@
 
 Label{
     -fx-font-size: 30;
+    -fx-text-fill: #fff;
 }
 
 GridPane{

@@ -91,7 +91,7 @@ public class SceneController {
         return loader.getController();
     }
 
-    public Window getWindow(){
+    public Stage getWindow() {
         return stage;
     }
 

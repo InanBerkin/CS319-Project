@@ -8,6 +8,7 @@ import javafx.application.Platform;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.layout.HBox;
@@ -28,6 +29,9 @@ import java.util.List;
 public class MultiplayerImageRecreationModeController extends GameInstance {
     @FXML
     private HBox playersBar;
+
+    @FXML
+    private Button submitButton;
 
     private final int SIZE = 640;
 
@@ -94,6 +98,7 @@ public class MultiplayerImageRecreationModeController extends GameInstance {
             submitJSON.put("roomID", payload.getInt("roomID"));
             submitJSON.put("finishTime", gameTimer.getGameTime().getValue());
             QBitzApplication.getSceneController().sendMessageToServer(submitJSON);
+            submitButton.setDisable(true);
             return true;
         }
         else{
