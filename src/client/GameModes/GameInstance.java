@@ -26,6 +26,7 @@ import org.json.JSONArray;
 import java.io.FileNotFoundException;
 
 import java.io.IOException;
+import java.net.Socket;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -36,7 +37,7 @@ public abstract class GameInstance extends MenuController implements TimerSignab
     public Group patternGroup = new Group();
 
     @FXML
-    private VBox vBox;
+    public VBox vBox;
 
     @FXML
     private HBox sceneHbox;
@@ -76,6 +77,7 @@ public abstract class GameInstance extends MenuController implements TimerSignab
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+
         try {
             cube = new Cube(200, KEY_ROTATION_STEP, 0, 0, 0);
         } catch (FileNotFoundException e) {
