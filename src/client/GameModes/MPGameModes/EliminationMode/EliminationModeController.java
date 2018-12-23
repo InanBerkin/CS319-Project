@@ -79,7 +79,7 @@ public class EliminationModeController extends GameInstance {
         Player player;
         VBox vBox;
         int id;
-        boolean isEliminated;
+        boolean isEliminated = false;
         String finishTime = "Solving...";
         int rank = 0;
         String name;
@@ -87,11 +87,12 @@ public class EliminationModeController extends GameInstance {
             JSONObject playerJSON = (JSONObject) playersList.get(i);
             id = playerJSON.getInt("id");
             name = playerJSON.getString("name");
-            isEliminated = playerJSON.getBoolean("isEliminated");
+
             if(playerJSON.has("finishTime")){
                 finishTime = playerJSON.getString("finishTime");
             }
-            if (isEliminated) {
+            if (playerJSON.has("isEliminated")) {
+                isEliminated = playerJSON.getBoolean("isEliminated");
                 finishTime = "Eliminated";
             }
             if(playerJSON.has("rank")){
