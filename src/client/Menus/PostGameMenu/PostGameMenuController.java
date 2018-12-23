@@ -67,9 +67,9 @@ public class PostGameMenuController extends MenuController {
             player = new Player(id,name, finishTime, rank);
             hBox = new HBox(20);
             hBox.setAlignment(Pos.CENTER);
+            hBox.getChildren().add(new Label(player.getRank() + ""));
             hBox.getChildren().add(new Label(player.getName()));
             hBox.getChildren().add(new Label(player.getFinishTime()));
-            hBox.getChildren().add(new Label(player.getRank() + ""));
             hBox.setStyle("-fx-background-color: #000");
             hBox.setStyle("-fx-background-radius: 5");
             hBox.setStyle("-fx-padding: 20 20;");

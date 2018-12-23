@@ -32,6 +32,9 @@ public class EliminationModeController extends GameInstance {
         if(responseJSON.getString("responseType").equals("submit")){
             Platform.runLater(() -> {
                 updatePlayers(responseJSON.getJSONArray("finishList"));
+                if (responseJSON.getBoolean("isGameFinished")) {
+                    QBitzApplication.getSceneController().gotoMenu("PostGameMenu", responseJSON);
+                }
                 if(responseJSON.getBoolean("isRoundFinished")){
                     QBitzApplication.getSceneController().gotoGameMode(false, "EliminationMode", responseJSON);
                 }
@@ -80,27 +83,31 @@ public class EliminationModeController extends GameInstance {
         VBox vBox;
         int id;
         boolean isEliminated = false;
-        String finishTime = "Solving...";
+        String finishTime;
         int rank = 0;
         String name;
         for (int i = 0; i < players; i++){
+            finishTime = "Solving...";
             JSONObject playerJSON = (JSONObject) playersList.get(i);
             id = playerJSON.getInt("id");
             name = playerJSON.getString("name");
-
             if(playerJSON.has("finishTime")){
                 finishTime = playerJSON.getString("finishTime");
             }
             if (playerJSON.has("isEliminated")) {
                 isEliminated = playerJSON.getBoolean("isEliminated");
-                finishTime = "Eliminated";
+                if (isEliminated) {
+                    finishTime = "Eliminated";
+                }
             }
             if(playerJSON.has("rank")){
                 rank = playerJSON.getInt("rank");
             }
+            System.out.println("ID userconfifg: " + UserConfiguration.userID);
             player = new Player(id, name, finishTime, rank, isEliminated);
-            if(player.getId() == UserConfiguration.userID && player.isEliminated()){
-                System.out.println("Disabled: " + UserConfiguration.userID);
+            System.out.println("ID player: " + player.getId());
+            System.out.println("Elim: " + isEliminated);
+            if (player.getId() == UserConfiguration.userID && isEliminated) {
                 submitButton.setDisable(true);
             }
             vBox = new VBox(20);
