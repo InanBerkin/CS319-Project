@@ -518,6 +518,7 @@ class QBitzServer {
                 respObj.put("entranceLevel", room.getEntranceLevel());
                 respObj.put("name", room.getName());
                 respObj.put("ownerID", room.getOwnerID());
+                respObj.put("isStartable", room.isStartable());
 
                 JSONArray userList = new JSONArray();
 
