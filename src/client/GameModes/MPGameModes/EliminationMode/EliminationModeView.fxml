@@ -12,6 +12,9 @@
             <Label HBox.hgrow="ALWAYS" fx:id="timerLabel"  alignment="CENTER" text="Q-BITZ"/>
             <!--<Label HBox.hgrow="ALWAYS" fx:id="winText" alignment="CENTER" text=""/>-->
         </HBox>
+        <HBox alignment="CENTER">
+            <Label fx:id="gameStatusLabel"  text="Let's solve the pattern!"/>
+        </HBox>
         <!--Space-->
         <Region prefHeight="10"/>
         <!--Space-->

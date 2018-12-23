@@ -27,12 +27,13 @@ public class TimeAttackModeController extends GameInstance {
     @Override
     public boolean submit(){
         boolean isPatternTrue = super.submit();
-        if( isPatternTrue) {
-            this.gameStatusLabel.setText("You solved the pattern!");
-            this.gameTimer.stopTimer();
+        if(isPatternTrue){
+            gameStatusLabel.setStyle("-fx-text-fill: #43d873");
+            gameStatusLabel.setText("You solved the pattern!");
         }
-        else {
-            this.gameStatusLabel.setText("Wrong Pattern. Think Again!");
+        else{
+            gameStatusLabel.setStyle("-fx-text-fill: #FF1654");
+            gameStatusLabel.setText("Wrong Pattern");
         }
         return isPatternTrue;
     }

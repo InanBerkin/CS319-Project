@@ -45,9 +45,6 @@ public abstract class GameInstance extends MenuController implements TimerSignab
     private HBox labelHbox;
 
     @FXML
-    private Label gameStatusLabel;
-
-    @FXML
     private Label timerLabel;
 
     public GameBoard board;
@@ -134,8 +131,6 @@ public abstract class GameInstance extends MenuController implements TimerSignab
             sceneHbox.setAlignment(Pos.CENTER);
             sceneHbox.getChildren().addAll(cubeScene, boardScene, patternScene);
 
-            gameStatusLabel.setStyle("-fx-text-fill: #FEC601");
-
             handleKeys(vBox);
         });
     }
@@ -209,16 +204,7 @@ public abstract class GameInstance extends MenuController implements TimerSignab
     }
 
     public boolean submit() {
-        if(pattern.checkPattern(board.getBoardImageViews())){
-            gameStatusLabel.setStyle("-fx-text-fill: #43d873");
-            gameStatusLabel.setText("You solved the pattern!");
-            return true;
-        }
-        else{
-            gameStatusLabel.setStyle("-fx-text-fill: #FF1654");
-            gameStatusLabel.setText("Wrong Pattern");
-            return false;
-        }
+        return pattern.checkPattern(board.getBoardImageViews());
     }
 
     public int[][] jsonArrayToMatrix(JSONArray array, int dimension) {

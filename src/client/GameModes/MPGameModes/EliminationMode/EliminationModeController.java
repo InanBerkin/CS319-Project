@@ -18,6 +18,9 @@ public class EliminationModeController extends GameInstance {
     @FXML
     private HBox playersBar;
 
+    @FXML
+    private Label gameStatusLabel;
+
     @Override
     public void onMessageReceived(String message) {
         JSONObject responseJSON = new JSONObject(message);
@@ -46,11 +49,15 @@ public class EliminationModeController extends GameInstance {
             submitJSON.put("roomID", payload.getInt("roomID"));
             submitJSON.put("finishTime", gameTimer.getGameTime().getValue());
             QBitzApplication.getSceneController().sendMessageToServer(submitJSON);
-            return true;
+            gameStatusLabel.setStyle("-fx-text-fill: #43d873");
+            gameStatusLabel.setText("You solved the pattern!");
         }
         else{
-            return false;
+            gameStatusLabel.setStyle("-fx-text-fill: #FF1654");
+            gameStatusLabel.setText("Wrong Pattern");
         }
+
+        return isPatternTrue;
     }
 
     private void addPlayers(JSONArray playersList){

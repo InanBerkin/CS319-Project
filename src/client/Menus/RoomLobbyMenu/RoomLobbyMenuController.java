@@ -79,7 +79,7 @@ public class RoomLobbyMenuController extends MenuController {
                     gamePayload.put("encodedImage", responseJSON.getString("encodedImage"));
                     QBitzApplication.getSceneController().gotoGameMode(false, "MultiplayerImageRecreationMode", gamePayload);
                 }
-                else if(responseJSON.getInt("gameMode") == 3) {
+                else if(responseJSON.getInt("gameMode") == 1) {
                     QBitzApplication.getSceneController().gotoGameMode(false, "EliminationMode", gamePayload);
                 }
             });
