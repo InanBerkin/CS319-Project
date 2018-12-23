@@ -1,6 +1,7 @@
 package client.GameModes.MPGameModes.EliminationMode;
 
 import client.GameModels.GameBoard;
+import client.GameModels.GameTimer;
 import client.GameModels.Pattern;
 import client.GameModes.GameInstance;
 import client.QBitzApplication;
@@ -15,6 +16,9 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import org.json.JSONArray;
 import org.json.JSONObject;
+
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class EliminationModeController extends GameInstance {
 
@@ -34,12 +38,44 @@ public class EliminationModeController extends GameInstance {
             Platform.runLater(() -> {
                 updatePlayers(responseJSON.getJSONArray("finishList"));
                 if (responseJSON.getBoolean("isGameFinished")) {
-                    System.out.println("Game finished");
-                    QBitzApplication.getSceneController().gotoMenu("PostGameMenu", responseJSON);
+                    try {
+                        Timer timer = new Timer();
+                        TimerTask task = new TimerTask() {
+                            public void run() {
+                                Platform.runLater(() -> {
+                                    QBitzApplication.getSceneController().gotoMenu("PostGameMenu", responseJSON);
+                                });
+
+                            }
+
+                        };
+                        gameStatusLabel.setText("Calculating Points...");
+                        submitButton.setDisable(true);
+                        timer.schedule(task, 3000l);
+                    } catch (Exception e) {
+                        System.out.println("Null geldi 1" + e.getMessage());
+                    }
                     return;
                 }
                 if(responseJSON.getBoolean("isRoundFinished")){
-                    QBitzApplication.getSceneController().gotoGameMode(false, "EliminationMode", responseJSON);
+                    try {
+                        Timer timer = new Timer();
+                        TimerTask task = new TimerTask() {
+                            public void run() {
+                                Platform.runLater(() -> {
+                                    QBitzApplication.getSceneController().gotoGameMode(false, "EliminationMode", responseJSON);
+                                });
+
+                            }
+
+                        };
+                        gameStatusLabel.setText("Calculating Points...");
+                        submitButton.setDisable(true);
+                        timer.schedule(task, 3000l);
+                    } catch (Exception e) {
+                        System.out.println("Null geldi 1" + e.getMessage());
+                    }
+                    submitButton.setDisable(true);
                 }
             });
         }

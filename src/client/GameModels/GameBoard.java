@@ -32,6 +32,7 @@ public class GameBoard {
     private static ImageView[] boardImageViews;
     private static SingleImageRecreationModeController singleImageRecreationModeController;
     private static MultiplayerImageRecreationModeController multipleImageRecreationModeController;
+    public Box[] gridCell;
 
     public GameBoard(int gridDimension, SingleImageRecreationModeController singleImageRecreationModeController, MultiplayerImageRecreationModeController multiplayerImageRecreationModeController)
     {
@@ -88,7 +89,7 @@ public class GameBoard {
         Box frameBottom = new Box(BOARD_LENGTH + 10, BOARD_WIDTH, BOARD_DEPTH + 10);
 
 
-        Box[] gridCell = new Box[(gridDimension) * (gridDimension)];
+        gridCell = new Box[(gridDimension) * (gridDimension)];
 
         mainBoard.setMaterial(mainMat);
         frameRight.setMaterial(frameMat);

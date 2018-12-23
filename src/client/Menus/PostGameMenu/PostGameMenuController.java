@@ -6,6 +6,7 @@ import client.QBitzApplication;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -23,6 +24,9 @@ public class PostGameMenuController extends MenuController {
     @FXML
     private VBox playerRankings;
 
+    @FXML
+    private Button gotolobby;
+
     @Override
     public void onMessageReceived(String message) {
         JSONObject responseJSON = new JSONObject(message);
@@ -36,9 +40,13 @@ public class PostGameMenuController extends MenuController {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-       Platform.runLater(() -> {
-           updatePlayers(payload.getJSONArray("finishList"));
-       });
+        try {
+            Platform.runLater(() -> {
+                updatePlayers(payload.getJSONArray("finishList"));
+            });
+        } catch (Exception e) {
+            System.out.println("Null geldi  bence");
+        }
     }
 
     @FXML
