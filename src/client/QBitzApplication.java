@@ -45,11 +45,6 @@ public class QBitzApplication extends Application {
             CubeFaces.initPaths();
             CubeFaces.initImages();
 
-            URL resource = QBitzApplication.class.getClassLoader().getResource("qbitz_music.mp3");
-
-            MediaPlayer player = new MediaPlayer(new Media(resource.toString()));
-            player.setStartTime(new Duration(0));
-            player.play();
 
             String homeDir = System.getProperty("user.home");
             folderPath = homeDir + File.separator + "qbitz_configs";
