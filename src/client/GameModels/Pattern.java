@@ -1,5 +1,6 @@
 package client.GameModels;
 
+import client.CubeFaces;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.scene.Group;
 import javafx.scene.image.Image;
@@ -72,8 +73,6 @@ public class Pattern {
         Group boardGroupInst = new Group();
         int gridIndex;
 
-
-
         for (int i = 0; i < gridDimension; i++) {
             for (int j = 0; j < gridDimension; j++) {
 
@@ -82,16 +81,12 @@ public class Pattern {
                 gridCell[gridIndex] = new Box(BOARD_LENGTH / gridDimension, BOARD_LENGTH / gridDimension, 0);
                 gridMat[gridIndex] = new PhongMaterial();
                 gridCell[gridIndex].setId(Integer.toString(gridIndex));
-//                System.out.println(
-//                        gridMatrix[gridIndex][0] +" " +gridMatrix[gridIndex][1]);
+
 
                 if(imagesToCreatePattern == null){
-                    String png = Integer.toString(gridMatrix[gridIndex][0]) + ".png";
 
                     try {
-                        //gridMat[gridIndex].setDiffuseMap(new Image(new FileInputStream("assets/CubeFaces/" + png), SIZE, SIZE, true, false));
-                        //gridCell[gridIndex].getTransforms().add(new Rotate(90*gridMatrix[gridIndex][1], Rotate.Z_AXIS));
-                        patternImageViews[gridIndex] = new ImageView(new Image(new FileInputStream("assets/CubeFaces/" + png), SIZE, SIZE, true, false));
+                        patternImageViews[gridIndex] = new ImageView(CubeFaces.getImageAt(gridMatrix[gridIndex][0]));
                         patternImageViews[gridIndex].setRotate( 90*gridMatrix[gridIndex][1]);
                         this.smoothImageView(patternImageViews[gridIndex]);
                         gridMat[gridIndex].setDiffuseMap(patternImageViews[gridIndex].snapshot(null,null));

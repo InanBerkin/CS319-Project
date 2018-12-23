@@ -16,7 +16,7 @@ import java.io.FileNotFoundException;
 public class SingleImageRecreationModeController extends GameInstance implements  TimerSignable
 {
     ///**********************FOR_IMAGE_RECREATION************************************
-    private final int SIZE = 640;
+    private final int SIZE = 600;
 
     private Image img;
     private BufferedImage buffImg;

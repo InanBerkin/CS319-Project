@@ -23,18 +23,19 @@ public class XRectangle extends Rectangle {
     public static final String IMG5_URL = "assets/CubeFaces/6.png";
     private static final int SIZE = 128;
 
-    private final String imgUrl;
+    //private final String imgUrl;
     private final int id;
 
     private Image faceImage;
     private Image faceImagePad;
 
-    public XRectangle(int id, String imgUrl, double size, double posX, double posY, double posZ) throws FileNotFoundException {
+    public XRectangle(int id, Image faceImage, double size, double posX, double posY, double posZ) throws FileNotFoundException {
         super();
 
         this.id = id;
-        this.imgUrl = imgUrl;
-        this.faceImage = new Image(new FileInputStream(imgUrl),SIZE,SIZE,true,false);
+        //this.imgUrl = imgUrl;
+        //this.faceImage = new Image(new FileInputStream(imgUrl),SIZE,SIZE,true,false);
+        this.faceImage = faceImage;
         this.faceImagePad = addBorders(this.faceImage);
         setFill(new ImagePattern(faceImagePad));
 
