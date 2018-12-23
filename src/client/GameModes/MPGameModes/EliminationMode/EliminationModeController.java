@@ -79,14 +79,16 @@ public class EliminationModeController extends GameInstance {
         Player player;
         VBox vBox;
         int id;
-        String finishTime;
+        String finishTime = "Solving...";
         int rank = 0;
         String name;
         for (int i = 0; i < players; i++){
             JSONObject playerJSON = (JSONObject) playersList.get(i);
             id = playerJSON.getInt("id");
             name = playerJSON.getString("name");
-            finishTime = playerJSON.getString("finishTime");
+            if(playerJSON.has("finishTime")){
+                finishTime = playerJSON.getString("finishTime");
+            }
             if(playerJSON.has("rank")){
                 rank = playerJSON.getInt("rank");
             }
