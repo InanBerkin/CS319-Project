@@ -95,12 +95,12 @@ public class MemoryModeController extends GameInstance {
         boolean isPatternTrue = super.submit();
 
         if( isPatternTrue) {
-            this.memoryLabel.setText("You solved goddammit!!!");
+            this.memoryLabel.setText("You solved the pattern!");
             this.gameTimer.stopTimer();
             this.pattern.showPattern();
         }
         else {
-            this.memoryLabel.setText("You cannot solve it. Think Again");
+            this.memoryLabel.setText("The pattern on the board is incorrect. Think Again!");
         }
         return isPatternTrue;
     }

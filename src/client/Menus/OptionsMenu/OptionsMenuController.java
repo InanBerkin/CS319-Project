@@ -63,7 +63,7 @@ public class OptionsMenuController extends MenuController {
         rightBtn = false;
 
         colorSlider.setValue(CubeFaces.colorOffset);
-        faceView.setImage(CubeFaces.getImageAt(0));
+        faceView.setImage(CubeFaces.getImageAt(1));
 
         rotationComboBox.getItems().addAll(
                 "WASD", "Arrow Keys"

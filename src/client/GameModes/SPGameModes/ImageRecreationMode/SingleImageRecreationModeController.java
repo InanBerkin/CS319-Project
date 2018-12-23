@@ -2,6 +2,8 @@ package client.GameModes.SPGameModes.ImageRecreationMode;
 
 import client.GameModes.GameInstance;
 import javafx.embed.swing.SwingFXUtils;
+import javafx.fxml.FXML;
+import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.paint.ImagePattern;
 import java.awt.*;
@@ -27,6 +29,9 @@ public class SingleImageRecreationModeController extends GameInstance implements
     private List<Integer> remainingList;
 
     private String img_path = "assets/recImage.jpg";
+
+    @FXML
+    private Label gameStatusLabel;
 
 
     @Override
@@ -128,7 +133,13 @@ public class SingleImageRecreationModeController extends GameInstance implements
     @Override
     public boolean submit(){
         boolean isPatternTrue = super.submit();
-        System.out.println("Is pattern true: " + isPatternTrue);
+        if( isPatternTrue) {
+            this.gameStatusLabel.setText("You solved the pattern!");
+            this.gameTimer.stopTimer();
+        }
+        else {
+            this.gameStatusLabel.setText("The pattern on the board is incorrect. Think Again!");
+        }
 
         return isPatternTrue;
     }

@@ -3,12 +3,17 @@ package client.GameModes.SPGameModes.TimeAttackMode;
 
 import client.GameModes.GameInstance;
 import client.GameModels.*;
+import javafx.fxml.FXML;
+import javafx.scene.control.Label;
+import javafx.scene.layout.VBox;
 
 import java.net.URL;
 import java.util.ResourceBundle;
 
 public class TimeAttackModeController extends GameInstance {
 
+    @FXML
+    private Label gameStatusLabel;
 
 
     @Override
@@ -21,8 +26,13 @@ public class TimeAttackModeController extends GameInstance {
     @Override
     public boolean submit(){
         boolean isPatternTrue = super.submit();
-        System.out.println("Is pattern true: " + isPatternTrue);
-
+        if( isPatternTrue) {
+            this.gameStatusLabel.setText("You solved the pattern!");
+            this.gameTimer.stopTimer();
+        }
+        else {
+            this.gameStatusLabel.setText("The pattern on the board is incorrect. Think Again!");
+        }
         return isPatternTrue;
     }
 }
