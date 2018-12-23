@@ -11,7 +11,7 @@ public class CubeFaces {
     public static Image[] faces;
     public static String[] paths;
     public static Image[] defaultFaces;
-    public static int colorOffset = 0;
+    public static double colorOffset = 50;
     static String homeDir = System.getProperty("user.home");
     static String folderPath = homeDir + File.separator + "qbitz_configs";
     static final int SIZE = 128;
@@ -71,6 +71,7 @@ public class CubeFaces {
     }
 
     public static void changeColor(double offset) {
+        colorOffset = offset;
         realOffset = ((offset - 50)*2.0/100);
 
         //System.out.println("Hue: "  + realOffset);
