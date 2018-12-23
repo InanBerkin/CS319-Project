@@ -76,6 +76,9 @@ public class QBitzApplication extends Application {
                 CubeFaces.loadFaces();
             }
 
+            SoundController.initSound();
+            SoundController.playMenuSound();
+
             primaryStage.setMinWidth(800);
             primaryStage.setMinHeight(600);
             primaryStage.setFullScreen(true);

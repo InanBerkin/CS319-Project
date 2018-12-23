@@ -3,6 +3,7 @@ package client.Menus.OptionsMenu;
 import client.CubeFaces;
 import client.Menus.MenuController;
 import client.Settings;
+import client.SoundController;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
@@ -80,6 +81,19 @@ public class OptionsMenuController extends MenuController {
         }
 
         );
+
+        soundSlider.setValue(SoundController.getSliderVolume());
+        soundSlider.valueProperty().addListener(new ChangeListener<Number>() {
+                                                    @Override
+                                                    public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
+                                                        SoundController.setVolume(soundSlider.getValue());
+
+                                                    }
+                                                }
+
+        );
+
+
 
         initModel();
     }
