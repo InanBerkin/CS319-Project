@@ -82,6 +82,7 @@ public class OptionsMenuController extends MenuController {
 
         );
 
+        soundSlider.setValue(SoundController.getSliderVolume());
         soundSlider.valueProperty().addListener(new ChangeListener<Number>() {
                                                     @Override
                                                     public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {

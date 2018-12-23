@@ -30,6 +30,7 @@ public class SoundController {
 
     public static void initSound() {
 
+
         mainMenuSoundPath = "/assets/qbitz_sound.mp3";
         System.out.println("here");
         System.out.println(System.getProperty("user.dir") + mainMenuSoundPath);
@@ -37,24 +38,18 @@ public class SoundController {
         menuMedia = new Media(resource.toString());
         menuPlayer = new MediaPlayer(menuMedia);
         menuPlayer.setStartTime(new Duration(0));
+        setVolume(50);
 
 
-
-        resource = SoundController.class.getClassLoader().getResource("qbitz_music.mp3");
-        gameMedia = new Media(resource.toString());
-        gamePlayer = new MediaPlayer(gameMedia);
-        gamePlayer.setStartTime(new Duration(0));
 
     }
 
     public static void playMenuSound() {
-        gamePlayer.stop();
         menuPlayer.play();
     }
 
     public static void playGameSound() {
-        menuPlayer.stop();
-        gamePlayer.play();
+
     }
 
 
@@ -62,7 +57,6 @@ public class SoundController {
     public static void setVolume(double volume) {
         volume = volume/100;
         menuPlayer.setVolume(volume);
-        gamePlayer.setVolume(volume);
     }
 
 
