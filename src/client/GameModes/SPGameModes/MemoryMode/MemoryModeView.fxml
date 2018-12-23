@@ -18,7 +18,10 @@
     <!--Space-->
     <Region prefHeight="5" />
     <!--Space-->
-    <HBox fx:id="sceneHbox" />
+    <VBox spacing="20">
+        <HBox fx:id="labelHbox"/>
+        <HBox fx:id="sceneHbox"/>
+    </VBox>
 
     <HBox alignment="CENTER">
         <Button fx:id="startButton" onAction="#startShowPattern" text="Start"/>

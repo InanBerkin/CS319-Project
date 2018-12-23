@@ -41,6 +41,9 @@ public class MemoryModeController extends GameInstance {
     @FXML
     private Label timerLabel;
 
+    @FXML
+    public Button submitButton;
+
 
     @Override
     public void initializeGameMode() {

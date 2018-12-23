@@ -15,7 +15,10 @@
         <!--Space-->
         <Region prefHeight="10"/>
         <!--Space-->
+    <VBox spacing="20">
+        <HBox fx:id="labelHbox"/>
         <HBox fx:id="sceneHbox"/>
+    </VBox>
         <HBox alignment="CENTER">
             <Button HBox.hgrow="ALWAYS" fx:id="submitButton" text="Submit" onAction="#submit"/>
         </HBox>

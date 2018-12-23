@@ -50,9 +50,6 @@ public abstract class GameInstance extends MenuController implements TimerSignab
     @FXML
     private Label timerLabel;
 
-    @FXML
-    private Label submitButton;
-
     public GameBoard board;
 
     public Pattern pattern;
@@ -215,7 +212,6 @@ public abstract class GameInstance extends MenuController implements TimerSignab
         if(pattern.checkPattern(board.getBoardImageViews())){
             gameStatusLabel.setStyle("-fx-text-fill: #43d873");
             gameStatusLabel.setText("You solved the pattern!");
-            submitButton.setDisable(true);
             return true;
         }
         else{

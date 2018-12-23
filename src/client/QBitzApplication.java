@@ -91,10 +91,10 @@ public class QBitzApplication extends Application {
 //                    UserConfiguration.isOnline = false;
 //                }
 //            }
-            primaryStage.setOnCloseRequest( e -> {
-                Platform.exit();
-                System.exit(0);
-            });
+//            primaryStage.setOnCloseRequest( e -> {
+//                Platform.exit();
+//                System.exit(0);
+//            });
             sceneController.gotoMenu("MainMenu");
             primaryStage.show();
             addEscKeyListener(primaryStage);
