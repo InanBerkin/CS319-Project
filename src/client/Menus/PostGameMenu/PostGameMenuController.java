@@ -42,7 +42,7 @@ public class PostGameMenuController extends MenuController {
     public void initialize(URL location, ResourceBundle resources) {
         try {
             Platform.runLater(() -> {
-                updatePlayers(payload.getJSONArray("finishList"));
+                updatePlayers(payload.getJSONArray("userList"));
             });
         } catch (Exception e) {
             System.out.println("Null geldi  bence");
@@ -62,27 +62,28 @@ public class PostGameMenuController extends MenuController {
         int players = playersList.length();
         Player player;
         HBox hBox;
-        int id;
-        int rank;
-        String name;
-        String finishTime;
+        int id = -1;
+        int rank = 0;
+        String name = "";
         for (int i = 0; i < players; i++){
             JSONObject playerJSON = (JSONObject) playersList.get(i);
             id = playerJSON.getInt("id");
             name = playerJSON.getString("name");
-            finishTime = playerJSON.getString("finishTime");
             rank = playerJSON.getInt("rank");
-            player = new Player(id,name, finishTime, rank);
+            player = new Player(id, name, "", rank);
             hBox = new HBox(20);
             hBox.setAlignment(Pos.CENTER);
             hBox.getChildren().add(new Label(player.getRank() + ""));
             hBox.getChildren().add(new Label(player.getName()));
-            hBox.getChildren().add(new Label(player.getFinishTime()));
+            if (playerJSON.has("gatheredPoints")) {
+                hBox.getChildren().add(new Label(playerJSON.getInt("gatheredPoints") + ""));
+            }
             hBox.setStyle("-fx-background-color: #000");
             hBox.setStyle("-fx-background-radius: 5");
             hBox.setStyle("-fx-padding: 20 20;");
             playerRankings.getChildren().add(hBox);
         }
+
     }
 
     private class Player{

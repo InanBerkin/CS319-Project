@@ -51,7 +51,7 @@ public class EliminationModeController extends GameInstance {
                         };
                         gameStatusLabel.setText("Calculating Points...");
                         submitButton.setDisable(true);
-                        timer.schedule(task, 3000l);
+                        timer.schedule(task, 5000l);
                     } catch (Exception e) {
                         System.out.println("Null geldi 1" + e.getMessage());
                     }
@@ -69,7 +69,7 @@ public class EliminationModeController extends GameInstance {
                             }
 
                         };
-                        gameStatusLabel.setText("Calculating Points...");
+                        gameStatusLabel.setText("Preparing the next round");
                         submitButton.setDisable(true);
                         timer.schedule(task, 3000l);
                     } catch (Exception e) {
