@@ -136,6 +136,21 @@ public class Room {
         return isPublic;
     }
 
+    public String getGameModeString()
+    {
+        if(gamemode == 0)
+        {
+            return "Race";
+        }
+        else if( gamemode == 1)
+        {
+            return "Elimination";
+        }
+        else if( gamemode == 2)
+            return "Image Recreation";
+        return "";
+    }
+
     public void setPublic(boolean aPublic) {
         isPublic = aPublic;
     }
